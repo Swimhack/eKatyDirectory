@@ -1,0 +1,16 @@
+node_modules
+.next
+.git
+.gitignore
+README.md
+.env
+.env.*
+!.env.example
+fly.toml
+Dockerfile
+.dockerignore
+npm-debug.log
+.DS_Store
+*.pem
+prisma/dev.db
+prisma/dev.db-journal

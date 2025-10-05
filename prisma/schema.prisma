@@ -1,0 +1,205 @@
+// This is your Prisma schema file for eKaty
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite doesn't support enums, using String instead
+// Valid roles: USER, EDITOR, ADMIN, ADVERTISER
+// Valid price levels: BUDGET, MODERATE, UPSCALE, PREMIUM
+
+// Users table
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  name          String?
+  passwordHash  String     @map("password_hash")
+  role          String     @default("USER")
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+  
+  // Relations
+  reviews       Review[]
+  favorites     Favorite[]
+  spins         Spin[]
+  auditLogs     AuditLog[]
+  
+  @@map("users")
+}
+
+// Restaurants table
+model Restaurant {
+  id            String      @id @default(cuid())
+  name          String
+  slug          String      @unique
+  description   String?
+  address       String
+  city          String      @default("Katy")
+  state         String      @default("TX")
+  zipCode       String      @map("zip_code")
+  latitude      Float
+  longitude     Float
+  phone         String?
+  website       String?
+  email         String?
+  categories    String      // Comma-separated category strings
+  cuisineTypes  String      @map("cuisine_types") // Comma-separated cuisine tags
+  hours         String      // JSON string with day-of-week hours
+  priceLevel    String      @default("MODERATE") @map("price_level")
+  photos        String      // Comma-separated photo URLs
+  logoUrl       String?     @map("logo_url")
+  featured      Boolean     @default(false)
+  verified      Boolean     @default(false)
+  active        Boolean     @default(true)
+  rating        Float?      // Calculated average rating
+  reviewCount   Int         @default(0) @map("review_count")
+  source        String?     // e.g., "google_places", "manual", "yelp"
+  sourceId      String?     @map("source_id") // External API ID
+  metadata      String?     // Additional flexible data as JSON string
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  lastVerified  DateTime?   @map("last_verified")
+  
+  // Relations
+  reviews       Review[]
+  favorites     Favorite[]
+  spins         Spin[]
+  ads           Ad[]
+  
+  @@index([latitude, longitude])
+  @@index([featured])
+  @@index([categories])
+  @@map("restaurants")
+}
+
+// Reviews table
+model Review {
+  id            String      @id @default(cuid())
+  restaurantId  String      @map("restaurant_id")
+  userId        String      @map("user_id")
+  rating        Int         // 1-5 stars
+  title         String?
+  text          String
+  helpful       Int         @default(0) // Helpful vote count
+  photos        String      // Comma-separated review photos
+  verified      Boolean     @default(false) // Verified visit
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  
+  // Relations
+  restaurant    Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([restaurantId, userId])
+  @@index([restaurantId])
+  @@index([userId])
+  @@map("reviews")
+}
+
+// Favorites table
+model Favorite {
+  id            String      @id @default(cuid())
+  userId        String      @map("user_id")
+  restaurantId  String      @map("restaurant_id")
+  notes         String?     // Personal notes about the favorite
+  createdAt     DateTime    @default(now()) @map("created_at")
+  
+  // Relations
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  restaurant    Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, restaurantId])
+  @@index([userId])
+  @@map("favorites")
+}
+
+// Spins table (Grub Roulette history)
+model Spin {
+  id            String      @id @default(cuid())
+  userId        String?     @map("user_id") // Nullable for anonymous spins
+  restaurantId  String      @map("restaurant_id")
+  spinParams    String      @map("spin_params") // Filters used for spin as JSON string
+  seed          String?     // For reproducibility
+  sessionId     String?     @map("session_id") // Track anonymous sessions
+  createdAt     DateTime    @default(now()) @map("created_at")
+  
+  // Relations
+  user          User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  restaurant    Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([createdAt])
+  @@map("spins")
+}
+
+// Ads table
+model Ad {
+  id            String      @id @default(cuid())
+  restaurantId  String      @map("restaurant_id")
+  title         String
+  description   String?
+  creative      String      // Ad creative assets and copy as JSON string
+  ctaUrl        String      @map("cta_url")
+  ctaText       String      @default("Learn More") @map("cta_text")
+  startDate     DateTime    @map("start_date")
+  endDate       DateTime    @map("end_date")
+  budget        Float?      // Optional budget cap
+  impressions   Int         @default(0)
+  clicks        Int         @default(0)
+  active        Boolean     @default(true)
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  
+  // Relations
+  restaurant    Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  
+  @@index([startDate, endDate])
+  @@index([active])
+  @@map("ads")
+}
+
+// Audit logs table
+model AuditLog {
+  id            String      @id @default(cuid())
+  entity        String      // Table/model name
+  entityId      String      @map("entity_id")
+  action        String      // CREATE, UPDATE, DELETE
+  userId        String?     @map("user_id")
+  changes       String?     // Before/after values as JSON string
+  metadata      String?     // Additional context as JSON string
+  ipAddress     String?     @map("ip_address")
+  userAgent     String?     @map("user_agent")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  
+  // Relations
+  user          User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  @@index([entity, entityId])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// Contact form submissions (for tracking)
+model ContactSubmission {
+  id            String      @id @default(cuid())
+  name          String
+  email         String
+  phone         String?
+  subject       String
+  message       String
+  type          String      // "general", "advertising", "support", "partnership"
+  metadata      String?     // Additional form data as JSON string
+  responded     Boolean     @default(false)
+  createdAt     DateTime    @default(now()) @map("created_at")
+  
+  @@index([type])
+  @@index([responded])
+  @@map("contact_submissions")
+}
