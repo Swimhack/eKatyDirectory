@@ -4,7 +4,7 @@
 cd /app
 
 # Check if database exists
-if [ ! -f /data/production.db ]; then
+if [ ! -f /data/ekaty.db ]; then
   echo "Database doesn't exist. Creating and seeding..."
   npx prisma migrate deploy
   npx prisma db seed --skip-generate
