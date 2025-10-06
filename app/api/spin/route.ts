@@ -72,7 +72,8 @@ export async function POST(request: NextRequest) {
     if (openNow) {
       const now = new Date()
       const currentHour = now.getHours()
-      const currentDay = now.toLocaleLowerCase().slice(0, 3) // 'mon', 'tue', etc.
+      const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+      const currentDay = days[now.getDay()] // 'mon', 'tue', etc.
       
       candidates = candidates.filter(restaurant => {
         // This is simplified - real implementation would parse hours JSON
