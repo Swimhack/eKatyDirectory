@@ -28,11 +28,11 @@ export async function POST(request: NextRequest) {
       data: {
         name,
         email,
-        phone: phone || null,
+        phone,
         subject,
         message,
         type,
-        metadata: restaurantName ? { restaurantName } : null,
+        metadata: restaurantName ? JSON.stringify({ restaurantName }) : null,
         responded: false
       }
     })
