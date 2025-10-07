@@ -94,14 +94,14 @@ export function Footer() {
             <p className="text-gray-400 text-xs">
               © 2024 eKaty. All rights reserved.
             </p>
-            <div className="flex justify-center space-x-4 mt-2">
-              <Link href="/privacy" className="text-gray-400 hover:text-white text-xs transition-colors">
-                Privacy
-              </Link>
-              <Link href="/terms" className="text-gray-400 hover:text-white text-xs transition-colors">
-                Terms
-              </Link>
-            </div>
+          <div className="flex justify-center space-x-4 mt-2">
+            <Link href="/privacy" className="text-gray-400 hover:text-white text-xs transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center px-2 py-3">
+              Privacy
+            </Link>
+            <Link href="/terms" className="text-gray-400 hover:text-white text-xs transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center px-2 py-3">
+              Terms
+            </Link>
+          </div>
           </div>
         </div>
       </footer>
