@@ -44,6 +44,7 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder /app/prisma/seed.ts ./prisma/seed.ts
+COPY --from=builder /app/prisma/seed-katy.ts ./prisma/seed-katy.ts
 COPY --from=builder /app/prisma/seed-data ./prisma/seed-data
 
 # Copy startup script
