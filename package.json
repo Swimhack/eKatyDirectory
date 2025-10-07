@@ -12,7 +12,8 @@
     "seed-db": "node scripts/seed-db.js",
     "seed-db:prod": "NODE_ENV=production node scripts/seed-db.js",
     "verify-mobile": "node scripts/verify-mobile-first.js",
-    "deploy-verify": "fly deploy && npm run verify-mobile"
+    "verify-deployment": "node scripts/verify-deployment.js",
+    "deploy-verify": "fly deploy && npm run verify-deployment"
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.10.0",
