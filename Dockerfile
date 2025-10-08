@@ -55,5 +55,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 EXPOSE 8080
 
+# Override any base image entrypoint
+ENTRYPOINT []
+
 # Start via package.json
 CMD ["npm", "run", "start"]
