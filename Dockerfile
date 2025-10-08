@@ -1,63 +1,36 @@
-# Use Node.js 18 Alpine as base image
-FROM node:18-alpine AS base
+# Use Node.js 20 Alpine as base image
+FROM node:20-alpine
 
-# Install dependencies only when needed
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+# Create app directory and set permissions for non-root user
 WORKDIR /app
+RUN addgroup -S nextjs && adduser -S nextjs -G nextjs
 
-# Copy package files
-COPY package.json package-lock.json* ./
-RUN npm ci --only=production && \
-    npm install --save-dev @types/node @types/react typescript
+# Install dependencies first (better caching)
+COPY package*.json ./
+RUN npm ci --omit=dev
 
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Copy source files
 COPY . .
 
-# Set environment variables for build
-ENV NEXT_TELEMETRY_DISABLED 1
-ENV NODE_ENV production
+# Generate Prisma client
+RUN npx prisma generate
 
-# Generate Prisma client and build Next.js
-RUN npx prisma generate && \
-    npm run build
-
-# Production image, copy all the files and run next
-FROM base AS runner
-WORKDIR /app
-
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-# Copy built application
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder /app/prisma/seed.ts ./prisma/seed.ts
-COPY --from=builder /app/prisma/seed-katy.ts ./prisma/seed-katy.ts
-COPY --from=builder /app/prisma/seed-data ./prisma/seed-data
-
-# Copy startup script
-COPY start.sh ./start.sh
-RUN chmod +x ./start.sh
+# Build the Next.js app
+RUN npm run build
 
 # Create data directory for SQLite
-RUN mkdir -p /data && chown -R nextjs:nodejs /data
+RUN mkdir -p /data && chown -R nextjs:nextjs /data
 
+# Switch to non-root user
 USER nextjs
 
-EXPOSE 3000
+# Fly sets PORT; default to 8080
+ENV PORT=8080
+ENV HOSTNAME="0.0.0.0"
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
-ENV PORT 3000
+EXPOSE 8080
 
-CMD ["./start.sh"]
+# Start via package.json (no start.sh)
+CMD ["npm", "run", "start"]
