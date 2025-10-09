@@ -1,5 +1,4 @@
 import client, { GOOGLE_CONFIG, KATY_SEARCH_CONFIG } from './client';
-import { PlaceData, PlacesNearbySearchParams } from '@googlemaps/google-maps-services-js';
 import pLimit from 'p-limit';
 
 // Rate limiter to respect API limits

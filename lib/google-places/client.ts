@@ -1,4 +1,4 @@
-import { Client, PlaceInputType } from '@googlemaps/google-maps-services-js';
+import { Client } from '@googlemaps/google-maps-services-js';
 
 // Initialize the Google Maps client
 const client = new Client({});
