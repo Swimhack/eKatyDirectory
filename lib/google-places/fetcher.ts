@@ -57,9 +57,10 @@ export async function fetchNearbyRestaurants(
       const nextResponse = await rateLimiter(() =>
         client.placesNearby({
           params: {
+            location: location, // Required by type definition
             pagetoken: nextPageToken,
             key: GOOGLE_CONFIG.apiKey,
-          },
+          } as any, // Type assertion to handle pagination
           timeout: 10000,
         })
       );
