@@ -18,16 +18,21 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
     "db:setup": "npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed",
-    "db:reset": "prisma migrate reset --force"
+    "db:reset": "prisma migrate reset --force",
+    "import:google": "ts-node scripts/import-google-places.ts",
+    "import:test": "ts-node scripts/test-google-api.ts"
   },
   "dependencies": {
     "@flydotio/litestream": "^1.0.1",
+    "@googlemaps/google-maps-services-js": "^3.4.2",
     "@prisma/client": "^5.7.0",
     "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/supabase-js": "^2.39.0",
     "bcrypt": "^5.1.1",
     "csv-parse": "^5.5.3",
     "next": "14.0.4",
+    "node-cron": "^4.2.1",
+    "p-limit": "^7.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
