@@ -40,6 +40,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder /app/start-production.js ./start-production.js
 
 # Create data directory for SQLite
 RUN mkdir -p /data && chown -R nextjs:nextjs /data
@@ -58,5 +59,5 @@ EXPOSE 8080
 # Override any base image entrypoint
 ENTRYPOINT []
 
-# Start via package.json
-CMD ["npm", "run", "start"]
+# Start via production script
+CMD ["node", "start-production.js"]

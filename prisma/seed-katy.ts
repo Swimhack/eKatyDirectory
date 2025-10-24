@@ -58,7 +58,7 @@ async function seedRestaurants() {
       '$': 'BUDGET',
       '$$': 'MODERATE',
       '$$$': 'UPSCALE',
-      '$$$$': 'FINE_DINING'
+      '$$$$': 'PREMIUM'
     }
     
     // Convert hours object to JSON string
