@@ -41,8 +41,15 @@ async function main() {
       await exec('npx prisma migrate deploy')
       
       // Seed the database
-      console.log('🌱 Seeding database with Google Places data...')
-      await exec('npx ts-node --compiler-options \'{"module":"CommonJS"}\' prisma/seed-google-places.ts')
+      console.log('🌱 Seeding database with restaurant data...')
+      try {
+        // Try Google Places first
+        await exec('npx ts-node --compiler-options \'{"module":"CommonJS"}\' prisma/seed-google-places.ts')
+      } catch (error) {
+        console.log('⚠️ Google Places import failed, using static data...')
+        // Fallback to static data
+        await exec('npx ts-node --compiler-options \'{"module":"CommonJS"}\' prisma/seed-katy.ts')
+      }
       
       console.log('✅ Database initialized and seeded successfully!')
     } else {

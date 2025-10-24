@@ -13,7 +13,6 @@ primary_region = 'dfw'
   NEXT_PUBLIC_APP_URL = 'https://ekaty.fly.dev'
   NODE_ENV = 'production'
   DATABASE_URL = 'file:/data/ekaty.db'
-  GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY_HERE'
 
 [[mounts]]
   source = 'ekaty_data'
