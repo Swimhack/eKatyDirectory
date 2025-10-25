@@ -17,11 +17,12 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
-    "prisma:seed-google": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed-google-places.ts",
+    "prisma:seed-google": "ts-node --compiler-options \"{\\\"module\\\":\\\"CommonJS\\\"}\" prisma/seed-google-places.ts",
     "db:setup": "npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed",
     "db:reset": "prisma migrate reset --force",
-    "import:google": "ts-node scripts/import-google-places.ts",
-    "import:test": "ts-node scripts/test-google-api.ts"
+    "import:google": "ts-node --compiler-options \"{\\\"module\\\":\\\"CommonJS\\\"}\" scripts/import-google-places.ts",
+    "import:test": "ts-node --compiler-options \"{\\\"module\\\":\\\"CommonJS\\\"}\" scripts/test-google-api.ts",
+    "sync-restaurants": "ts-node --compiler-options \"{\\\"module\\\":\\\"CommonJS\\\"}\" scripts/sync-restaurants.ts"
   },
   "dependencies": {
     "@flydotio/litestream": "^1.0.1",

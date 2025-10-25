@@ -105,14 +105,14 @@ export default function ContactPage() {
               <div className="space-y-4">
                 <div>
                   <h3 className="font-medium text-gray-700">Email</h3>
-                  <a href="mailto:hello@ekaty.com" className="text-primary-600 hover:text-primary-700">
-                    hello@ekaty.com
+                  <a href="mailto:James@eKaty.com" className="text-primary-600 hover:text-primary-700">
+                    James@eKaty.com
                   </a>
                 </div>
                 <div>
                   <h3 className="font-medium text-gray-700">Phone</h3>
-                  <a href="tel:+18325551234" className="text-primary-600 hover:text-primary-700">
-                    (832) 555-1234
+                  <a href="tel:+17134446732" className="text-primary-600 hover:text-primary-700">
+                    (713) 444-6732
                   </a>
                 </div>
                 <div>

@@ -37,8 +37,8 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">4. Contact Us</h2>
             <p className="text-gray-700">
               If you have any questions about this Privacy Policy, please contact us at{' '}
-              <a href="mailto:privacy@ekaty.com" className="text-primary-600 hover:text-primary-700">
-                privacy@ekaty.com
+              <a href="mailto:James@eKaty.com" className="text-primary-600 hover:text-primary-700">
+                James@eKaty.com
               </a>
             </p>
           </section>
