@@ -62,8 +62,10 @@ export async function sendContactNotification(data: ContactEmailData) {
       </div>
     `
 
+    console.log('Attempting to send contact notification email to James@eKaty.com')
+    
     const response = await resend.emails.send({
-      from: 'eKaty Contact Form <noreply@ekaty.com>',
+      from: 'eKaty Contact Form <onboarding@resend.dev>',
       to: 'James@eKaty.com',
       replyTo: email,
       subject: `${type === 'advertising' ? '🚀 Advertising Inquiry' : '📧 Contact Form'}: ${subject}`,
@@ -71,9 +73,10 @@ export async function sendContactNotification(data: ContactEmailData) {
       html: htmlContent,
     })
 
+    console.log('Contact notification email sent successfully:', response.data)
     return { success: true, id: response.data?.id }
   } catch (error) {
-    console.error('Error sending email:', error)
+    console.error('Error sending contact notification email:', error)
     return { success: false, error }
   }
 }
@@ -111,13 +114,16 @@ export async function sendConfirmationEmail(name: string, email: string, subject
       </div>
     `
 
-    await resend.emails.send({
-      from: 'eKaty <noreply@ekaty.com>',
+    console.log(`Attempting to send confirmation email to ${email}`)
+    
+    const response = await resend.emails.send({
+      from: 'eKaty <onboarding@resend.dev>',
       to: email,
       subject: `We received your message - eKaty`,
       html: htmlContent,
     })
 
+    console.log('Confirmation email sent successfully:', response.data)
     return { success: true }
   } catch (error) {
     console.error('Error sending confirmation email:', error)
