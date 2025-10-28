@@ -65,8 +65,8 @@ export async function sendContactNotification(data: ContactEmailData) {
     console.log('Attempting to send contact notification email to James@eKaty.com')
     
     const response = await resend.emails.send({
-      from: 'eKaty Contact Form <onboarding@resend.dev>',
-      to: 'James@eKaty.com',
+      from: 'James from eKaty <james@ekaty.com>',
+      to: 'james@ekaty.com',
       replyTo: email,
       subject: `${type === 'advertising' ? '🚀 Advertising Inquiry' : '📧 Contact Form'}: ${subject}`,
       text: emailContent,
@@ -117,7 +117,7 @@ export async function sendConfirmationEmail(name: string, email: string, subject
     console.log(`Attempting to send confirmation email to ${email}`)
     
     const response = await resend.emails.send({
-      from: 'eKaty <onboarding@resend.dev>',
+      from: 'James from eKaty <james@ekaty.com>',
       to: email,
       subject: `We received your message - eKaty`,
       html: htmlContent,
