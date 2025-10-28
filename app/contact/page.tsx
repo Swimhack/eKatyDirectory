@@ -21,6 +21,11 @@ export default function ContactPage() {
     setSubmitting(true)
     
     try {
+      // Auto-set subject for advertising form
+      const subject = formType === 'advertise' 
+        ? `Advertising Inquiry - ${formData.restaurantName || 'New Restaurant'}` 
+        : formData.subject
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -28,6 +33,7 @@ export default function ContactPage() {
         },
         body: JSON.stringify({
           ...formData,
+          subject,
           type: formType === 'advertise' ? 'advertising' : formData.type
         })
       })
