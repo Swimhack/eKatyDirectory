@@ -1,6 +1,6 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY || 'dummy_key_for_build')
 
 interface ContactEmailData {
   name: string
@@ -14,6 +14,12 @@ interface ContactEmailData {
 
 export async function sendContactNotification(data: ContactEmailData) {
   try {
+    // Check if API key is configured
+    if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 'dummy_key_for_build') {
+      console.warn('RESEND_API_KEY not configured - email not sent')
+      return { success: false, error: 'Email not configured' }
+    }
+    
     const { name, email, phone, restaurantName, subject, message, type } = data
     
     const emailContent = `
@@ -74,6 +80,12 @@ export async function sendContactNotification(data: ContactEmailData) {
 
 export async function sendConfirmationEmail(name: string, email: string, subject: string) {
   try {
+    // Check if API key is configured
+    if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 'dummy_key_for_build') {
+      console.warn('RESEND_API_KEY not configured - confirmation email not sent')
+      return { success: false, error: 'Email not configured' }
+    }
+    
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #2563eb;">Thank You for Contacting eKaty!</h2>
