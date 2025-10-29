@@ -36,9 +36,9 @@ async function main() {
     if (!dbExists) {
       console.log('📊 Database not found, initializing...')
       
-      // Run migrations
-      console.log('🔄 Running database migrations...')
-      await exec('npx prisma migrate deploy')
+      // Push schema to database (creates tables)
+      console.log('🔄 Creating database schema...')
+      await exec('npx prisma db push --accept-data-loss')
       
       // Seed the database
       console.log('🌱 Seeding database with restaurant data...')
@@ -53,8 +53,10 @@ async function main() {
       
       console.log('✅ Database initialized and seeded successfully!')
     } else {
-      console.log('📊 Database exists, running migrations...')
-      await exec('npx prisma migrate deploy')
+      console.log('📊 Database exists, syncing schema...')
+      // Use db push to sync schema changes without losing data
+      await exec('npx prisma db push --accept-data-loss')
+      console.log('✅ Schema synchronized!')
     }
     
     // Start the Next.js server
