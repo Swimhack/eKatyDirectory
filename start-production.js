@@ -38,7 +38,7 @@ async function main() {
       
       // Push schema to database (creates tables)
       console.log('🔄 Creating database schema...')
-      await exec('npx prisma db push --accept-data-loss')
+      await exec('npx prisma db push --accept-data-loss --skip-generate')
       
       // Seed the database
       console.log('🌱 Seeding database with restaurant data...')
@@ -55,7 +55,7 @@ async function main() {
     } else {
       console.log('📊 Database exists, syncing schema...')
       // Use db push to sync schema changes without losing data
-      await exec('npx prisma db push --accept-data-loss')
+      await exec('npx prisma db push --accept-data-loss --skip-generate')
       console.log('✅ Schema synchronized!')
     }
     
