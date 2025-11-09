@@ -93,20 +93,19 @@ export async function checkDatabaseHealth(): Promise<DatabaseHealth> {
 /**
  * Check Google API quota health
  */
-export function checkApiHealth(): ApiHealth {
-  const stats = getApiUsageStats();
-  const percentageUsed = (stats.dailyRequestCount / stats.dailyLimit) * 100;
-  
+export async function checkApiHealth(): Promise<ApiHealth> {
+  const stats = await getApiUsageStats();
+
   // API is healthy if less than 90% of quota used
-  const healthy = percentageUsed < 90;
-  
+  const healthy = stats.percentUsed < 90;
+
   return {
     healthy,
-    dailyUsed: stats.dailyRequestCount,
-    dailyLimit: stats.dailyLimit,
-    remainingRequests: stats.remainingRequests,
-    percentageUsed: Math.round(percentageUsed * 100) / 100,
-    resetTime: stats.resetTime.toISOString(),
+    dailyUsed: stats.today,
+    dailyLimit: stats.limit,
+    remainingRequests: stats.remaining,
+    percentageUsed: Math.round(stats.percentUsed * 100) / 100,
+    resetTime: new Date().toISOString(), // Next day
   };
 }
 
@@ -162,9 +161,9 @@ export async function checkSyncHealth(): Promise<SyncHealth> {
  */
 export async function performHealthCheck(): Promise<HealthStatus> {
   const dbHealth = await checkDatabaseHealth();
-  const apiHealth = checkApiHealth();
+  const apiHealth = await checkApiHealth();
   const syncHealth = await checkSyncHealth();
-  
+
   const overallHealthy = dbHealth.healthy && apiHealth.healthy && syncHealth.healthy;
   
   return {
