@@ -95,20 +95,34 @@ export async function importRestaurants(
 
       if (existing) {
         if (options.updateExisting) {
+          // Parse admin overrides (locked fields)
+          const overrides = existing.adminOverrides
+            ? JSON.parse(existing.adminOverrides)
+            : {};
+
+          // Only update fields NOT locked by admin
+          const safeUpdate = Object.keys(restaurantData).reduce((acc, key) => {
+            if (!overrides[key]) {
+              acc[key] = restaurantData[key];
+            }
+            return acc;
+          }, {} as any);
+
           // Update existing restaurant
           const updated = await prisma.restaurant.update({
             where: { id: existing.id },
             data: {
-              ...restaurantData,
+              ...safeUpdate,
               slug: existing.slug, // Keep original slug
+              adminOverrides: existing.adminOverrides, // Preserve locks
               updatedAt: new Date(),
               lastVerified: new Date(),
             }
           });
-          
+
           results.updated++;
           results.restaurants.push(updated);
-          
+
           console.log(`Updated: ${restaurantData.name}`);
         } else {
           console.log(`Skipped existing: ${restaurantData.name}`);

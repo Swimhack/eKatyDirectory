@@ -1,34 +1,17 @@
 import client, { GOOGLE_CONFIG, KATY_SEARCH_CONFIG } from './client';
 import pLimit from 'p-limit';
+import { checkAndIncrementUsage } from './rate-limiter';
 
 // Rate limiter to respect API limits
 const rateLimiter = pLimit(GOOGLE_CONFIG.rateLimit);
-
-// Track daily API usage
-let dailyRequestCount = 0;
-let dailyResetTime = Date.now() + 24 * 60 * 60 * 1000;
-
-function checkDailyLimit() {
-  // Reset counter if a day has passed
-  if (Date.now() > dailyResetTime) {
-    dailyRequestCount = 0;
-    dailyResetTime = Date.now() + 24 * 60 * 60 * 1000;
-  }
-  
-  if (dailyRequestCount >= GOOGLE_CONFIG.dailyLimit) {
-    throw new Error('Daily Google API limit reached');
-  }
-  
-  dailyRequestCount++;
-}
 
 // Fetch all restaurants near a specific point
 export async function fetchNearbyRestaurants(
   location: { lat: number; lng: number },
   radius: number = 5000
 ): Promise<any[]> {
-  checkDailyLimit();
-  
+  await checkAndIncrementUsage();
+
   try {
     const response = await rateLimiter(() =>
       client.placesNearby({
@@ -51,9 +34,9 @@ export async function fetchNearbyRestaurants(
     while (nextPageToken) {
       // Wait 2 seconds before requesting next page (Google requirement)
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      checkDailyLimit();
-      
+
+      await checkAndIncrementUsage();
+
       const nextResponse = await rateLimiter(() =>
         client.placesNearby({
           params: {
@@ -78,8 +61,8 @@ export async function fetchNearbyRestaurants(
 
 // Fetch detailed information about a specific place
 export async function fetchPlaceDetails(placeId: string): Promise<any> {
-  checkDailyLimit();
-  
+  await checkAndIncrementUsage();
+
   try {
     const response = await rateLimiter(() =>
       client.placeDetails({

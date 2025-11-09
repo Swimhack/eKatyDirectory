@@ -63,6 +63,7 @@ model Restaurant {
   source        String?     // e.g., "google_places", "manual", "yelp"
   sourceId      String?     @map("source_id") // External API ID
   metadata      String?     // Additional flexible data as JSON string
+  adminOverrides String?    @map("admin_overrides") // JSON: locked fields {"phone":true,"hours":true}
   createdAt     DateTime    @default(now()) @map("created_at")
   updatedAt     DateTime    @updatedAt @map("updated_at")
   lastVerified  DateTime?   @map("last_verified")
@@ -76,6 +77,9 @@ model Restaurant {
   @@index([latitude, longitude])
   @@index([featured])
   @@index([categories])
+  @@index([active])
+  @@index([city])
+  @@index([sourceId])
   @@map("restaurants")
 }
 
@@ -199,8 +203,18 @@ model ContactSubmission {
   metadata      String?     // Additional form data as JSON string
   responded     Boolean     @default(false)
   createdAt     DateTime    @default(now()) @map("created_at")
-  
+
   @@index([type])
   @@index([responded])
   @@map("contact_submissions")
+}
+
+// API usage tracking (for rate limiting)
+model ApiUsage {
+  id            String      @id @default(cuid())
+  date          String      @unique // YYYY-MM-DD format
+  requestCount  Int         @default(0) @map("request_count")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@map("api_usage")
 }

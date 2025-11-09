@@ -70,7 +70,46 @@ export async function POST(request: Request) {
     // Step 4: Clean up duplicates
     console.log('🧹 Cleaning up duplicates...')
     const duplicatesRemoved = await deduplicateRestaurants()
-    
+
+    // Check failure threshold (fail if >10% failed)
+    const totalProcessed = detailedRestaurants.length
+    const failureRate = totalProcessed > 0 ? importResults.failed / totalProcessed : 0
+    const isHighFailureRate = failureRate > 0.1
+
+    if (isHighFailureRate) {
+      console.error(`⚠️  High failure rate detected: ${importResults.failed}/${totalProcessed} (${(failureRate * 100).toFixed(1)}%)`)
+
+      // Log the failed sync
+      await prisma.auditLog.create({
+        data: {
+          action: 'RESTAURANT_SYNC_FAILED',
+          entity: 'Restaurant',
+          entityId: 'system',
+          changes: JSON.stringify({
+            created: importResults.created,
+            updated: importResults.updated,
+            failed: importResults.failed,
+            failureRate: `${(failureRate * 100).toFixed(1)}%`,
+            duplicatesRemoved,
+            reason: 'High failure rate (>10%)'
+          }),
+          userId: null
+        }
+      })
+
+      return NextResponse.json({
+        success: false,
+        error: `High failure rate: ${importResults.failed}/${totalProcessed} restaurants failed (${(failureRate * 100).toFixed(1)}%)`,
+        stats: {
+          discovered: restaurants.length,
+          created: importResults.created,
+          updated: importResults.updated,
+          failed: importResults.failed,
+          duplicatesRemoved
+        }
+      }, { status: 500 })
+    }
+
     // Log the sync event
     await prisma.auditLog.create({
       data: {
@@ -98,10 +137,10 @@ export async function POST(request: Request) {
         duplicatesRemoved
       }
     }
-    
+
     console.log('✅ Daily sync completed successfully')
     console.log(JSON.stringify(result, null, 2))
-    
+
     return NextResponse.json(result)
     
   } catch (error) {
