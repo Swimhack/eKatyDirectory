@@ -1,8 +1,8 @@
 # Use Node.js 20 Alpine as base image
 FROM node:20-alpine AS builder
 
-# Install dependencies for building
-RUN apk add --no-cache libc6-compat
+# Install dependencies for building (including openssl for Prisma)
+RUN apk add --no-cache libc6-compat openssl openssl-dev
 
 WORKDIR /app
 
@@ -25,8 +25,8 @@ RUN npm run build
 # Production image
 FROM node:20-alpine AS runner
 
-# Install OpenSSL for Prisma
-RUN apk add --no-cache openssl
+# Install OpenSSL 3 and compatibility layer for Prisma
+RUN apk add --no-cache openssl openssl-dev
 
 WORKDIR /app
 
