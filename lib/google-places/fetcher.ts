@@ -177,12 +177,8 @@ export async function fetchDetailedRestaurantData(
   return detailedData;
 }
 
-// Export daily usage stats
-export function getApiUsageStats() {
-  return {
-    dailyRequestCount,
-    dailyLimit: GOOGLE_CONFIG.dailyLimit,
-    remainingRequests: GOOGLE_CONFIG.dailyLimit - dailyRequestCount,
-    resetTime: new Date(dailyResetTime),
-  };
+// Export daily usage stats (async now - uses database)
+export async function getApiUsageStats() {
+  const { getUsageStats } = await import('./rate-limiter');
+  return getUsageStats();
 }
