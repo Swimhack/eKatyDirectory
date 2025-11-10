@@ -17,19 +17,23 @@ datasource db {
 
 // Users table
 model User {
-  id            String     @id @default(cuid())
-  email         String     @unique
-  name          String?
-  passwordHash  String     @map("password_hash")
-  role          String     @default("USER")
-  createdAt     DateTime   @default(now()) @map("created_at")
-  updatedAt     DateTime   @updatedAt @map("updated_at")
+  id                String              @id @default(cuid())
+  email             String              @unique
+  name              String?
+  passwordHash      String              @map("password_hash")
+  role              String              @default("USER")
+  stripeCustomerId  String?             @unique @map("stripe_customer_id")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
 
   // Relations
-  reviews       Review[]
-  favorites     Favorite[]
-  spins         Spin[]
-  auditLogs     AuditLog[]
+  reviews           Review[]
+  favorites         Favorite[]
+  spins             Spin[]
+  auditLogs         AuditLog[]
+  subscriptions     Subscription[]
+  claimRequests     RestaurantClaim[]
+  ownedRestaurants  RestaurantOwner[]
 
   @@map("users")
 }
@@ -74,6 +78,8 @@ model Restaurant {
   spins         Spin[]
   ads           Ad[]
   events        Event[]
+  owners        RestaurantOwner[]
+  claims        RestaurantClaim[]
   
   @@index([latitude, longitude])
   @@index([featured])
@@ -242,4 +248,71 @@ model ApiUsage {
   updatedAt     DateTime    @updatedAt @map("updated_at")
 
   @@map("api_usage")
+}
+
+// Subscriptions table (Stripe subscriptions)
+model Subscription {
+  id                    String      @id @default(cuid())
+  userId                String      @map("user_id")
+  stripeSubscriptionId  String      @unique @map("stripe_subscription_id")
+  stripePriceId         String      @map("stripe_price_id")
+  stripeProductId       String      @map("stripe_product_id")
+  status                String      // active, canceled, past_due, etc.
+  tier                  String      // owner, featured, premium
+  currentPeriodStart    DateTime    @map("current_period_start")
+  currentPeriodEnd      DateTime    @map("current_period_end")
+  cancelAtPeriodEnd     Boolean     @default(false) @map("cancel_at_period_end")
+  createdAt             DateTime    @default(now()) @map("created_at")
+  updatedAt             DateTime    @updatedAt @map("updated_at")
+
+  // Relations
+  user                  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@map("subscriptions")
+}
+
+// Restaurant ownership (links users to restaurants they own)
+model RestaurantOwner {
+  id            String      @id @default(cuid())
+  userId        String      @map("user_id")
+  restaurantId  String      @map("restaurant_id")
+  role          String      @default("owner") // owner, manager, staff
+  verified      Boolean     @default(false)
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  // Relations
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  restaurant    Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, restaurantId])
+  @@index([userId])
+  @@index([restaurantId])
+  @@map("restaurant_owners")
+}
+
+// Restaurant claim requests
+model RestaurantClaim {
+  id                    String      @id @default(cuid())
+  userId                String      @map("user_id")
+  restaurantId          String      @map("restaurant_id")
+  status                String      @default("pending") // pending, approved, rejected
+  verificationMethod    String?     @map("verification_method") // email_domain, phone, stripe_identity, manual
+  verificationData      String?     @map("verification_data") // JSON with verification details
+  adminNotes            String?     @map("admin_notes")
+  reviewedBy            String?     @map("reviewed_by") // Admin user ID
+  reviewedAt            DateTime?   @map("reviewed_at")
+  createdAt             DateTime    @default(now()) @map("created_at")
+  updatedAt             DateTime    @updatedAt @map("updated_at")
+
+  // Relations
+  user                  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  restaurant            Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([restaurantId])
+  @@index([status])
+  @@map("restaurant_claims")
 }
