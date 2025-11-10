@@ -1,0 +1,607 @@
+=== Comprehensive Restaurant Import for Katy ===
+Total restaurants to check: 108
+
+[1/108] Checking: Mala Sichuan Bistro Katy
+  ✓ Already in database
+[2/108] Checking: Phat Eatery Katy
+  ✓ Already in database
+[3/108] Checking: Haidilao Hotpot Katy
+  ✓ Already in database
+[4/108] Checking: Supreme Dumplings Katy
+  ✓ Already in database
+[5/108] Checking: Ten Seconds Yunnan Rice Noodle Katy
+  ✓ Already in database
+[6/108] Checking: Yummy Pho Bo Ne Katy
+  ✓ Already in database
+[7/108] Checking: Hong Kong Food Street Katy
+  ✓ Already in database
+[8/108] Checking: Loves Dumpling House Katy
+  ✓ Already in database
+[9/108] Checking: Uncle Chin Kitchen Katy
+  ✓ Already in database
+[10/108] Checking: Bon Galbi Katy
+  ✓ Already in database
+[11/108] Checking: Tan Tan Wok Katy
+  ✓ Already in database
+[12/108] Checking: AMA Kitchen Katy
+  ✓ Already in database
+[13/108] Checking: Tiger Noodle House Katy
+  ! Found but NOT in database - will import
+[14/108] Checking: Taste of China Katy
+  ! Found but NOT in database - will import
+[15/108] Checking: Chung Wang BBQ Katy
+  ! Found but NOT in database - will import
+[16/108] Checking: P.F. Chang's Katy
+  ! Found but NOT in database - will import
+[17/108] Checking: Panda Express Katy
+  ! Found but NOT in database - will import
+[18/108] Checking: China Garden Katy
+  ! Found but NOT in database - will import
+[19/108] Checking: Hunan Chef Katy
+  ! Found but NOT in database - will import
+[20/108] Checking: Peking Chinese Restaurant Katy
+  ! Found but NOT in database - will import
+[21/108] Checking: Kokai Sushi Lounge Katy
+  ! Found but NOT in database - will import
+[22/108] Checking: Yaki Sushi AYCE Katy
+  ! Found but NOT in database - will import
+[23/108] Checking: Gyu-Kaku Japanese BBQ Katy
+  ! Found but NOT in database - will import
+[24/108] Checking: Twenty Five Teishoku House Katy
+  ! Found but NOT in database - will import
+[25/108] Checking: Airi Ramen Katy
+  ! Found but NOT in database - will import
+[26/108] Checking: Samurai Japanese Steakhouse Katy
+  ! Found but NOT in database - will import
+[27/108] Checking: Sushi Sake Katy
+  ! Found but NOT in database - will import
+[28/108] Checking: Ra Sushi Katy
+  ! Found but NOT in database - will import
+[29/108] Checking: Kaze Sushi Bar Katy
+  ! Found but NOT in database - will import
+[30/108] Checking: Spicy House Katy
+  ! Found but NOT in database - will import
+[31/108] Checking: Soju 101 Katy
+  ! Found but NOT in database - will import
+[32/108] Checking: Gen Korean BBQ Katy
+  ! Found but NOT in database - will import
+[33/108] Checking: Korean Noodle House Katy
+  ! Found but NOT in database - will import
+[34/108] Checking: Yummy Quan Hu Tieu Nam Vang Katy
+  ! Found but NOT in database - will import
+[35/108] Checking: Corner 99 Viet Kitchen Katy
+  ! Found but NOT in database - will import
+[36/108] Checking: To Soc Chon Katy
+  ! Found but NOT in database - will import
+[37/108] Checking: Pho Binh Katy
+  ! Found but NOT in database - will import
+[38/108] Checking: Viet Kitchen Katy
+  ! Found but NOT in database - will import
+[39/108] Checking: Ginger Thai Katy
+  ! Found but NOT in database - will import
+[40/108] Checking: Thai Spice Asian Gourmet Katy
+  ! Found but NOT in database - will import
+[41/108] Checking: Thai Cottage Katy
+  ! Found but NOT in database - will import
+[42/108] Checking: Siam Cuisine Katy
+  ! Found but NOT in database - will import
+[43/108] Checking: Chocho Hot Pot Katy
+  ! Found but NOT in database - will import
+[44/108] Checking: Jia Kitchen Katy
+  ! Found but NOT in database - will import
+[45/108] Checking: GiAu Bar N Bites Katy
+  ! Found but NOT in database - will import
+[46/108] Checking: Maharaja Bhog Katy
+  ! Found but NOT in database - will import
+[47/108] Checking: Clay Oven Katy
+  ! Found but NOT in database - will import
+[48/108] Checking: Bombay Brasserie Katy
+  ! Found but NOT in database - will import
+[49/108] Checking: India's Restaurant Katy
+  ! Found but NOT in database - will import
+[50/108] Checking: Biryani Pot Katy
+  ! Found but NOT in database - will import
+[51/108] Checking: Gringo's Mexican Kitchen Katy
+  ! Found but NOT in database - will import
+[52/108] Checking: Chuy's Katy
+  ! Found but NOT in database - will import
+[53/108] Checking: Taco Cabana Katy
+  ! Found but NOT in database - will import
+[54/108] Checking: Torchy's Tacos Katy
+  ! Found but NOT in database - will import
+[55/108] Checking: El Tiempo Cantina Katy
+  ! Found but NOT in database - will import
+[56/108] Checking: Pappasito's Cantina Katy
+  ! Found but NOT in database - will import
+[57/108] Checking: Ninfa's on Navigation Katy
+  ✗ Error: Not found
+[58/108] Checking: Los Cucos Mexican Cafe Katy
+  ! Found but NOT in database - will import
+[59/108] Checking: Escalante's Mexican Grille Katy
+  ! Found but NOT in database - will import
+[60/108] Checking: Blue Agave Katy
+  ! Found but NOT in database - will import
+[61/108] Checking: Killen's BBQ Katy
+  ! Found but NOT in database - will import
+[62/108] Checking: Rudy's Country Store and Bar-B-Q Katy
+  ! Found but NOT in database - will import
+[63/108] Checking: Spring Creek Barbeque Katy
+  ! Found but NOT in database - will import
+[64/108] Checking: Dickey's Barbecue Pit Katy
+  ! Found but NOT in database - will import
+[65/108] Checking: The Brisket House Katy
+  ! Found but NOT in database - will import
+[66/108] Checking: Five Guys Katy
+  ! Found but NOT in database - will import
+[67/108] Checking: In-N-Out Burger Katy
+  ! Found but NOT in database - will import
+[68/108] Checking: Whataburger Katy
+  ! Found but NOT in database - will import
+[69/108] Checking: Shake Shack Katy
+  ! Found but NOT in database - will import
+[70/108] Checking: The Burger Joint Katy
+  ! Found but NOT in database - will import
+[71/108] Checking: Buffalo Wild Wings Katy
+  ! Found but NOT in database - will import
+[72/108] Checking: Twin Peaks Katy
+  ! Found but NOT in database - will import
+[73/108] Checking: Local Foods Katy
+  ! Found but NOT in database - will import
+[74/108] Checking: Carrabba's Italian Grill Katy
+  ! Found but NOT in database - will import
+[75/108] Checking: Olive Garden Katy
+  ! Found but NOT in database - will import
+[76/108] Checking: Romano's Macaroni Grill Katy
+  ! Found but NOT in database - will import
+[77/108] Checking: Zio's Italian Kitchen Katy
+  ! Found but NOT in database - will import
+[78/108] Checking: Grimaldi's Pizzeria Katy
+  ! Found but NOT in database - will import
+[79/108] Checking: Pappadeaux Seafood Kitchen Katy
+  ! Found but NOT in database - will import
+[80/108] Checking: Saltgrass Steak House Katy
+  ! Found but NOT in database - will import
+[81/108] Checking: Red Lobster Katy
+  ! Found but NOT in database - will import
+[82/108] Checking: Landry's Seafood House Katy
+  ! Found but NOT in database - will import
+[83/108] Checking: Truluck's Ocean's Finest Seafood Katy
+  ! Found but NOT in database - will import
+[84/108] Checking: Perry's Steakhouse Katy
+  ! Found but NOT in database - will import
+[85/108] Checking: Texas Roadhouse Katy
+  ! Found but NOT in database - will import
+[86/108] Checking: LongHorn Steakhouse Katy
+  ! Found but NOT in database - will import
+[87/108] Checking: Outback Steakhouse Katy
+  ! Found but NOT in database - will import
+[88/108] Checking: III Forks Katy
+  ! Found but NOT in database - will import
+[89/108] Checking: Snooze AM Eatery Katy
+  ! Found but NOT in database - will import
+[90/108] Checking: First Watch Katy
+  ! Found but NOT in database - will import
+[91/108] Checking: Another Broken Egg Cafe Katy
+  ! Found but NOT in database - will import
+[92/108] Checking: IHOP Katy
+  ! Found but NOT in database - will import
+[93/108] Checking: Denny's Katy
+  ! Found but NOT in database - will import
+[94/108] Checking: Aladdin Mediterranean Cuisine Katy
+  ! Found but NOT in database - will import
+[95/108] Checking: Niko Niko's Katy
+  ! Found but NOT in database - will import
+[96/108] Checking: Cazba Mediterranean Grille Katy
+  ! Found but NOT in database - will import
+[97/108] Checking: Shawarma Press Katy
+  ! Found but NOT in database - will import
+[98/108] Checking: Chipotle Mexican Grill Katy
+  ! Found but NOT in database - will import
+[99/108] Checking: Panera Bread Katy
+  ! Found but NOT in database - will import
+[100/108] Checking: Jason's Deli Katy
+  ! Found but NOT in database - will import
+[101/108] Checking: Freshii Katy
+  ! Found but NOT in database - will import
+[102/108] Checking: Newk's Eatery Katy
+  ! Found but NOT in database - will import
+[103/108] Checking: Chili's Grill & Bar Katy
+  ! Found but NOT in database - will import
+[104/108] Checking: Applebee's Grill + Bar Katy
+  ! Found but NOT in database - will import
+[105/108] Checking: TGI Fridays Katy
+  ! Found but NOT in database - will import
+[106/108] Checking: BJ's Restaurant & Brewhouse Katy
+  ! Found but NOT in database - will import
+[107/108] Checking: The Cheesecake Factory Katy
+  ! Found but NOT in database - will import
+[108/108] Checking: Maggiano's Little Italy Katy
+  ! Found but NOT in database - will import
+
+=== Summary ===
+✓ Already in database: 12
+! Need to import: 95
+? Not found: 0
+✗ Errors: 1
+
+=== Importing 95 restaurants ===
+
+[1/95] Importing: Tiger Noodle House Katy
+  ✓ Successfully imported!
+    ID: cmhtdp3r7000cwdtl4wfjad6d
+    Slug: tiger-noodle-house
+[2/95] Importing: Taste of China Katy
+  ✓ Successfully imported!
+    ID: cmhtdp4d9000dwdtl4ewtitlu
+    Slug: taste-of-china
+[3/95] Importing: Chung Wang BBQ Katy
+  ✓ Successfully imported!
+    ID: cmhtdp50s000ewdtln6p8550p
+    Slug: chung-wang-cantonese-bbq
+[4/95] Importing: P.F. Chang's Katy
+  ✓ Successfully imported!
+    ID: cmhtdp5pn000fwdtlofgcdg5w
+    Slug: chang-s-chinese-restaurant
+[5/95] Importing: Panda Express Katy
+  ✓ Successfully imported!
+    ID: cmhtdp6fq000gwdtlpry3jire
+    Slug: panda-express
+[6/95] Importing: China Garden Katy
+  ✓ Successfully imported!
+    ID: cmhtdp74j000hwdtlp7ga9d7s
+    Slug: green-garden-restaurant
+[7/95] Importing: Hunan Chef Katy
+  ✓ Successfully imported!
+    ID: cmhtdp7uk000iwdtl23ubn3ew
+    Slug: hunan-chef
+[8/95] Importing: Peking Chinese Restaurant Katy
+  ✓ Successfully imported!
+    ID: cmhcu3s590007eqk63rgqch6v
+    Slug: beijing-ranch
+[9/95] Importing: Kokai Sushi Lounge Katy
+  ✓ Successfully imported!
+    ID: cmhtdp994000jwdtlrha21rch
+    Slug: kokai-sushi-and-lounge
+[10/95] Importing: Yaki Sushi AYCE Katy
+  ✓ Successfully imported!
+    ID: cmh5jyebe002bnyp6bzbkkmp0
+    Slug: yaki-sushi
+[11/95] Importing: Gyu-Kaku Japanese BBQ Katy
+  ✓ Successfully imported!
+    ID: cmhtdpbbg000kwdtl8oprjuvi
+    Slug: gyu-kaku-japanese-bbq
+[12/95] Importing: Twenty Five Teishoku House Katy
+  ✓ Successfully imported!
+    ID: cmhtdpc0u000lwdtl6g0z9vdz
+    Slug: twenty-five-teishoku-house
+[13/95] Importing: Airi Ramen Katy
+  ✓ Successfully imported!
+    ID: cmh5jye1b000knyp69q1ra8ty
+    Slug: airi-ramen-katy-park
+[14/95] Importing: Samurai Japanese Steakhouse Katy
+  ✓ Successfully imported!
+    ID: cmhtdpdn1000mwdtl19movxyu
+    Slug: samurai-japanese-steak-and-sushi
+[15/95] Importing: Sushi Sake Katy
+  ✓ Successfully imported!
+    ID: cmhtdpeah000nwdtlk0hhjcsg
+    Slug: zake-sushi-ramen
+[16/95] Importing: Ra Sushi Katy
+  ✓ Successfully imported!
+    ID: cmhtdpf02000owdtlmms76koo
+    Slug: sushi-hara
+[17/95] Importing: Kaze Sushi Bar Katy
+  ✓ Successfully imported!
+    ID: cmhtdpeah000nwdtlk0hhjcsg
+    Slug: zake-sushi-ramen
+[18/95] Importing: Spicy House Katy
+  ✓ Successfully imported!
+    ID: cmhtdpg18000pwdtlenuroutp
+    Slug: spicy-house
+[19/95] Importing: Soju 101 Katy
+  ✓ Successfully imported!
+    ID: cmhtdpgo3000qwdtl1bb93vri
+    Slug: soju-101
+[20/95] Importing: Gen Korean BBQ Katy
+  ✓ Successfully imported!
+    ID: cmhtdphfg000rwdtld0d50yei
+    Slug: stoneage
+[21/95] Importing: Korean Noodle House Katy
+  ✓ Successfully imported!
+    ID: cmhtdpi08000swdtlzbuohp50
+    Slug: maht-gaek-katy
+[22/95] Importing: Yummy Quan Hu Tieu Nam Vang Katy
+  ✓ Successfully imported!
+    ID: cmhtdpitb000twdtlfi80x0z7
+    Slug: yummy-quan-hu-tieu-nam-vang
+[23/95] Importing: Corner 99 Viet Kitchen Katy
+  ✓ Successfully imported!
+    ID: cmhtdpjex000uwdtl8vycjb3m
+    Slug: corner-99-viet-kitchen
+[24/95] Importing: To Soc Chon Katy
+  ✓ Successfully imported!
+    ID: cmhtdpk4v000vwdtl49wgjee3
+    Slug: to-soc-chon
+[25/95] Importing: Pho Binh Katy
+  ✓ Successfully imported!
+    ID: cmhtdpkrm000wwdtl2vmxvnkk
+    Slug: pho-binh
+[26/95] Importing: Viet Kitchen Katy
+  ✓ Successfully imported!
+    ID: cmhtdplex000xwdtllztglks7
+    Slug: vietnam-bistro
+[27/95] Importing: Ginger Thai Katy
+  ✓ Successfully imported!
+    ID: cmhcu3ser0018eqk6u3xwz4m6
+    Slug: ginger-thai
+[28/95] Importing: Thai Spice Asian Gourmet Katy
+  ✓ Successfully imported!
+    ID: cmhtdpmqx000ywdtlnr1lw44w
+    Slug: thai-spice-asian-gourmet
+[29/95] Importing: Thai Cottage Katy
+  ✓ Successfully imported!
+    ID: cmhtdpndu000zwdtl6l21stho
+    Slug: thai-cottage-katy
+[30/95] Importing: Siam Cuisine Katy
+  ✓ Successfully imported!
+    ID: cmhtdpo1g0010wdtlynjms9xa
+    Slug: amazing-thai-cuisine
+[31/95] Importing: Chocho Hot Pot Katy
+  ✓ Successfully imported!
+    ID: cmhtdpoou0011wdtlycxwci6b
+    Slug: chocho-hot-pot-katy-premium-all-you-can-eat
+[32/95] Importing: Jia Kitchen Katy
+  ✓ Successfully imported!
+    ID: cmhtdppdk0012wdtl4ldhszwo
+    Slug: jia-kitchen
+[33/95] Importing: GiAu Bar N Bites Katy
+  ✓ Successfully imported!
+    ID: cmhtdpq320013wdtl327jnu9m
+    Slug: giau-bar-n-bites
+[34/95] Importing: Maharaja Bhog Katy
+  ✓ Successfully imported!
+    ID: cmhtdpqqo0014wdtlsyl2bluz
+    Slug: maharaja-bhog
+[35/95] Importing: Clay Oven Katy
+  ✓ Successfully imported!
+    ID: cmhtdpreg0015wdtl0erg731f
+    Slug: under-the-knife
+[36/95] Importing: Bombay Brasserie Katy
+  ✓ Successfully imported!
+    ID: cmhtdps400016wdtlf1nho0n8
+    Slug: bombay-palace-indian-restaurant
+[37/95] Importing: India's Restaurant Katy
+  ✓ Successfully imported!
+    ID: cmhtdpsqp0017wdtlcw4b3vgh
+    Slug: tikkatemple-restaurant-catering
+[38/95] Importing: Biryani Pot Katy
+  ✓ Successfully imported!
+    ID: cmhtdptes0018wdtl5itcfe0o
+    Slug: biryani-pot-express-katy
+[39/95] Importing: Gringo's Mexican Kitchen Katy
+  ✓ Successfully imported!
+    ID: cmhtdpuhm0019wdtl54bb2q11
+    Slug: gringo-s-mexican-kitchen-katy
+[40/95] Importing: Chuy's Katy
+  ✓ Successfully imported!
+    ID: cmhcu3sme0026eqk6zgqswfw6
+    Slug: chuy-s
+[41/95] Importing: Taco Cabana Katy
+  ✓ Successfully imported!
+    ID: cmhtdpvwh001awdtlhdo3d7pb
+    Slug: taco-cabana
+[42/95] Importing: Torchy's Tacos Katy
+  ✓ Successfully imported!
+    ID: cmhtdpwl6001bwdtlpow629lz
+    Slug: torchy-s-tacos
+[43/95] Importing: El Tiempo Cantina Katy
+  ✓ Successfully imported!
+    ID: cmhtdpx9m001cwdtl41k5ucs5
+    Slug: el-tiempo-cantina
+[44/95] Importing: Pappasito's Cantina Katy
+  ✓ Successfully imported!
+    ID: cmhtdpxz2001dwdtlp75m8itj
+    Slug: pappasito-s-cantina
+[45/95] Importing: Los Cucos Mexican Cafe Katy
+  ✓ Successfully imported!
+    ID: cmhcu3s450002eqk6iq23bong
+    Slug: los-cucos-mexican-cafe
+[46/95] Importing: Escalante's Mexican Grille Katy
+  ✓ Successfully imported!
+    ID: cmhtdpzk2001ewdtl3uxv6g8a
+    Slug: escalante-s-fine-tex-mex-tequila-meyerland
+[47/95] Importing: Blue Agave Katy
+  ✓ Successfully imported!
+    ID: cmhtdq08q001fwdtlwj114y7w
+    Slug: blue-agave-cantina
+[48/95] Importing: Killen's BBQ Katy
+  ✓ Successfully imported!
+    ID: cmhtdq0yt001gwdtlmc3pl8h4
+    Slug: killen-s-bbq
+[49/95] Importing: Rudy's Country Store and Bar-B-Q Katy
+  ✓ Successfully imported!
+    ID: cmhcu3so5002beqk6jypmrj9m
+    Slug: rudy-s-country-store-and-bar-b-q
+[50/95] Importing: Spring Creek Barbeque Katy
+  ✓ Successfully imported!
+    ID: cmhtdq2cw001hwdtl1cdphre7
+    Slug: spring-creek-barbeque
+[51/95] Importing: Dickey's Barbecue Pit Katy
+  ✓ Successfully imported!
+    ID: cmhtdq317001iwdtlyhjmhr1o
+    Slug: dickey-s-barbecue-pit-halal
+[52/95] Importing: The Brisket House Katy
+  ✓ Successfully imported!
+    ID: cmhtdq3o7001jwdtl7hxt2rin
+    Slug: jos-brisket
+[53/95] Importing: Five Guys Katy
+  ✗ Import failed: Import failed
+[54/95] Importing: In-N-Out Burger Katy
+  ✓ Successfully imported!
+    ID: cmhtdq57j001lwdtlc1lzm146
+    Slug: in-n-out-burger
+[55/95] Importing: Whataburger Katy
+  ✗ Import failed: Import failed
+[56/95] Importing: Shake Shack Katy
+  ✓ Successfully imported!
+    ID: cmhtdq6o8001nwdtlwgfoet50
+    Slug: shake-shack-katy-freeway
+[57/95] Importing: The Burger Joint Katy
+  ✓ Successfully imported!
+    ID: cmhtdq7cc001owdtldec1v2a7
+    Slug: juicy-joint-katy
+[58/95] Importing: Buffalo Wild Wings Katy
+  ✓ Successfully imported!
+    ID: cmhtdq7ze001pwdtl7fzryn04
+    Slug: buffalo-wild-wings
+[59/95] Importing: Twin Peaks Katy
+  ✓ Successfully imported!
+    ID: cmhtdq8qp001qwdtlnbbmocrs
+    Slug: twin-peaks
+[60/95] Importing: Local Foods Katy
+  ✓ Successfully imported!
+    ID: cmhcu3sh8001geqk6qgru63rw
+    Slug: local-table
+[61/95] Importing: Carrabba's Italian Grill Katy
+  ✓ Successfully imported!
+    ID: cmhtdqa30001rwdtl6bzrv8ps
+    Slug: carrabba-s-italian-grill
+[62/95] Importing: Olive Garden Katy
+  ✓ Successfully imported!
+    ID: cmhcu3sim001meqk6tehq5i1d
+    Slug: olive-garden-italian-restaurant
+[63/95] Importing: Romano's Macaroni Grill Katy
+  ✓ Successfully imported!
+    ID: cmhcu3s5r000aeqk6ixy2c8cu
+    Slug: antonia-s-restaurant
+[64/95] Importing: Zio's Italian Kitchen Katy
+  ✓ Successfully imported!
+    ID: cmhtdqc35001swdtlgnm742sj
+    Slug: little-italy-restaurant
+[65/95] Importing: Grimaldi's Pizzeria Katy
+  ✓ Successfully imported!
+    ID: cmhtdqcq4001twdtl910ujriy
+    Slug: grimaldi-s-pizzeria
+[66/95] Importing: Pappadeaux Seafood Kitchen Katy
+  ✓ Successfully imported!
+    ID: cmhtdqde6001uwdtlygcni3r1
+    Slug: pappadeaux-seafood-kitchen
+[67/95] Importing: Saltgrass Steak House Katy
+  ✗ Import failed: Import failed
+[68/95] Importing: Red Lobster Katy
+  ✓ Successfully imported!
+    ID: cmhcu3s4h0004eqk6llo2ostg
+    Slug: red-lobster
+[69/95] Importing: Landry's Seafood House Katy
+  ✓ Successfully imported!
+    ID: cmhcu3sjk001seqk63vpkch9r
+    Slug: landry-s-seafood-house
+[70/95] Importing: Truluck's Ocean's Finest Seafood Katy
+  ✓ Successfully imported!
+    ID: cmhtdqg50001wwdtlrjb9dokl
+    Slug: truluck-s-ocean-s-finest-seafood-crab
+[71/95] Importing: Perry's Steakhouse Katy
+  ✓ Successfully imported!
+    ID: cmhcu3sd20012eqk6qefmlsj0
+    Slug: perry-s-steakhouse-grille
+[72/95] Importing: Texas Roadhouse Katy
+  ✓ Successfully imported!
+    ID: cmhcu3sif001leqk6xdfxtoff
+    Slug: texas-roadhouse
+[73/95] Importing: LongHorn Steakhouse Katy
+  ✓ Successfully imported!
+    ID: cmhtdqi50001xwdtlgirl6bqv
+    Slug: longhorn-steakhouse
+[74/95] Importing: Outback Steakhouse Katy
+  ✓ Successfully imported!
+    ID: cmhcu3s4b0003eqk64oo0wwq5
+    Slug: outback-steakhouse
+[75/95] Importing: III Forks Katy
+  ✓ Successfully imported!
+    ID: cmhtdqjjp001ywdtlr4bwq307
+    Slug: iii-forks-steakhouse
+[76/95] Importing: Snooze AM Eatery Katy
+  ✓ Successfully imported!
+    ID: cmhtdqk9p001zwdtl1rek94c7
+    Slug: snooze-an-a-m-eatery
+[77/95] Importing: First Watch Katy
+  ✗ Import failed: Import failed
+[78/95] Importing: Another Broken Egg Cafe Katy
+  ✓ Successfully imported!
+    ID: cmhtdqlkl0021wdtl6y2oq023
+    Slug: another-broken-egg-cafe
+[79/95] Importing: IHOP Katy
+  ✗ Import failed: Import failed
+[80/95] Importing: Denny's Katy
+  ✓ Successfully imported!
+    ID: cmhcu3scj0011eqk6y7hjirbs
+    Slug: denny-s
+[81/95] Importing: Aladdin Mediterranean Cuisine Katy
+  ✓ Successfully imported!
+    ID: cmhtdqnor0023wdtl886d6aks
+    Slug: aladdin-mediterranean-cuisine
+[82/95] Importing: Niko Niko's Katy
+  ✓ Successfully imported!
+    ID: cmhtdqoc80024wdtlj40ufuks
+    Slug: nikko-dermatology-katy
+[83/95] Importing: Cazba Mediterranean Grille Katy
+  ✓ Successfully imported!
+    ID: cmhtdqp2x0025wdtl7n7cbkd7
+    Slug: cava
+[84/95] Importing: Shawarma Press Katy
+  ✓ Successfully imported!
+    ID: cmhtdqppo0026wdtlwi6ntk2l
+    Slug: shawarma-del-valle
+[85/95] Importing: Chipotle Mexican Grill Katy
+  ✗ Import failed: Import failed
+[86/95] Importing: Panera Bread Katy
+  ✓ Successfully imported!
+    ID: cmhtdqr4n0028wdtldetda8f1
+    Slug: panera-bread
+[87/95] Importing: Jason's Deli Katy
+  ✓ Successfully imported!
+    ID: cmhcu3slc0021eqk6svopjt05
+    Slug: jason-s-deli
+[88/95] Importing: Freshii Katy
+  ✓ Successfully imported!
+    ID: cmhtdqsj70029wdtlzw5wf1py
+    Slug: wow-wow-lemonade-katy
+[89/95] Importing: Newk's Eatery Katy
+  ✓ Successfully imported!
+    ID: cmhtdqtaq002awdtl4d0mmxhb
+    Slug: newk-s-eatery
+[90/95] Importing: Chili's Grill & Bar Katy
+  ✓ Successfully imported!
+    ID: cmhcu3sga001deqk6wmax1o94
+    Slug: chili-s-grill-bar
+[91/95] Importing: Applebee's Grill + Bar Katy
+  ✓ Successfully imported!
+    ID: cmhcu3spi002ieqk6j368ujlr
+    Slug: applebee-s-grill-bar
+[92/95] Importing: TGI Fridays Katy
+  ✓ Successfully imported!
+    ID: cmhtdqvke002bwdtlff4ubn1f
+    Slug: times-square-entertainment
+[93/95] Importing: BJ's Restaurant & Brewhouse Katy
+  ✓ Successfully imported!
+    ID: cmhtdqw8y002cwdtls7bym8pp
+    Slug: bj-s-restaurant-brewhouse
+[94/95] Importing: The Cheesecake Factory Katy
+  ✓ Successfully imported!
+    ID: cmhtdqwwl002dwdtlkor6laqx
+    Slug: the-cheesecake-factory
+[95/95] Importing: Maggiano's Little Italy Katy
+  ✓ Successfully imported!
+    ID: cmhtdqc35001swdtlgnm742sj
+    Slug: little-italy-restaurant
+
+=== Import Complete ===
+✓ Successfully imported: 89
+✗ Failed to import: 6
+
+=== Final Summary ===
+Total checked: 108
+Already existed: 12
+Newly imported: 95
+Not found: 0
+Errors: 1

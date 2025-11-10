@@ -1,7 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npx prisma generate:*)",
+      "Bash(npm run dev:*)",
+      "Bash(node scripts/check-asian-town.js:*)",
+      "Bash(flyctl auth whoami:*)",
+      "Bash(flyctl apps:*)",
+      "Bash(flyctl deploy:*)",
+      "Bash(flyctl status:*)",
+      "Bash(flyctl machine start:*)",
+      "Bash(node scripts/import-all-restaurants.js:*)",
+      "Bash(tee:*)",
+      "Bash(bash trigger-prod-sync.sh:*)"
     ],
     "deny": [],
     "ask": []

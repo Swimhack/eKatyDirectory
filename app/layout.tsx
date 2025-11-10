@@ -6,18 +6,21 @@ import Link from 'next/link'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'eKaty - Best Restaurants in Katy, Texas',
-  description: 'Discover the best restaurants in Katy, Texas. Interactive restaurant guide with Grub Roulette spinner. Powered by Strickland Technology.',
-  keywords: 'Katy restaurants, Texas dining, restaurant finder, Grub Roulette, food discovery',
+  title: 'Best Restaurants in Katy TX | Katy Texas Restaurant Guide | eKaty',
+  description: 'Find the best restaurants in Katy, Texas! Explore 500+ local dining options including Katy Asian Town, Mexican, BBQ, seafood & more. Try our Grub Roulette restaurant picker!',
+  keywords: 'restaurants in Katy TX, Katy Texas restaurants, best restaurants Katy, Katy Asian Town restaurants, where to eat Katy TX, Mexican restaurants Katy, BBQ Katy Texas, Asian restaurants Katy, restaurant guide Katy, dining Katy TX',
   authors: [{ name: 'Strickland Technology' }],
   openGraph: {
-    title: 'eKaty - Best Restaurants in Katy, Texas',
-    description: 'Discover the best restaurants in Katy with our AI-powered local restaurant guide',
-    url: 'https://ekaty.com',
-    siteName: 'eKaty',
+    title: 'Best Restaurants in Katy TX | Complete Dining Guide',
+    description: 'Discover 500+ restaurants in Katy, Texas. From Katy Asian Town to local BBQ favorites. AI-powered recommendations & Grub Roulette picker!',
+    url: 'https://ekaty.fly.dev',
+    siteName: 'eKaty - Katy TX Restaurant Guide',
     locale: 'en_US',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://ekaty.fly.dev'
+  }
 }
 
 export default function RootLayout({

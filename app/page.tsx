@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import SearchBar from '@/components/SearchBar'
 import RestaurantCard from '@/components/RestaurantCard'
+import Script from 'next/script'
 
 const categories = [
   { name: 'Mexican', emoji: '🌮' },
@@ -34,8 +35,37 @@ export default function HomePage() {
       })
   }, [])
 
+  // Local Business Schema for homepage
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "eKaty - Katy TX Restaurant Guide",
+    "url": "https://ekaty.fly.dev",
+    "description": "Complete guide to restaurants in Katy, Texas. Find the best local dining options.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://ekaty.fly.dev/discover?search={search_term_string}",
+      "query-input": "required name=search_term_string"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "Katy",
+      "containedIn": {
+        "@type": "State",
+        "name": "Texas"
+      }
+    }
+  }
+
   return (
     <div className="min-h-screen">
+      {/* Local Business Schema */}
+      <Script
+        id="local-business-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
+      
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 text-white">
         <div className="absolute inset-0 bg-black opacity-20"></div>
