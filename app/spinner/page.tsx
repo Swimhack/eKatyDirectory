@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useSound } from '@/hooks/useSound'
 
 const categories = [
@@ -17,11 +18,16 @@ const priceLevels = [
 ]
 
 export default function SpinnerPage() {
+  const searchParams = useSearchParams()
+  const favoritesOnly = searchParams?.get('favoritesOnly') === 'true'
+  const userId = searchParams?.get('userId') || 'demo-user-id'
+  
   const [isSpinning, setIsSpinning] = useState(false)
   const [result, setResult] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
   const [history, setHistory] = useState<any[]>([])
   const [soundEnabled, setSoundEnabled] = useState(true)
+  const [favorites, setFavorites] = useState<any[]>([])
   
   // Sound effects
   const spinSound = useSound('/sounds/spin.mp3', { volume: 0.5 })
@@ -32,9 +38,82 @@ export default function SpinnerPage() {
   const [selectedPriceLevel, setSelectedPriceLevel] = useState<string | null>(null)
   const [radius, setRadius] = useState(5)
 
+  // Fetch favorites if in favorites-only mode
+  useEffect(() => {
+    if (favoritesOnly) {
+      fetchFavorites()
+    }
+  }, [favoritesOnly])
+
+  const fetchFavorites = async () => {
+    try {
+      const response = await fetch(`/api/favorites?userId=${userId}`)
+      const data = await response.json()
+      setFavorites(data.favorites || [])
+    } catch (error) {
+      console.error('Failed to fetch favorites:', error)
+    }
+  }
+
   const handleSpin = async () => {
     if (isSpinning) return
     
+    // If favorites-only mode, spin from favorites list
+    if (favoritesOnly) {
+      if (favorites.length === 0) {
+        setError('No favorites to spin from!')
+        return
+      }
+      
+      setIsSpinning(true)
+      setError(null)
+      setResult(null)
+      
+      if (soundEnabled) {
+        spinSound.play()
+      }
+      
+      // Filter favorites based on selected filters
+      let filteredFavorites = favorites.map(f => f.restaurant)
+      
+      if (selectedCategories.length > 0) {
+        filteredFavorites = filteredFavorites.filter(r => 
+          selectedCategories.some(cat => r.cuisineTypes?.includes(cat))
+        )
+      }
+      
+      if (selectedPriceLevel) {
+        filteredFavorites = filteredFavorites.filter(r => r.priceLevel === selectedPriceLevel)
+      }
+      
+      // Exclude recent spins
+      const excludeIds = history.map(h => h.id)
+      filteredFavorites = filteredFavorites.filter(r => !excludeIds.includes(r.id))
+      
+      if (filteredFavorites.length === 0) {
+        setError('No favorites match your filters!')
+        setIsSpinning(false)
+        return
+      }
+      
+      // Pick random restaurant
+      const randomRestaurant = filteredFavorites[Math.floor(Math.random() * filteredFavorites.length)]
+      
+      setTimeout(() => {
+        setResult(randomRestaurant)
+        setHistory(prev => [randomRestaurant, ...prev.slice(0, 4)])
+        setIsSpinning(false)
+        
+        if (soundEnabled) {
+          spinSound.stop()
+          winSound.play()
+        }
+      }, 3000)
+      
+      return
+    }
+    
+    // Normal spin mode
     setIsSpinning(true)
     setError(null)
     setResult(null)
@@ -105,6 +184,21 @@ export default function SpinnerPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Favorites-Only Banner */}
+        {favoritesOnly && (
+          <div className="bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-lg p-4 mb-6 text-center">
+            <p className="text-lg font-semibold">
+              ❤️ Spinning from your {favorites.length} favorite{favorites.length !== 1 ? 's' : ''}!
+            </p>
+            <Link
+              href="/spinner"
+              className="text-sm underline hover:no-underline"
+            >
+              Spin from all restaurants instead
+            </Link>
+          </div>
+        )}
+        
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-gray-900 mb-4">
