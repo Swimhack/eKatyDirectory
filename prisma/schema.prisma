@@ -4,14 +4,17 @@
 generator client {
   provider = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas  = ["public"]
 }
 
-// SQLite doesn't support enums, using String instead
+// Using String types for flexibility across database providers
 // Valid roles: USER, EDITOR, ADMIN, ADVERTISER
 // Valid price levels: BUDGET, MODERATE, UPSCALE, PREMIUM
 
@@ -24,14 +27,15 @@ model User {
   role          String     @default("USER")
   createdAt     DateTime   @default(now()) @map("created_at")
   updatedAt     DateTime   @updatedAt @map("updated_at")
-  
+
   // Relations
   reviews       Review[]
   favorites     Favorite[]
   spins         Spin[]
   auditLogs     AuditLog[]
-  
+
   @@map("users")
+  @@schema("public")
 }
 
 // Restaurants table
@@ -81,6 +85,7 @@ model Restaurant {
   @@index([city])
   @@index([sourceId])
   @@map("restaurants")
+  @@schema("public")
 }
 
 // Reviews table
@@ -105,6 +110,7 @@ model Review {
   @@index([restaurantId])
   @@index([userId])
   @@map("reviews")
+  @@schema("public")
 }
 
 // Favorites table
@@ -122,6 +128,7 @@ model Favorite {
   @@unique([userId, restaurantId])
   @@index([userId])
   @@map("favorites")
+  @@schema("public")
 }
 
 // Spins table (Grub Roulette history)
@@ -141,6 +148,7 @@ model Spin {
   @@index([userId])
   @@index([createdAt])
   @@map("spins")
+  @@schema("public")
 }
 
 // Ads table
@@ -167,6 +175,7 @@ model Ad {
   @@index([startDate, endDate])
   @@index([active])
   @@map("ads")
+  @@schema("public")
 }
 
 // Audit logs table
@@ -189,6 +198,7 @@ model AuditLog {
   @@index([userId])
   @@index([createdAt])
   @@map("audit_logs")
+  @@schema("public")
 }
 
 // Contact form submissions (for tracking)
@@ -207,6 +217,7 @@ model ContactSubmission {
   @@index([type])
   @@index([responded])
   @@map("contact_submissions")
+  @@schema("public")
 }
 
 // API usage tracking (for rate limiting)
@@ -217,4 +228,5 @@ model ApiUsage {
   updatedAt     DateTime    @updatedAt @map("updated_at")
 
   @@map("api_usage")
+  @@schema("public")
 }

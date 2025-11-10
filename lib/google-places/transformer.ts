@@ -56,27 +56,61 @@ function convertOpeningHours(openingHours?: any): string {
 }
 
 // Extract categories from Google types
-function extractCategories(types?: string[]): string {
-  if (!types || types.length === 0) {
-    return 'Restaurant';
+// Also includes cuisine-based categories for better filtering
+function extractCategories(types?: string[], name?: string): string {
+  const categories = new Set<string>();
+  
+  if (types && types.length > 0) {
+    const categoryMap: { [key: string]: string } = {
+      restaurant: 'Restaurant',
+      bar: 'Bar',
+      cafe: 'Cafe',
+      bakery: 'Bakery',
+      meal_delivery: 'Delivery',
+      meal_takeaway: 'Takeout',
+      night_club: 'Nightlife',
+      food: 'Food',
+    };
+
+    types.forEach(type => {
+      const mapped = categoryMap[type];
+      if (mapped) categories.add(mapped);
+    });
   }
 
-  const categoryMap: { [key: string]: string } = {
-    restaurant: 'Restaurant',
-    bar: 'Bar',
-    cafe: 'Cafe',
-    bakery: 'Bakery',
-    meal_delivery: 'Delivery',
-    meal_takeaway: 'Takeout',
-    night_club: 'Nightlife',
-    food: 'Food',
-  };
+  // Also add cuisine-based categories from name for better discoverability
+  // This ensures categories like "BBQ" appear in both categories and cuisineTypes
+  if (name) {
+    const cuisineCategoryMap: { [key: string]: string } = {
+      'bbq': 'BBQ',
+      'barbecue': 'BBQ',
+      'mexican': 'Mexican',
+      'italian': 'Italian',
+      'chinese': 'Chinese',
+      'japanese': 'Japanese',
+      'thai': 'Thai',
+      'vietnamese': 'Vietnamese',
+      'indian': 'Indian',
+      'greek': 'Greek',
+      'seafood': 'Seafood',
+      'breakfast': 'Breakfast',
+      'sushi': 'Japanese',
+      'pizza': 'Italian',
+      'burger': 'American',
+      'steakhouse': 'American',
+      'tex-mex': 'Mexican',
+      'asian': 'Asian',
+    };
 
-  const categories = types
-    .map(type => categoryMap[type])
-    .filter(Boolean);
+    const nameLower = name.toLowerCase();
+    Object.entries(cuisineCategoryMap).forEach(([keyword, category]) => {
+      if (nameLower.includes(keyword)) {
+        categories.add(category);
+      }
+    });
+  }
 
-  return categories.length > 0 ? categories.join(', ') : 'Restaurant';
+  return categories.size > 0 ? Array.from(categories).join(', ') : 'Restaurant';
 }
 
 // Extract cuisine types from Google types and name
@@ -163,7 +197,7 @@ export function transformGooglePlaceToRestaurant(place: any): any {
     phone: details.formatted_phone_number || details.international_phone_number || null,
     website: details.website || null,
     email: null, // Google doesn't provide email
-    categories: extractCategories(details.types),
+    categories: extractCategories(details.types, details.name),
     cuisineTypes: extractCuisineTypes(details.types, details.name),
     hours: convertOpeningHours(details.opening_hours),
     priceLevel: convertPriceLevel(details.price_level),
