@@ -32,7 +32,6 @@ model User {
   auditLogs     AuditLog[]
 
   @@map("users")
-  @@schema("public")
 }
 
 // Restaurants table
@@ -82,7 +81,6 @@ model Restaurant {
   @@index([city])
   @@index([sourceId])
   @@map("restaurants")
-  @@schema("public")
 }
 
 // Reviews table
@@ -107,7 +105,6 @@ model Review {
   @@index([restaurantId])
   @@index([userId])
   @@map("reviews")
-  @@schema("public")
 }
 
 // Favorites table
@@ -125,7 +122,6 @@ model Favorite {
   @@unique([userId, restaurantId])
   @@index([userId])
   @@map("favorites")
-  @@schema("public")
 }
 
 // Spins table (Grub Roulette history)
@@ -145,7 +141,6 @@ model Spin {
   @@index([userId])
   @@index([createdAt])
   @@map("spins")
-  @@schema("public")
 }
 
 // Ads table
@@ -172,7 +167,6 @@ model Ad {
   @@index([startDate, endDate])
   @@index([active])
   @@map("ads")
-  @@schema("public")
 }
 
 // Audit logs table
@@ -195,7 +189,6 @@ model AuditLog {
   @@index([userId])
   @@index([createdAt])
   @@map("audit_logs")
-  @@schema("public")
 }
 
 // Contact form submissions (for tracking)
@@ -214,7 +207,6 @@ model ContactSubmission {
   @@index([type])
   @@index([responded])
   @@map("contact_submissions")
-  @@schema("public")
 }
 
 // API usage tracking (for rate limiting)
@@ -225,5 +217,4 @@ model ApiUsage {
   updatedAt     DateTime    @updatedAt @map("updated_at")
 
   @@map("api_usage")
-  @@schema("public")
 }
