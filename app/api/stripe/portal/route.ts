@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { PrismaClient } from '@prisma/client'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-02-24.acacia'
-})
+const getStripe = () => {
+  return new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+    apiVersion: '2025-02-24.acacia'
+  })
+}
 
 const prisma = new PrismaClient()
 
@@ -33,6 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create portal session
+    const stripe = getStripe()
     const session = await stripe.billingPortal.sessions.create({
       customer: user.stripeCustomerId,
       return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/restaurant-dashboard`
