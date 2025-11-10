@@ -1,19 +1,22 @@
 import { MetadataRoute } from 'next'
-import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+export const dynamic = 'force-dynamic'
+export const revalidate = 3600 // Revalidate every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://ekaty.fly.dev'
   
-  // Get all restaurants
-  const restaurants = await prisma.restaurant.findMany({
-    select: {
-      slug: true,
-      id: true,
-      updatedAt: true
-    }
-  })
+  // Fetch restaurants from API instead of direct DB access
+  let restaurants: any[] = []
+  try {
+    const response = await fetch(`${baseUrl}/api/restaurants?limit=1000`, {
+      next: { revalidate: 3600 }
+    })
+    const data = await response.json()
+    restaurants = data.restaurants || []
+  } catch (error) {
+    console.error('Error fetching restaurants for sitemap:', error)
+  }
 
   // Static pages
   const staticPages = [
@@ -65,9 +68,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   // Restaurant pages
-  const restaurantPages = restaurants.map(restaurant => ({
+  const restaurantPages = restaurants.map((restaurant: any) => ({
     url: `${baseUrl}/restaurants/${restaurant.slug || restaurant.id}`,
-    lastModified: restaurant.updatedAt,
+    lastModified: restaurant.updatedAt ? new Date(restaurant.updatedAt) : new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }))

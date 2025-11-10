@@ -6,6 +6,7 @@ import Link from 'next/link'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://ekaty.fly.dev'),
   title: 'Best Restaurants in Katy TX | Katy Texas Restaurant Guide | eKaty',
   description: 'Find the best restaurants in Katy, Texas! Explore 500+ local dining options including Katy Asian Town, Mexican, BBQ, seafood & more. Try our Grub Roulette restaurant picker!',
   keywords: 'restaurants in Katy TX, Katy Texas restaurants, best restaurants Katy, Katy Asian Town restaurants, where to eat Katy TX, Mexican restaurants Katy, BBQ Katy Texas, Asian restaurants Katy, restaurant guide Katy, dining Katy TX',
