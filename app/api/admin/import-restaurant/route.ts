@@ -232,7 +232,7 @@ export async function POST(request: NextRequest) {
         active: restaurant.active,
         verified: restaurant.verified
       },
-      url: `/restaurant/${restaurant.slug}`
+      url: `/restaurants/${restaurant.slug}`
     })
 
   } catch (error: any) {

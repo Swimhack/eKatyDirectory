@@ -77,7 +77,7 @@ try {
     }
     
     Write-Host ""
-    Write-Host "🌐 View at: $baseUrl/restaurant/$($response.restaurant.slug)" -ForegroundColor Cyan
+    Write-Host "🌐 View at: $baseUrl/restaurants/$($response.restaurant.slug)" -ForegroundColor Cyan
     
 } catch {
     Write-Host ""

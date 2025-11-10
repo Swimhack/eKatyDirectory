@@ -284,7 +284,7 @@ export default function ImportRestaurantPage() {
 
             <div className="mt-6 flex gap-3">
               <Link
-                href={`/restaurant/${importResult.restaurant.slug}`}
+                href={`/restaurants/${importResult.restaurant.slug}`}
                 className="flex-1 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium text-center"
               >
                 View Restaurant
