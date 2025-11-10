@@ -33,9 +33,32 @@ export async function GET(request: NextRequest) {
       ]
     }
     
-    // Category filter
+    // Category filter - handle comma-separated categories
+    // Search in both categories and cuisineTypes fields since cuisine types like "BBQ" 
+    // are stored in cuisineTypes, not categories
     if (category) {
-      where.categories = { contains: category }
+      // Use simple contains for better compatibility with both single and comma-separated values
+      const categoryFilter = {
+        OR: [
+          // Search in categories field - simple contains will match "BBQ" in "BBQ" or "BBQ,Other"
+          { categories: { contains: category } },
+          // Also search in cuisineTypes field (where BBQ, Mexican, etc. are stored)
+          { cuisineTypes: { contains: category } }
+        ]
+      }
+      
+      // Combine with existing where clause using AND
+      if (where.OR) {
+        // If we have text search, combine with AND
+        where.AND = [
+          { OR: where.OR },
+          categoryFilter
+        ]
+        delete where.OR
+      } else {
+        // Otherwise, just apply the category filter directly
+        where.OR = categoryFilter.OR
+      }
     }
     
     // Price level filter
