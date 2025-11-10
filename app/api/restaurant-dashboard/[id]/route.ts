@@ -64,7 +64,7 @@ export async function GET(
       reviews: restaurant.reviews.map(review => ({
         id: review.id,
         rating: review.rating,
-        comment: review.comment,
+        comment: review.text,
         userName: review.user?.name || 'Anonymous',
         createdAt: review.createdAt,
         response: review.ownerResponse
