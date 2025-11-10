@@ -204,6 +204,17 @@ export async function POST(request: NextRequest) {
 
     console.log(`✅ Successfully imported: ${restaurant.name}`)
 
+    // Verify the restaurant was saved correctly
+    const verification = await prisma.restaurant.findUnique({
+      where: { id: restaurant.id }
+    })
+
+    if (!verification) {
+      throw new Error('Restaurant was not saved to database')
+    }
+
+    console.log(`✓ Verified in database: ${verification.slug}`)
+
     return NextResponse.json({
       success: true,
       action: existing ? 'updated' : 'created',
@@ -217,8 +228,11 @@ export async function POST(request: NextRequest) {
         rating: restaurant.rating,
         reviewCount: restaurant.reviewCount,
         cuisineTypes: restaurant.cuisineTypes,
-        priceLevel: restaurant.priceLevel
-      }
+        priceLevel: restaurant.priceLevel,
+        active: restaurant.active,
+        verified: restaurant.verified
+      },
+      url: `/restaurant/${restaurant.slug}`
     })
 
   } catch (error: any) {
