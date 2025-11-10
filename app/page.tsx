@@ -180,6 +180,27 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Restaurant Owner CTA */}
+      <section className="py-12 bg-white border-t border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="text-4xl">🍽️</div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">Own a restaurant in Katy?</h3>
+                <p className="text-gray-600">Join 500+ restaurants reaching thousands of local diners</p>
+              </div>
+            </div>
+            <Link
+              href="/pitch"
+              className="px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 whitespace-nowrap"
+            >
+              Learn More →
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

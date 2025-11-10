@@ -148,16 +148,16 @@ export default function RootLayout({
               <div>
                 <h3 className="font-semibold mb-4">For Businesses</h3>
                 <ul className="space-y-2 text-sm">
-                  <li><Link href="/contact" className="text-gray-400 hover:text-white">Advertise</Link></li>
-                  <li><Link href="/contact" className="text-gray-400 hover:text-white">Add Restaurant</Link></li>
-                  <li><Link href="/contact" className="text-gray-400 hover:text-white">Partner With Us</Link></li>
+                  <li><Link href="/pitch" className="text-gray-400 hover:text-white">Restaurant Partners</Link></li>
+                  <li><Link href="/pitch" className="text-gray-400 hover:text-white">Investor Relations</Link></li>
+                  <li><Link href="/contact" className="text-gray-400 hover:text-white">Advertise With Us</Link></li>
                   <li><Link href="/privacy" className="text-gray-400 hover:text-white">Privacy Policy</Link></li>
                 </ul>
               </div>
             </div>
             
             <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-500">
-              © {new Date().getFullYear()} eKaty.com. All rights reserved.
+              &copy; {new Date().getFullYear()} eKaty.com. All rights reserved.
             </div>
           </div>
         </footer>
