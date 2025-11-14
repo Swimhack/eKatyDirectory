@@ -22,7 +22,16 @@ export async function GET(
     }
 
     // Parse metadata to get heroImage
-    const metadata = restaurant.metadata ? JSON.parse(restaurant.metadata) : {}
+    let metadata = {}
+    try {
+      metadata = restaurant.metadata ? JSON.parse(restaurant.metadata) : {}
+    } catch (e) {
+      console.error('Error parsing metadata in GET:', e)
+      metadata = {}
+    }
+    
+    console.log('Restaurant metadata:', restaurant.metadata)
+    console.log('Parsed heroImage:', metadata.heroImage)
     
     return NextResponse.json({
       ...restaurant,
@@ -71,9 +80,17 @@ export async function PATCH(
       select: { metadata: true }
     })
     
-    const metadata = currentRestaurant?.metadata ? JSON.parse(currentRestaurant.metadata) : {}
+    let metadata = {}
+    try {
+      metadata = currentRestaurant?.metadata ? JSON.parse(currentRestaurant.metadata) : {}
+    } catch (e) {
+      console.error('Error parsing metadata:', e)
+      metadata = {}
+    }
+    
     if (heroImage !== undefined) {
       metadata.heroImage = heroImage
+      console.log('Setting heroImage in metadata:', heroImage)
     }
 
     const restaurant = await prisma.restaurant.update({

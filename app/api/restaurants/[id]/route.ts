@@ -49,7 +49,17 @@ export async function GET(
     }
     
     // Parse metadata to get heroImage
-    const metadata = restaurant.metadata ? JSON.parse(restaurant.metadata) : {}
+    let metadata = {}
+    try {
+      metadata = restaurant.metadata ? JSON.parse(restaurant.metadata) : {}
+    } catch (e) {
+      console.error('Error parsing metadata:', e)
+      metadata = {}
+    }
+    
+    console.log('Public API - Restaurant:', restaurant.name)
+    console.log('Public API - Metadata:', restaurant.metadata)
+    console.log('Public API - HeroImage:', metadata.heroImage)
     
     // Parse string fields back to arrays for response
     const formattedRestaurant = {
