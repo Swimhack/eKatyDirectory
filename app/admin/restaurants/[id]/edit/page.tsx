@@ -170,8 +170,26 @@ export default function EditRestaurantPage() {
       })
 
       if (response.ok) {
-        alert('Restaurant updated successfully!')
-        router.push(`/restaurants/${restaurant.slug}`)
+        const result = await response.json()
+        console.log('Update response:', result)
+        
+        // Verify the hero image was actually saved
+        const verifyResponse = await fetch(`/api/admin/restaurants/${restaurantId}`)
+        if (verifyResponse.ok) {
+          const verifiedData = await verifyResponse.json()
+          console.log('Verified hero image after save:', verifiedData.heroImage)
+          
+          if (updateData.heroImage && !verifiedData.heroImage) {
+            alert('Warning: Restaurant updated but hero image may not have been saved correctly. Please check the image.')
+          } else {
+            alert('Restaurant updated successfully!')
+          }
+        } else {
+          alert('Restaurant updated successfully!')
+        }
+        
+        // Force reload to clear cache
+        window.location.href = `/restaurants/${restaurant.slug}`
       } else {
         const error = await response.json()
         alert(`Error: ${error.error || 'Failed to update restaurant'}`)

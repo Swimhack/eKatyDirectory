@@ -93,6 +93,9 @@ export async function PATCH(
       console.log('Setting heroImage in metadata:', heroImage)
     }
 
+    const metadataString = JSON.stringify(metadata)
+    console.log('Saving metadata string:', metadataString)
+    
     const restaurant = await prisma.restaurant.update({
       where: { id: params.id },
       data: {
@@ -111,10 +114,12 @@ export async function PATCH(
         ...(active !== undefined && { active }),
         ...(logoUrl !== undefined && { logoUrl }),
         ...(photos !== undefined && { photos }),
-        metadata: JSON.stringify(metadata),
+        metadata: metadataString,
         updatedAt: new Date()
       }
     })
+
+    console.log('Restaurant updated, metadata field:', restaurant.metadata)
 
     // Log the change
     await prisma.auditLog.create({
@@ -128,7 +133,15 @@ export async function PATCH(
       }
     })
 
-    return NextResponse.json({ success: true, restaurant })
+    // Return with parsed heroImage for verification
+    const savedMetadata = restaurant.metadata ? JSON.parse(restaurant.metadata) : {}
+    return NextResponse.json({ 
+      success: true, 
+      restaurant: {
+        ...restaurant,
+        heroImage: savedMetadata.heroImage || null
+      }
+    })
   } catch (error) {
     console.error('Error updating restaurant:', error)
     return NextResponse.json({ error: 'Failed to update restaurant' }, { status: 500 })
