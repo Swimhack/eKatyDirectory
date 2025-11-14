@@ -73,37 +73,46 @@ export default function BlogPreview({ limit = 3, showTitle = true, familyFocused
           <Link
             key={article.id}
             href={`/blog/${article.slug}`}
-            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all p-6 group"
+            className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden group border border-gray-100"
           >
-            <div className="flex items-start justify-between mb-3">
-              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+            {/* Header with gradient */}
+            <div className="bg-gradient-to-br from-primary-50 to-orange-50 p-6 pb-4">
+              <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors min-h-[3.5rem] leading-tight">
                 {article.title}
               </h3>
             </div>
             
-            {article.metaDescription ? (
-              <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                {article.metaDescription}
-              </p>
-            ) : (
-              <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                {generateExcerpt(article.content, 100)}
-              </p>
-            )}
-            
-            <div className="flex items-center justify-between text-xs text-gray-500">
-              {article.publishedDate && (
-                <span>
-                  📅 {new Date(article.publishedDate).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}
-                </span>
+            {/* Content */}
+            <div className="p-6 pt-4">
+              {article.metaDescription ? (
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                  {article.metaDescription}
+                </p>
+              ) : (
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                  {generateExcerpt(article.content, 120)}
+                </p>
               )}
-              <span className="text-primary-600 group-hover:text-primary-700 font-medium">
-                Read More →
-              </span>
+              
+              {/* Footer */}
+              <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                {article.publishedDate && (
+                  <span className="flex items-center gap-1 text-xs text-gray-500">
+                    <span className="text-base">📅</span>
+                    {new Date(article.publishedDate).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                  </span>
+                )}
+                <span className="text-primary-600 group-hover:text-primary-700 font-semibold text-sm flex items-center gap-1">
+                  Read More
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </div>
             </div>
           </Link>
         ))}
