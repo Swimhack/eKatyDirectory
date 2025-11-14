@@ -5,7 +5,7 @@
   "description": "Local restaurant discovery & engagement platform for Katy, Texas",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start -p ${PORT:-8080}",
     "lint": "next lint",
     "test": "jest",
