@@ -48,6 +48,9 @@ export async function GET(
       )
     }
     
+    // Parse metadata to get heroImage
+    const metadata = restaurant.metadata ? JSON.parse(restaurant.metadata) : {}
+    
     // Parse string fields back to arrays for response
     const formattedRestaurant = {
       ...restaurant,
@@ -55,6 +58,7 @@ export async function GET(
       cuisineTypes: restaurant.cuisineTypes ? restaurant.cuisineTypes.split(',').map((c: string) => c.trim()) : [],
       photos: restaurant.photos ? restaurant.photos.split(',').map((p: string) => p.trim()) : [],
       hours: restaurant.hours ? JSON.parse(restaurant.hours) : {},
+      heroImage: metadata.heroImage || null,
       reviews: restaurant.reviews.map((review: any) => ({
         ...review,
         photos: review.photos ? review.photos.split(',').map((p: string) => p.trim()) : []
