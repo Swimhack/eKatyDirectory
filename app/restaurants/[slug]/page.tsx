@@ -248,6 +248,10 @@ export default function RestaurantDetailPage() {
 
   // Use hero image if available, otherwise fall back to first photo
   const heroImage = restaurant.heroImage || (photos.length > 0 ? photos[0] : null)
+  
+  console.log('Restaurant hero image:', restaurant.heroImage)
+  console.log('Photos array:', photos)
+  console.log('Final heroImage:', heroImage)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -258,6 +262,10 @@ export default function RestaurantDetailPage() {
             src={heroImage}
             alt={restaurant.name}
             className="w-full h-full object-cover"
+            onError={(e) => {
+              console.error('Hero image failed to load:', heroImage)
+              e.currentTarget.style.display = 'none'
+            }}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-300 to-gray-400">
