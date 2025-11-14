@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import LanguageSwitcher from './LanguageSwitcher'
 
 export default function MobileNavigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -23,7 +24,7 @@ export default function MobileNavigation() {
             {/* Logo and Brand */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center space-x-1" onClick={closeMobileMenu}>
-                <img src="/logo.png" alt="eKaty" className="h-10 w-auto" />
+                <img src="/logo.png" alt="eKaty" className="h-15 w-auto" />
               </Link>
             </div>
 
@@ -79,6 +80,7 @@ export default function MobileNavigation() {
 
             {/* Desktop Auth Buttons */}
             <div className="hidden md:flex items-center space-x-4">
+              <LanguageSwitcher />
               <Link
                 href="/auth/signin"
                 className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
@@ -173,6 +175,9 @@ export default function MobileNavigation() {
 
               {/* Mobile Auth Buttons */}
               <div className="pt-4 border-t border-gray-200 space-y-3">
+                <div className="px-4 py-2">
+                  <LanguageSwitcher />
+                </div>
                 <Link
                   href="/auth/signin"
                   onClick={closeMobileMenu}
