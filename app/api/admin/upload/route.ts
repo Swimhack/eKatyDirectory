@@ -13,7 +13,9 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData()
     const file = formData.get('file') as File
-    const type = formData.get('type') as string // 'logo' or 'photo'
+    const type = formData.get('type') as string // 'logo', 'hero', or 'photo'
+
+    console.log('Upload API - Received file:', file?.name, 'type:', type)
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
@@ -49,6 +51,8 @@ export async function POST(request: NextRequest) {
 
     // Return the public URL
     const url = `/uploads/restaurants/${filename}`
+
+    console.log('Upload API - File saved successfully:', url)
 
     return NextResponse.json({ 
       success: true, 

@@ -108,6 +108,7 @@ export default function EditRestaurantPage() {
       }
 
       if (heroImageFile) {
+        console.log('Uploading hero image file:', heroImageFile.name)
         const heroFormData = new FormData()
         heroFormData.append('file', heroImageFile)
         heroFormData.append('type', 'hero')
@@ -120,7 +121,14 @@ export default function EditRestaurantPage() {
         if (uploadResponse.ok) {
           const { url } = await uploadResponse.json()
           uploadedHeroImage = url
+          console.log('Hero image uploaded successfully to:', url)
+        } else {
+          const error = await uploadResponse.text()
+          console.error('Hero image upload failed:', error)
+          alert('Failed to upload hero image: ' + error)
         }
+      } else {
+        console.log('No hero image file to upload, using existing:', uploadedHeroImage)
       }
 
       if (photoFiles.length > 0) {
@@ -197,6 +205,7 @@ export default function EditRestaurantPage() {
         setHeroImagePreview(reader.result as string)
       }
       reader.readAsDataURL(file)
+      console.log('Hero image file selected:', file.name)
     }
   }
 
