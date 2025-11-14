@@ -112,20 +112,29 @@ export default function EditRestaurantPage() {
         const heroFormData = new FormData()
         heroFormData.append('file', heroImageFile)
         heroFormData.append('type', 'hero')
-        
+
         const uploadResponse = await fetch('/api/admin/upload', {
           method: 'POST',
           body: heroFormData
         })
-        
+
         if (uploadResponse.ok) {
-          const { url } = await uploadResponse.json()
-          uploadedHeroImage = url
-          console.log('Hero image uploaded successfully to:', url)
+          const result = await uploadResponse.json()
+          if (result.url) {
+            uploadedHeroImage = result.url
+            console.log('Hero image uploaded successfully to:', result.url)
+          } else {
+            console.error('Hero image upload response missing URL:', result)
+            alert('Failed to upload hero image: Invalid response from server')
+            setSaving(false)
+            return // Stop the save process
+          }
         } else {
           const error = await uploadResponse.text()
           console.error('Hero image upload failed:', error)
           alert('Failed to upload hero image: ' + error)
+          setSaving(false)
+          return // Stop the save process if hero image upload fails
         }
       } else {
         console.log('No hero image file to upload, using existing:', uploadedHeroImage)
@@ -178,14 +187,18 @@ export default function EditRestaurantPage() {
         if (verifyResponse.ok) {
           const verifiedData = await verifyResponse.json()
           console.log('Verified hero image after save:', verifiedData.heroImage)
-          
-          if (updateData.heroImage && !verifiedData.heroImage) {
-            alert('Warning: Restaurant updated but hero image may not have been saved correctly. Please check the image.')
+          console.log('Expected hero image:', updateData.heroImage)
+
+          // Only show warning if we expected to save a hero image but it's not there
+          if (updateData.heroImage && updateData.heroImage.trim() !== '' && !verifiedData.heroImage) {
+            alert('⚠️ Warning: Restaurant updated but hero image was NOT saved correctly.\n\nThe hero image upload may have failed. Please try uploading the hero image again.')
+          } else if (heroImageFile && updateData.heroImage === verifiedData.heroImage) {
+            alert('✅ Success! Restaurant and hero image updated successfully!')
           } else {
-            alert('Restaurant updated successfully!')
+            alert('✅ Restaurant updated successfully!')
           }
         } else {
-          alert('Restaurant updated successfully!')
+          alert('✅ Restaurant updated successfully!')
         }
         
         // Force reload to clear cache

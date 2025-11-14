@@ -22,14 +22,14 @@ export async function GET(
     }
 
     // Parse metadata to get heroImage
-    let metadata = {}
+    let metadata: any = {}
     try {
       metadata = restaurant.metadata ? JSON.parse(restaurant.metadata) : {}
     } catch (e) {
       console.error('Error parsing metadata in GET:', e)
       metadata = {}
     }
-    
+
     console.log('Restaurant metadata:', restaurant.metadata)
     console.log('Parsed heroImage:', metadata.heroImage)
     
@@ -79,8 +79,8 @@ export async function PATCH(
       where: { id: params.id },
       select: { metadata: true }
     })
-    
-    let metadata = {}
+
+    let metadata: any = {}
     try {
       metadata = currentRestaurant?.metadata ? JSON.parse(currentRestaurant.metadata) : {}
     } catch (e) {
@@ -89,8 +89,16 @@ export async function PATCH(
     }
     
     if (heroImage !== undefined) {
-      metadata.heroImage = heroImage
-      console.log('Setting heroImage in metadata:', heroImage)
+      // Only save heroImage if it's a non-empty string
+      // This prevents saving empty strings when upload fails
+      if (heroImage && heroImage.trim() !== '') {
+        metadata.heroImage = heroImage
+        console.log('Setting heroImage in metadata:', heroImage)
+      } else if (heroImage === '' || heroImage === null) {
+        // Explicitly remove heroImage if empty string or null
+        delete metadata.heroImage
+        console.log('Removing heroImage from metadata (empty value provided)')
+      }
     }
 
     const metadataString = JSON.stringify(metadata)

@@ -28,7 +28,6 @@ export const translations = {
     phone: 'Phone',
     website: 'Website',
     getDirections: 'Get Directions',
-    categories: 'Categories',
     reviews: 'Reviews',
     writeReview: 'Write a Review',
     
@@ -74,7 +73,6 @@ export const translations = {
     phone: 'Teléfono',
     website: 'Sitio Web',
     getDirections: 'Cómo Llegar',
-    categories: 'Categorías',
     reviews: 'Reseñas',
     writeReview: 'Escribir Reseña',
     
