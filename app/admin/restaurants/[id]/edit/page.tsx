@@ -46,6 +46,7 @@ export default function EditRestaurantPage() {
       const response = await fetch(`/api/admin/restaurants/${restaurantId}`)
       if (response.ok) {
         const data = await response.json()
+        console.log('Loaded restaurant data, heroImage:', data.heroImage)
         setRestaurant(data)
         setFormData({
           name: data.name || '',
@@ -67,6 +68,7 @@ export default function EditRestaurantPage() {
         })
         setLogoPreview(data.logoUrl || '')
         setHeroImagePreview(data.heroImage || '')
+        console.log('Set hero image preview to:', data.heroImage)
         if (data.photos) {
           const photosArray = data.photos.split(',').filter(Boolean)
           setPhotosPreviews(photosArray)
@@ -144,15 +146,19 @@ export default function EditRestaurantPage() {
         uploadedPhotos = [...existingPhotos, ...photoUrls].join(',')
       }
 
+      const updateData = {
+        ...formData,
+        logoUrl: uploadedLogoUrl,
+        heroImage: uploadedHeroImage,
+        photos: uploadedPhotos
+      }
+      
+      console.log('Sending update with heroImage:', updateData.heroImage)
+      
       const response = await fetch(`/api/admin/restaurants/${restaurantId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          logoUrl: uploadedLogoUrl,
-          heroImage: uploadedHeroImage,
-          photos: uploadedPhotos
-        })
+        body: JSON.stringify(updateData)
       })
 
       if (response.ok) {
