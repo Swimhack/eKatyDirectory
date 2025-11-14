@@ -12,7 +12,11 @@
       "Bash(flyctl machine start:*)",
       "Bash(node scripts/import-all-restaurants.js:*)",
       "Bash(tee:*)",
-      "Bash(bash trigger-prod-sync.sh:*)"
+      "Bash(bash trigger-prod-sync.sh:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(npx prisma db push:*)",
+      "Bash(flyctl secrets list:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

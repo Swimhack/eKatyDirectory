@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import BlogPreview from '@/components/BlogPreview'
 
 // Review Form Component
 function ReviewForm({ restaurantId, restaurantName, onClose }: { restaurantId: string, restaurantName: string, onClose: () => void }) {
@@ -108,13 +109,25 @@ export default function RestaurantDetailPage() {
   const [loading, setLoading] = useState(true)
   const [isFavorite, setIsFavorite] = useState(false)
   const [showReviewForm, setShowReviewForm] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     if (params.slug) {
       fetchRestaurant(params.slug as string)
       checkFavoriteStatus()
+      checkAdminStatus()
     }
   }, [params.slug])
+
+  const checkAdminStatus = () => {
+    if (typeof window !== 'undefined') {
+      const userRole = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('ekaty_user_role='))
+        ?.split('=')[1]
+      setIsAdmin(userRole === 'ADMIN' || userRole === 'EDITOR')
+    }
+  }
 
   const fetchRestaurant = async (slug: string) => {
     try {
@@ -225,17 +238,37 @@ export default function RestaurantDetailPage() {
   }
 
   const todayHours = formatHours(restaurant.hours)
-  const defaultImage = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=400&fit=crop'
+  
+  // Parse photos if they're a string (comma-separated)
+  const photos = Array.isArray(restaurant.photos) 
+    ? restaurant.photos 
+    : restaurant.photos 
+      ? restaurant.photos.split(',').map((p: string) => p.trim()).filter(Boolean)
+      : []
+
+  // Use hero image if available, otherwise fall back to first photo
+  const heroImage = restaurant.heroImage || (photos.length > 0 ? photos[0] : null)
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Image */}
       <div className="relative h-96 bg-gray-200">
-        <img 
-          src={restaurant.photos?.[0] || defaultImage}
-          alt={restaurant.name}
-          className="w-full h-full object-cover"
-        />
+        {heroImage ? (
+          <img 
+            src={heroImage}
+            alt={restaurant.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-300 to-gray-400">
+            <div className="text-center text-white">
+              <svg className="w-16 h-16 mx-auto mb-4 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <p className="text-lg font-medium">No photo available</p>
+            </div>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         
         {/* Breadcrumb */}
@@ -253,9 +286,23 @@ export default function RestaurantDetailPage() {
           <div className="max-w-7xl mx-auto">
             <div className="flex items-end justify-between">
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  {restaurant.name}
-                </h1>
+                <div className="flex items-center gap-3 mb-2">
+                  <h1 className="text-4xl md:text-5xl font-bold text-white">
+                    {restaurant.name}
+                  </h1>
+                  {isAdmin && (
+                    <Link
+                      href={`/admin/restaurants/${restaurant.id}/edit`}
+                      className="bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-lg hover:bg-white/20 transition-colors text-white text-sm flex items-center gap-1"
+                      title="Edit Restaurant (Admin)"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      Edit
+                    </Link>
+                  )}
+                </div>
                 <div className="flex items-center gap-4 text-white">
                   {restaurant.rating && (
                     <div className="flex items-center">
@@ -473,6 +520,11 @@ export default function RestaurantDetailPage() {
                 )}
               </div>
             </div>
+          </div>
+          
+          {/* Related Blog Articles */}
+          <div className="mt-12 bg-gray-50 rounded-lg p-8">
+            <BlogPreview limit={2} showTitle={true} familyFocused={false} />
           </div>
         </div>
       </div>

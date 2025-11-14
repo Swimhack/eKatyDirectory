@@ -1,0 +1,28 @@
+# Blog Manager - Git Ignore File
+
+# Environment variables (contains API keys)
+.env
+
+# Database connection (contains credentials)
+dbconnect.php
+
+# Temporary files
+*.tmp
+*.log
+*.cache
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Backup files
+*.bak
+*.backup
+*~

@@ -54,11 +54,8 @@ export default function SignUpPage() {
         <div className="bg-white rounded-2xl shadow-xl p-8">
           {/* Logo */}
           <div className="text-center mb-8">
-            <Link href="/" className="inline-flex items-center space-x-2">
-              <div className="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-2xl">e</span>
-              </div>
-              <span className="text-3xl font-bold text-gray-900">Katy</span>
+            <Link href="/" className="inline-block">
+              <img src="/logo.png" alt="eKaty" className="h-12 w-auto mx-auto" />
             </Link>
             <h1 className="text-2xl font-bold text-gray-900 mt-6 mb-2">Create Account</h1>
             <p className="text-gray-600">Join eKaty to save your favorite restaurants</p>

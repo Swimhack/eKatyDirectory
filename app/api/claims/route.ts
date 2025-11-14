@@ -1,30 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
+import { cookies } from 'next/headers'
 
-const prisma = new PrismaClient()
-
-// GET - List all claim requests (admin only)
+// GET - Get user's claim requests
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
-    const status = searchParams.get('status')
-    const adminKey = request.headers.get('x-admin-key')
+    const cookieStore = await cookies()
+    const userId = cookieStore.get('ekaty_user_id')?.value
 
-    // Verify admin authentication
-    if (adminKey !== process.env.ADMIN_API_KEY) {
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const claims = await prisma.restaurantClaim.findMany({
-      where: status ? { status } : undefined,
+      where: { userId },
       include: {
-        user: {
-          select: {
-            id: true,
-            email: true,
-            name: true
-          }
-        },
         restaurant: {
           select: {
             id: true,
@@ -32,7 +22,7 @@ export async function GET(request: NextRequest) {
             slug: true,
             address: true,
             phone: true,
-            website: true
+            email: true
           }
         }
       },
@@ -40,30 +30,38 @@ export async function GET(request: NextRequest) {
     })
 
     return NextResponse.json({ claims })
-
-  } catch (error: any) {
+  } catch (error) {
     console.error('Failed to fetch claims:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch claims', message: error.message },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to fetch claims' }, { status: 500 })
   }
 }
 
-// POST - Create a claim request
+// POST - Submit a claim request
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { userId, restaurantId } = body
+    const cookieStore = await cookies()
+    const userId = cookieStore.get('ekaty_user_id')?.value
 
-    if (!userId || !restaurantId) {
-      return NextResponse.json(
-        { error: 'User ID and Restaurant ID are required' },
-        { status: 400 }
-      )
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if claim already exists
+    const { restaurantId, verificationMethod, verificationData } = await request.json()
+
+    if (!restaurantId) {
+      return NextResponse.json({ error: 'Restaurant ID is required' }, { status: 400 })
+    }
+
+    // Check if restaurant exists
+    const restaurant = await prisma.restaurant.findUnique({
+      where: { id: restaurantId }
+    })
+
+    if (!restaurant) {
+      return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 })
+    }
+
+    // Check if user already has a pending or approved claim
     const existingClaim = await prisma.restaurantClaim.findFirst({
       where: {
         userId,
@@ -74,7 +72,7 @@ export async function POST(request: NextRequest) {
 
     if (existingClaim) {
       return NextResponse.json(
-        { error: 'Claim request already exists', claim: existingClaim },
+        { error: 'You already have a claim request for this restaurant' },
         { status: 400 }
       )
     }
@@ -84,20 +82,25 @@ export async function POST(request: NextRequest) {
       data: {
         userId,
         restaurantId,
+        verificationMethod: verificationMethod || 'manual',
+        verificationData: verificationData ? JSON.stringify(verificationData) : null,
         status: 'pending'
       },
       include: {
-        restaurant: true
+        restaurant: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            address: true
+          }
+        }
       }
     })
 
-    return NextResponse.json({ claim })
-
-  } catch (error: any) {
+    return NextResponse.json({ success: true, claim })
+  } catch (error) {
     console.error('Failed to create claim:', error)
-    return NextResponse.json(
-      { error: 'Failed to create claim', message: error.message },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to create claim' }, { status: 500 })
   }
 }

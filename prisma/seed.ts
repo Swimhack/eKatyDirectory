@@ -37,6 +37,12 @@ async function seedUsers() {
   
   const users = [
     {
+      email: 'james@ekaty.com',
+      name: 'James Strickland',
+      passwordHash: await bcrypt.hash('jasper', 10),
+      role: 'ADMIN' as const
+    },
+    {
       email: 'admin@ekaty.com',
       name: 'Admin User',
       passwordHash: await bcrypt.hash('admin123!', 10),

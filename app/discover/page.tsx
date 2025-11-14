@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import RestaurantCard from '@/components/RestaurantCard'
 import SearchBar from '@/components/SearchBar'
+import BlogPreview from '@/components/BlogPreview'
 
 const categories = [
   'All', 'Mexican', 'BBQ', 'Asian', 'American', 
@@ -303,6 +305,13 @@ export default function DiscoverPage() {
             >
               Clear Filters
             </button>
+          </div>
+        )}
+        
+        {/* Blog Sidebar */}
+        {restaurants.length > 0 && (
+          <div className="mt-16 bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-8">
+            <BlogPreview limit={2} showTitle={true} familyFocused={true} />
           </div>
         )}
       </div>

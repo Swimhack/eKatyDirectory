@@ -316,3 +316,25 @@ model RestaurantClaim {
   @@index([status])
   @@map("restaurant_claims")
 }
+
+// Blog articles table
+model BlogArticle {
+  id              String      @id @default(cuid())
+  title           String
+  slug            String      @unique
+  content         String      // HTML content
+  metaDescription String?     @map("meta_description")
+  keywords        String?     // Comma-separated keywords
+  authorName      String      @default("James Strickland") @map("author_name")
+  contactEmail    String?     @map("contact_email")
+  phoneNumber     String?     @map("phone_number")
+  publishedDate   DateTime?   @map("published_date")
+  status          String      @default("published") // draft, published
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([publishedDate])
+  @@index([slug])
+  @@map("blog_articles")
+}
