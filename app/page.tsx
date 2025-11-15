@@ -7,6 +7,7 @@ import RestaurantCard from '@/components/RestaurantCard'
 import BlogPreview from '@/components/BlogPreview'
 import LaunchPromotionSection from '@/components/LaunchPromotionSection'
 import Script from 'next/script'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const categories = [
   { name: 'Mexican', emoji: '🌮' },
@@ -20,6 +21,7 @@ const categories = [
 ]
 
 export default function HomePage() {
+  const { t } = useLanguage()
   const [featuredRestaurants, setFeaturedRestaurants] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -80,13 +82,13 @@ export default function HomePage() {
               <span>🎉</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Discover Katy's Best Restaurants
+              {t('heroTitle')}
             </h1>
             <p className="text-xl md:text-2xl mb-4 text-primary-100">
-              Your AI-powered guide to local dining experiences
+              {t('heroSubtitle')}
             </p>
             <p className="text-lg mb-8 text-primary-200">
-              🎁 Join our launch celebration with deals, coupons & giveaways!
+              🎁 {t('heroLaunchBadge')}
             </p>
             
             {/* Search Bar */}
@@ -103,14 +105,14 @@ export default function HomePage() {
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                Browse All Restaurants
+                {t('browseAllRestaurants')}
               </Link>
               <Link 
                 href="/spinner" 
                 className="bg-primary-800 text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-900 transition-colors inline-flex items-center justify-center"
               >
                 <span className="text-2xl mr-2">🎰</span>
-                Try Grub Roulette
+                {t('tryGrubRoulette')}
               </Link>
             </div>
           </div>
@@ -131,7 +133,7 @@ export default function HomePage() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            Browse by Category
+            {t('browseByCategory')}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
             {categories.map((category) => (
@@ -191,13 +193,13 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900">
-              Featured Restaurants
+              {t('featuredRestaurants')}
             </h2>
             <Link 
               href="/discover?featured=true" 
               className="text-primary-600 hover:text-primary-700 font-medium"
             >
-              View All →
+              {t('viewAll')} →
             </Link>
           </div>
           
@@ -222,16 +224,16 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="text-6xl mb-4">🎰</div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Can't Decide? Spin the Wheel!
+            {t('cantDecide')}
           </h2>
           <p className="text-xl mb-8 text-primary-100">
-            Let Grub Roulette pick your next dining adventure
+            {t('grubRouletteDesc')}
           </p>
           <Link 
             href="/spinner" 
             className="bg-white text-primary-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center text-lg"
           >
-            <span className="mr-2">Start Spinning</span>
+            <span className="mr-2">{t('startSpinning')}</span>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -244,10 +246,10 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              🗺️ Explore Restaurants on the Map
+              🗺️ {t('exploreMap')}
             </h2>
             <p className="text-xl text-gray-600">
-              Find restaurants near you with our interactive map
+              {t('exploreMapDesc')}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow-xl p-4">
@@ -258,10 +260,10 @@ export default function HomePage() {
               <div className="h-[400px] bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg flex items-center justify-center overflow-hidden">
                 <div className="text-center z-10">
                   <div className="text-6xl mb-4">🗺️</div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">View Interactive Map</h3>
-                  <p className="text-gray-700 mb-4">Click to explore all restaurants on the map</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('viewInteractiveMap')}</h3>
+                  <p className="text-gray-700 mb-4">{t('exploreMapDesc')}</p>
                   <span className="inline-block px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold group-hover:bg-primary-700 transition-colors">
-                    Open Map →
+                    {t('openMap')} →
                   </span>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>

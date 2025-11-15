@@ -4,6 +4,7 @@ import './globals.css'
 import Link from 'next/link'
 import LaunchBanner from '@/components/LaunchBanner'
 import MobileNavigation from '@/components/MobileNavigation'
+import ClientProviders from '@/components/ClientProviders'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +25,20 @@ export const metadata: Metadata = {
     siteName: 'eKaty - Katy TX Restaurant Guide',
     locale: 'en_US',
     type: 'website',
-    images: ['/logo.png'],
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'eKaty - Discover Katy\'s Best Restaurants',
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Best Restaurants in Katy TX | eKaty',
+    description: 'Discover 500+ restaurants in Katy, Texas. AI-powered recommendations & Grub Roulette picker!',
+    images: ['/og-image.png'],
   },
   alternates: {
     canonical: 'https://ekaty.fly.dev'
@@ -39,18 +53,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-gray-50`}>
-        {/* Launch Banner */}
-        <LaunchBanner />
+        <ClientProviders>
+          {/* Launch Banner */}
+          <LaunchBanner />
 
-        {/* Mobile Navigation Component */}
-        <MobileNavigation />
-        
-        {/* Main Content */}
-        <main className="min-h-[calc(100vh-4rem)]">
-          {children}
-        </main>
-        
-        {/* Footer */}
+          {/* Mobile Navigation Component */}
+          <MobileNavigation />
+          
+          {/* Main Content */}
+          <main className="min-h-[calc(100vh-4rem)]">
+            {children}
+          </main>
+          
+          {/* Footer */}
         <footer className="bg-secondary-900 text-white py-12 mt-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -119,6 +134,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+        </ClientProviders>
       </body>
     </html>
   )

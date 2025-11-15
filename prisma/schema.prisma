@@ -7,8 +7,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // Using String types for flexibility across database providers
@@ -337,4 +338,39 @@ model BlogArticle {
   @@index([publishedDate])
   @@index([slug])
   @@map("blog_articles")
+}
+
+// Community suggestions table
+model Suggestion {
+  id                String      @id @default(cuid())
+  type              String      // correction, new_restaurant, photo, review, translation, menu, hours
+  restaurantId      String?     @map("restaurant_id")
+  restaurantName    String?     @map("restaurant_name") // For new restaurant suggestions
+  field             String?     // Which field to update (phone, hours, address, etc)
+  currentValue      String?     @map("current_value") // Current value in database
+  suggestedValue    String      @map("suggested_value") // Suggested new value
+  reason            String?     // Why the change is needed
+  submittedBy       String?     @map("submitted_by") // Email (optional)
+  submitterName     String?     @map("submitter_name") // Name (optional)
+  status            String      @default("pending") // pending, approved, rejected, duplicate
+  priority          String      @default("normal") // low, normal, high, urgent
+  confidence        Float?      // AI confidence score 0-1
+  votes             Int         @default(0) // Community upvotes
+  adminNotes        String?     @map("admin_notes")
+  reviewedBy        String?     @map("reviewed_by") // Admin user ID
+  reviewedAt        DateTime?   @map("reviewed_at")
+  appliedAt         DateTime?   @map("applied_at") // When change was applied
+  metadata          String?     // Additional data as JSON (photos, coordinates, etc)
+  ipAddress         String?     @map("ip_address") // For spam prevention
+  userAgent         String?     @map("user_agent")
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+
+  @@index([type])
+  @@index([status])
+  @@index([restaurantId])
+  @@index([priority])
+  @@index([createdAt])
+  @@index([submittedBy])
+  @@map("suggestions")
 }

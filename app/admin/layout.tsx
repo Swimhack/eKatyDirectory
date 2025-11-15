@@ -19,8 +19,7 @@ export default function AdminLayout({
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <Link href="/" className="flex items-center space-x-2">
-                <img src="/logo.png" alt="eKaty" className="h-8 w-auto" />
-                <span className="text-sm font-semibold text-gray-500">Admin</span>
+                <span className="text-lg font-bold text-gray-900">Admin</span>
               </Link>
             </div>
 
@@ -36,6 +35,12 @@ export default function AdminLayout({
                 className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
               >
                 Restaurants
+              </Link>
+              <Link
+                href="/admin/suggestions"
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              >
+                Suggestions
               </Link>
               <Link
                 href="/admin/blog"
