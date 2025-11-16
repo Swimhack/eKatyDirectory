@@ -148,9 +148,14 @@ export default function ShareRewardsTracker() {
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              onClick={() => setShowTracker(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setShowTracker(false)
+              }}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-lg hover:bg-gray-100 z-10 cursor-pointer"
               aria-label="Close rewards modal"
+              type="button"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
