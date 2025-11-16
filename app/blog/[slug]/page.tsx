@@ -51,11 +51,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       url: `${baseUrl}/blog/${article.slug}`,
       publishedTime: article.publishedDate ? new Date(article.publishedDate).toISOString() : undefined,
       authors: [article.authorName],
+      images: ['/og-image.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title: article.title,
       description: excerpt,
+      images: ['/og-image.png'],
     }
   }
 }

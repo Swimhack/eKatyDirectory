@@ -8,6 +8,17 @@ export const dynamic = 'force-dynamic'
 export const metadata = {
   title: 'Restaurant Map | eKaty - Explore Katy Restaurants',
   description: 'Interactive map of all restaurants in Katy, Texas. Find dining options near you with our easy-to-use restaurant map.',
+  openGraph: {
+    title: 'Restaurant Map | eKaty - Explore Katy Restaurants',
+    description: 'Interactive map of all restaurants in Katy, Texas. Find dining options near you with our easy-to-use restaurant map.',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Restaurant Map | eKaty - Explore Katy Restaurants',
+    description: 'Interactive map of all restaurants in Katy, Texas. Find dining options near you with our easy-to-use restaurant map.',
+    images: ['/og-image.png'],
+  },
 }
 
 async function getRestaurants() {
