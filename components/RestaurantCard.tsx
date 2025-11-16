@@ -22,14 +22,17 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
       ? restaurant.photos.split(',').map((p: string) => p.trim()).filter(Boolean)
       : []
 
+  // Use hero image if available, otherwise fall back to first photo or logo
+  const thumbnailImage = restaurant.heroImage || (photos.length > 0 ? photos[0] : restaurant.logoUrl)
+
   return (
     <Link href={`/restaurants/${restaurant.slug || restaurant.id}`}>
       <div className="card overflow-hidden hover:shadow-xl transition-all duration-200 cursor-pointer group">
         {/* Image */}
         <div className="relative h-48 bg-gray-200 overflow-hidden">
-          {photos.length > 0 ? (
+          {thumbnailImage ? (
             <img 
-              src={photos[0]} 
+              src={thumbnailImage} 
               alt={restaurant.name}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
             />

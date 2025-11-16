@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import BlogPreview from '@/components/BlogPreview'
+import ShareDiscoveryCard from '@/components/ShareDiscoveryCard'
 
 // Review Form Component
 function ReviewForm({ restaurantId, restaurantName, onClose }: { restaurantId: string, restaurantName: string, onClose: () => void }) {
@@ -527,9 +528,26 @@ export default function RestaurantDetailPage() {
                   </a>
                 )}
               </div>
+
+              {/* Share Discovery Card */}
+              <div className="mt-8 border-t border-gray-200 pt-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">
+                  ✨ Share Your Discovery
+                </h3>
+                <ShareDiscoveryCard
+                  restaurant={{
+                    id: restaurant.id,
+                    name: restaurant.name,
+                    cuisine: restaurant.primaryCategory || restaurant.cuisine,
+                    address: restaurant.address,
+                    rating: restaurant.averageRating,
+                    imageUrl: restaurant.heroImageUrl || restaurant.imageUrl
+                  }}
+                />
+              </div>
             </div>
           </div>
-          
+
           {/* Related Blog Articles */}
           <div className="mt-12 bg-gray-50 rounded-lg p-8">
             <BlogPreview limit={2} showTitle={true} familyFocused={false} />

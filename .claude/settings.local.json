@@ -16,7 +16,17 @@
       "Bash(npx ts-node:*)",
       "Bash(npx prisma db push:*)",
       "Bash(flyctl secrets list:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(npm install:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(git stash pop:*)",
+      "Bash(git rebase:*)",
+      "Bash(git reset:*)",
+      "Bash(git fetch:*)"
     ],
     "deny": [],
     "ask": []

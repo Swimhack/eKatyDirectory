@@ -114,7 +114,7 @@ export default function DiscoverPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-4">Discover Restaurants</h1>
           <p className="text-xl text-primary-100">
-            Explore {totalCount > 0 && `${totalCount}+`} amazing restaurants in Katy
+            Explore Katy's Best Restaurants
           </p>
           
           {/* Search Bar */}

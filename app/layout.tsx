@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
-import LaunchBanner from '@/components/LaunchBanner'
-import MobileNavigation from '@/components/MobileNavigation'
+import ConditionalNav from '@/components/ConditionalNav'
 import ClientProviders from '@/components/ClientProviders'
+import ShareRewardsTracker from '@/components/ShareRewardsTracker'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -54,16 +54,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-gray-50`}>
         <ClientProviders>
-          {/* Launch Banner */}
-          <LaunchBanner />
+          {/* Conditional Navigation - Hidden on auth pages */}
+          <ConditionalNav />
 
-          {/* Mobile Navigation Component */}
-          <MobileNavigation />
-          
           {/* Main Content */}
           <main className="min-h-[calc(100vh-4rem)]">
             {children}
           </main>
+
+          {/* Share Rewards Tracker - Floating Button */}
+          <ShareRewardsTracker />
           
           {/* Footer */}
         <footer className="bg-secondary-900 text-white py-12 mt-20">
@@ -92,6 +92,7 @@ export default function RootLayout({
                   <li><Link href="/categories" className="text-gray-400 hover:text-white">Categories</Link></li>
                   <li><Link href="/featured" className="text-gray-400 hover:text-white">Featured</Link></li>
                   <li><Link href="/blog" className="text-gray-400 hover:text-white">📝 Family Dining Blog</Link></li>
+                  <li><Link href="/personality" className="text-gray-400 hover:text-white">🎯 Dining Personality Quiz</Link></li>
                 </ul>
               </div>
               

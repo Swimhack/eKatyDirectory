@@ -7,9 +7,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 // Using String types for flexibility across database providers
@@ -24,6 +23,7 @@ model User {
   passwordHash      String              @map("password_hash")
   role              String              @default("USER")
   stripeCustomerId  String?             @unique @map("stripe_customer_id")
+  metadata          String?             // JSON string for magic link tokens, etc.
   createdAt         DateTime            @default(now()) @map("created_at")
   updatedAt         DateTime            @updatedAt @map("updated_at")
 

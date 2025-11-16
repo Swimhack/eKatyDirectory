@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import bcrypt from 'bcrypt'
-import { cookies } from 'next/headers'
+import bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,52 +26,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify password
-    const passwordValid = await bcrypt.compare(password, user.passwordHash)
-    if (!passwordValid) {
+    const isValidPassword = await bcrypt.compare(password, user.passwordHash)
+
+    if (!isValidPassword) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
       )
     }
 
-    // Check if user has admin or editor role
-    if (user.role !== 'ADMIN' && user.role !== 'EDITOR') {
-      return NextResponse.json(
-        { error: 'Access denied. Admin or Editor role required.' },
-        { status: 403 }
-      )
-    }
-
-    // Create session token (simple approach - in production use JWT or session store)
-    const sessionToken = Buffer.from(`${user.id}:${Date.now()}`).toString('base64')
-    
-    // Set cookie
-    const cookieStore = await cookies()
-    cookieStore.set('ekaty_session', sessionToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/'
-    })
-
-    cookieStore.set('ekaty_user_id', user.id, {
-      httpOnly: false, // Allow client-side access for display
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7,
-      path: '/'
-    })
-
-    cookieStore.set('ekaty_user_role', user.role, {
-      httpOnly: false,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7,
-      path: '/'
-    })
-
-    return NextResponse.json({
+    // Create session (simplified - in production use proper session management)
+    const response = NextResponse.json({
       success: true,
       user: {
         id: user.id,
@@ -81,14 +45,30 @@ export async function POST(request: NextRequest) {
         role: user.role
       }
     })
+
+    // Set cookies for session
+    response.cookies.set('ekaty_user_id', user.id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7 // 7 days
+    })
+
+    response.cookies.set('ekaty_user_role', user.role, {
+      httpOnly: false, // Allow client-side access for role checks
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7
+    })
+
+    return response
   } catch (error) {
     console.error('Login error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'An error occurred during login' },
       { status: 500 }
     )
   }
 }
-
 
 
