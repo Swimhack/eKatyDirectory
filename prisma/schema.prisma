@@ -374,3 +374,130 @@ model Suggestion {
   @@index([submittedBy])
   @@map("suggestions")
 }
+
+// Launch Giveaway Entries ($500 gift card giveaway)
+model LaunchGiveawayEntry {
+  id            String      @id @default(cuid())
+  email         String
+  name          String
+  phone         String?
+  source        String      @default("website") // website, social, flyer
+  referralCode  String?     @map("referral_code") // Track referrals
+  metadata      String?     // JSON: social shares, engagement data
+  ipAddress     String?     @map("ip_address") // Prevent duplicates
+  winner        Boolean     @default(false) // Mark the winner(s)
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@index([email])
+  @@index([winner])
+  @@index([createdAt])
+  @@map("launch_giveaway_entries")
+}
+
+// Launch Coupons (20% off at participating restaurants)
+model LaunchCoupon {
+  id                String      @id @default(cuid())
+  code              String      @unique // Unique coupon code
+  restaurantId      String?     @map("restaurant_id") // Null = valid at all participating
+  restaurantName    String?     @map("restaurant_name") // Denormalized for quick display
+  discountPercent   Int         @default(20) @map("discount_percent")
+  maxDiscount       Float?      @map("max_discount") // Cap in dollars
+  minPurchase       Float?      @map("min_purchase") // Minimum purchase required
+  validFrom         DateTime    @map("valid_from")
+  validUntil        DateTime    @map("valid_until")
+  maxRedemptions    Int         @default(100) @map("max_redemptions") // Total redemption limit
+  redemptionCount   Int         @default(0) @map("redemption_count")
+  perUserLimit      Int         @default(1) @map("per_user_limit") // Redemptions per user
+  active            Boolean     @default(true)
+  termsAndConditions String?    @map("terms_and_conditions")
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+
+  // Relations
+  redemptions       CouponRedemption[]
+
+  @@index([code])
+  @@index([restaurantId])
+  @@index([active])
+  @@index([validFrom, validUntil])
+  @@map("launch_coupons")
+}
+
+// Coupon Redemptions (track who redeemed what)
+model CouponRedemption {
+  id            String      @id @default(cuid())
+  couponId      String      @map("coupon_id")
+  email         String      // User who redeemed
+  name          String?
+  phone         String?
+  restaurantId  String?     @map("restaurant_id") // Where it was redeemed
+  orderValue    Float?      @map("order_value") // Total order amount
+  discountAmount Float?     @map("discount_amount") // Actual discount applied
+  redemptionDate DateTime   @default(now()) @map("redemption_date")
+  metadata      String?     // JSON: additional redemption details
+  verified      Boolean     @default(false) // Restaurant confirmed redemption
+
+  // Relations
+  coupon        LaunchCoupon @relation(fields: [couponId], references: [id], onDelete: Cascade)
+
+  @@index([couponId])
+  @@index([email])
+  @@index([restaurantId])
+  @@index([redemptionDate])
+  @@map("coupon_redemptions")
+}
+
+// Flyer Downloads (track promotional material downloads)
+model FlyerDownload {
+  id            String      @id @default(cuid())
+  flyerType     String      @map("flyer_type") // social_media, printable, business_card, poster
+  format        String      // pdf, png, jpg
+  email         String?     // Optional: who downloaded
+  name          String?
+  downloadUrl   String      @map("download_url") // S3 or R2 URL
+  shareCount    Int         @default(0) @map("share_count") // Track social shares
+  ipAddress     String?     @map("ip_address")
+  userAgent     String?     @map("user_agent")
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@index([flyerType])
+  @@index([email])
+  @@index([createdAt])
+  @@map("flyer_downloads")
+}
+
+// Early Adopter Achievements (reward first users)
+model EarlyAdopterAchievement {
+  id                String      @id @default(cuid())
+  email             String      // User email (before they might have full account)
+  achievementType   String      @map("achievement_type") // first_100, first_500, first_spin, first_review, etc.
+  badgeName         String      @map("badge_name") // Display name
+  badgeIcon         String      @map("badge_icon") // Emoji or icon
+  earnedAt          DateTime    @default(now()) @map("earned_at")
+  rewardDescription String?     @map("reward_description") // What they unlocked
+  metadata          String?     // JSON: additional achievement data
+
+  @@index([email])
+  @@index([achievementType])
+  @@index([earnedAt])
+  @@map("early_adopter_achievements")
+}
+
+// Launch Metrics Dashboard (aggregate stats)
+model LaunchMetric {
+  id                String      @id @default(cuid())
+  date              String      @unique // YYYY-MM-DD
+  giveawayEntries   Int         @default(0) @map("giveaway_entries")
+  couponsGenerated  Int         @default(0) @map("coupons_generated")
+  couponsRedeemed   Int         @default(0) @map("coupons_redeemed")
+  flyersDownloaded  Int         @default(0) @map("flyers_downloaded")
+  newUsers          Int         @default(0) @map("new_users")
+  restaurantSpins   Int         @default(0) @map("restaurant_spins")
+  socialShares      Int         @default(0) @map("social_shares")
+  pageViews         Int         @default(0) @map("page_views")
+  metadata          String?     // JSON: additional daily metrics
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+
+  @@index([date])
+  @@map("launch_metrics")
+}
