@@ -1,27 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node update-admin-password.js:*)",
-      "Bash(npx ts-node:*)",
-      "Bash(curl:*)",
-      "Bash(npm run dev:*)",
-      "Bash(node scripts/import-harlem-bbq.js:*)",
-      "Bash(npm install:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(fly deploy:*)",
-      "Bash(node scripts/update-harlem-prod.js:*)",
-      "Bash(python:*)",
-      "Bash(fly ssh console:*)",
-      "Bash(npx prisma migrate:*)",
-      "Bash(npx prisma db push:*)",
-      "Bash(npm audit:*)",
-      "Bash(cat:*)",
-      "Bash(sqlite3:*)",
-      "Bash(npx tsx:*)",
-      "Bash(git rm:*)",
-      "Bash(npm update:*)"
+      "Bash(node --eval:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import RestaurantCard from '@/components/RestaurantCard'
@@ -28,7 +28,7 @@ const sortOptions = [
   { value: 'reviews', label: 'Most Reviewed' }
 ]
 
-export default function DiscoverPage() {
+function DiscoverPageContent() {
   const searchParams = useSearchParams()
   const [restaurants, setRestaurants] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -316,5 +316,12 @@ export default function DiscoverPage() {
         )}
       </div>
     </div>
+  )
+}
+export default function DiscoverPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-xl">Loading...</div></div>}>
+      <DiscoverPageContent />
+    </Suspense>
   )
 }

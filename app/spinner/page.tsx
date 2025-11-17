@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useSound } from '@/hooks/useSound'
@@ -17,7 +17,7 @@ const priceLevels = [
   { value: 'PREMIUM', label: '$$$$', description: 'Premium' }
 ]
 
-export default function SpinnerPage() {
+function SpinnerPageContent() {
   const searchParams = useSearchParams()
   const favoritesOnly = searchParams?.get('favoritesOnly') === 'true'
   const userId = searchParams?.get('userId') || 'demo-user-id'
@@ -420,5 +420,12 @@ export default function SpinnerPage() {
         </div>
       </div>
     </div>
+  )
+}
+export default function SpinnerPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-xl">Loading...</div></div>}>
+      <SpinnerPageContent />
+    </Suspense>
   )
 }
