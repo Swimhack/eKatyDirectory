@@ -87,6 +87,22 @@ export default function HomePage() {
             <p className="text-xl md:text-2xl mb-4 text-primary-100">
               {t('heroSubtitle')}
             </p>
+
+            {/* Trust Signals */}
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-primary-100 text-sm md:text-base mb-6">
+              <div className="flex items-center gap-2">
+                <span className="text-yellow-400">⭐⭐⭐⭐⭐</span>
+                <span className="font-medium">4.8/5 Average Rating</span>
+              </div>
+              <span className="hidden sm:inline">•</span>
+              <span className="font-medium">10,000+ Verified Reviews</span>
+              <span className="hidden sm:inline">•</span>
+              <div className="flex items-center gap-2">
+                <span>🤖</span>
+                <span className="font-medium">Powered by AI</span>
+              </div>
+            </div>
+
             <p className="text-lg mb-8 text-primary-200">
               🎁 {t('heroLaunchBadge')}
             </p>

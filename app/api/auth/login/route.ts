@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
+import crypto from 'crypto'
 
 export async function POST(request: NextRequest) {
   try {
@@ -66,8 +67,8 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // Basic session token for server-side auth checks
-    const sessionToken = `sess_${user.id}_${Date.now()}`
+    // Generate cryptographically secure session token
+    const sessionToken = crypto.randomBytes(32).toString('hex')
 
     // Set cookies for session
     response.cookies.set('ekaty_user_id', user.id, {

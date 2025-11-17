@@ -15,7 +15,13 @@
       "Bash(python:*)",
       "Bash(fly ssh console:*)",
       "Bash(npx prisma migrate:*)",
-      "Bash(npx prisma db push:*)"
+      "Bash(npx prisma db push:*)",
+      "Bash(npm audit:*)",
+      "Bash(cat:*)",
+      "Bash(sqlite3:*)",
+      "Bash(npx tsx:*)",
+      "Bash(git rm:*)",
+      "Bash(npm update:*)"
     ],
     "deny": [],
     "ask": []
