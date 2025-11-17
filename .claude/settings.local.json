@@ -1,33 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(curl:*)",
-      "Bash(npx prisma generate:*)",
-      "Bash(npm run dev:*)",
-      "Bash(node scripts/check-asian-town.js:*)",
-      "Bash(flyctl auth whoami:*)",
-      "Bash(flyctl apps:*)",
-      "Bash(flyctl deploy:*)",
-      "Bash(flyctl status:*)",
-      "Bash(flyctl machine start:*)",
-      "Bash(node scripts/import-all-restaurants.js:*)",
-      "Bash(tee:*)",
-      "Bash(bash trigger-prod-sync.sh:*)",
+      "Bash(node update-admin-password.js:*)",
       "Bash(npx ts-node:*)",
-      "Bash(npx prisma db push:*)",
-      "Bash(flyctl secrets list:*)",
-      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(npm run dev:*)",
+      "Bash(node scripts/import-harlem-bbq.js:*)",
       "Bash(npm install:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(git pull:*)",
-      "Bash(git stash:*)",
-      "Bash(git stash pop:*)",
-      "Bash(git rebase:*)",
-      "Bash(git reset:*)",
-      "Bash(git fetch:*)",
-      "Bash(npm run build:*)"
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

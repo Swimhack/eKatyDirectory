@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toPng } from 'html-to-image'
+import QRCode from 'qrcode'
 
 interface ShareDiscoveryCardProps {
   restaurant: {
@@ -19,6 +20,7 @@ export default function ShareDiscoveryCard({ restaurant }: ShareDiscoveryCardPro
   const [showCard, setShowCard] = useState(false)
   const [selectedVibe, setSelectedVibe] = useState<string | null>(null)
   const [caption, setCaption] = useState('')
+  const [qrCodeUrl, setQrCodeUrl] = useState('')
 
   const vibes = [
     { emoji: '🔥', label: 'Fire', color: 'from-red-500 to-orange-500' },
@@ -28,6 +30,23 @@ export default function ShareDiscoveryCard({ restaurant }: ShareDiscoveryCardPro
     { emoji: '😋', label: 'Comfort Food', color: 'from-pink-500 to-rose-500' },
     { emoji: '🌟', label: 'Date Night', color: 'from-indigo-500 to-violet-500' },
   ]
+
+  // Generate QR code when component shows
+  useEffect(() => {
+    if (showCard && restaurant.id) {
+      const restaurantUrl = `https://ekaty.com/restaurants/${restaurant.id}`
+      QRCode.toDataURL(restaurantUrl, {
+        width: 200,
+        margin: 1,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      })
+        .then(url => setQrCodeUrl(url))
+        .catch(err => console.error('QR Code generation error:', err))
+    }
+  }, [showCard, restaurant.id])
 
   const generateCaption = async () => {
     setIsGenerating(true)
@@ -221,10 +240,18 @@ export default function ShareDiscoveryCard({ restaurant }: ShareDiscoveryCardPro
                       <p className="text-sm opacity-90 mb-1">Discover More at</p>
                       <p className="text-2xl font-bold">eKaty.com</p>
                     </div>
-                    <div className="bg-white p-3 rounded-xl">
-                      <div className="w-20 h-20 bg-gray-900 rounded flex items-center justify-center text-xs text-white text-center">
-                        QR Code
-                      </div>
+                    <div className="bg-white p-2 rounded-xl shadow-lg">
+                      {qrCodeUrl ? (
+                        <img
+                          src={qrCodeUrl}
+                          alt="QR Code to restaurant page"
+                          className="w-20 h-20"
+                        />
+                      ) : (
+                        <div className="w-20 h-20 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500 text-center animate-pulse">
+                          Loading...
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

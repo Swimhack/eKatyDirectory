@@ -35,11 +35,33 @@ export default function SignUpPage() {
       return
     }
 
-    // Simulate registration - In production, integrate with Supabase or NextAuth
-    setTimeout(() => {
-      // Success - redirect to signin
-      router.push('/auth/signin')
-    }, 1000)
+    try {
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || 'Unable to create account')
+        setLoading(false)
+        return
+      }
+
+      // Success: cookies are set by the API, so user is logged in
+      router.push('/admin/dashboard')
+    } catch (err) {
+      setError('An error occurred. Please try again.')
+      setLoading(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

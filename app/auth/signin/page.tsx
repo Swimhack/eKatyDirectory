@@ -70,7 +70,9 @@ export default function SignInPage() {
       // Success - redirect to admin dashboard or redirect URL
       const urlParams = new URLSearchParams(window.location.search)
       const redirectTo = urlParams.get('redirect') || '/admin/dashboard'
-      router.push(redirectTo)
+
+      // Use window.location for a full page navigation to ensure cookies are properly set
+      window.location.href = redirectTo
     } catch (err) {
       setError('An error occurred. Please try again.')
       setLoading(false)

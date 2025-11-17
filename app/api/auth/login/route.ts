@@ -7,6 +7,10 @@ export async function POST(request: NextRequest) {
     const { email, password } = await request.json()
 
     if (!email || !password) {
+      console.warn('[auth/login] Missing credentials', {
+        email: email || null,
+        path: request.nextUrl.pathname,
+      })
       return NextResponse.json(
         { error: 'Email and password are required' },
         { status: 400 }
@@ -14,11 +18,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Find user by email
+    const normalizedEmail = email.toLowerCase()
+
+    console.info('[auth/login] Login attempt', {
+      email: normalizedEmail,
+      path: request.nextUrl.pathname,
+      userAgent: request.headers.get('user-agent') || undefined,
+      ip: request.headers.get('x-forwarded-for') || undefined,
+    })
+
     const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() }
+      where: { email: normalizedEmail }
     })
 
     if (!user) {
+      console.warn('[auth/login] Invalid login - user not found', {
+        email: normalizedEmail,
+      })
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
@@ -29,6 +45,10 @@ export async function POST(request: NextRequest) {
     const isValidPassword = await bcrypt.compare(password, user.passwordHash)
 
     if (!isValidPassword) {
+      console.warn('[auth/login] Invalid login - bad password', {
+        email: normalizedEmail,
+        userId: user.id,
+      })
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
@@ -46,12 +66,23 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    // Basic session token for server-side auth checks
+    const sessionToken = `sess_${user.id}_${Date.now()}`
+
     // Set cookies for session
     response.cookies.set('ekaty_user_id', user.id, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7 // 7 days
+    })
+
+    // Session token used by getCurrentUser() to detect logged-in state
+    response.cookies.set('ekaty_session', sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7
     })
 
     response.cookies.set('ekaty_user_role', user.role, {
@@ -63,7 +94,7 @@ export async function POST(request: NextRequest) {
 
     return response
   } catch (error) {
-    console.error('Login error:', error)
+    console.error('[auth/login] Login error', error)
     return NextResponse.json(
       { error: 'An error occurred during login' },
       { status: 500 }
