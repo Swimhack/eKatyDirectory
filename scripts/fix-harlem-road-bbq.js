@@ -5,31 +5,24 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function fixHarlemRoad() {
-  console.log('🔍 Finding Harlem Road Texas BBQ...')
+  console.log('🔍 Updating Harlem Road Texas BBQ...')
 
-  const restaurant = await prisma.restaurant.findFirst({
-    where: {
-      name: { contains: 'Harlem Road Texas' }
-    }
-  })
+  // Direct update by ID
+  const restaurantId = 'cmi34ro6x0000zu9ehyg4mibk'
 
-  if (!restaurant) {
-    console.log('❌ Not found')
-    await prisma.$disconnect()
-    return
+  try {
+    const updated = await prisma.restaurant.update({
+      where: { id: restaurantId },
+      data: {
+        cuisineTypes: 'BBQ, Texas BBQ, Barbecue'
+      }
+    })
+
+    console.log(`✅ Updated: ${updated.name}`)
+    console.log(`✅ New cuisine: ${updated.cuisineTypes}`)
+  } catch (error) {
+    console.log(`❌ Error: ${error.message}`)
   }
-
-  console.log(`✅ Found: ${restaurant.name}`)
-  console.log(`Current cuisine: ${restaurant.cuisineTypes}`)
-
-  const updated = await prisma.restaurant.update({
-    where: { id: restaurant.id },
-    data: {
-      cuisineTypes: 'BBQ, Texas BBQ, Barbecue'
-    }
-  })
-
-  console.log(`✅ Updated to: ${updated.cuisineTypes}`)
 
   // Also delete the incorrect "Harlem Road" entry if it exists
   const incorrectEntry = await prisma.restaurant.findFirst({
