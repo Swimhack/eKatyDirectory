@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import BlogPreview from '@/components/BlogPreview'
 import ShareDiscoveryCard from '@/components/ShareDiscoveryCard'
+import { useToast } from '@/contexts/ToastContext'
 
 // Review Form Component
 function ReviewForm({ restaurantId, restaurantName, onClose }: { restaurantId: string, restaurantName: string, onClose: () => void }) {
@@ -106,6 +107,7 @@ function ReviewForm({ restaurantId, restaurantName, onClose }: { restaurantId: s
 
 export default function RestaurantDetailPage() {
   const params = useParams()
+  const toast = useToast()
   const [restaurant, setRestaurant] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [isFavorite, setIsFavorite] = useState(false)
@@ -162,13 +164,13 @@ export default function RestaurantDetailPage() {
       const updatedFavorites = favorites.filter((f: string) => f !== slug)
       localStorage.setItem('favorites', JSON.stringify(updatedFavorites))
       setIsFavorite(false)
-      alert('Removed from favorites')
+      toast.info('Removed from favorites')
     } else {
       // Add to favorites
       favorites.push(slug)
       localStorage.setItem('favorites', JSON.stringify(favorites))
       setIsFavorite(true)
-      alert('Added to favorites!')
+      toast.success('Added to favorites!')
     }
   }
 
@@ -186,13 +188,13 @@ export default function RestaurantDetailPage() {
     } else {
       // Fallback: copy to clipboard
       await navigator.clipboard.writeText(window.location.href)
-      alert('Link copied to clipboard!')
+      toast.success('Link copied to clipboard!')
     }
   }
 
   const handleCopyLink = async () => {
     await navigator.clipboard.writeText(window.location.href)
-    alert('Link copied to clipboard!')
+    toast.success('Link copied to clipboard!')
   }
 
   const getPriceLevelDisplay = (level: string) => {

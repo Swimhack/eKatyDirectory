@@ -53,12 +53,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-gray-50`}>
+        {/* Skip to main content link for accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4
+                     bg-primary-600 text-white px-4 py-2 rounded-lg z-50 focus:outline-none focus:ring-2 focus:ring-primary-700"
+        >
+          Skip to main content
+        </a>
+
         <ClientProviders>
           {/* Conditional Navigation - Hidden on auth pages */}
           <ConditionalNav />
 
           {/* Main Content */}
-          <main className="min-h-[calc(100vh-4rem)]">
+          <main id="main-content" className="min-h-[calc(100vh-4rem)]">
             {children}
           </main>
 

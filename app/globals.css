@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Accessibility: Focus indicators for WCAG AA compliance */
+*:focus-visible {
+  outline: 3px solid #dc2626;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Toast animation */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
 /* Blog Article Content Styling */
 .blog-article-content {
   max-width: 760px;
