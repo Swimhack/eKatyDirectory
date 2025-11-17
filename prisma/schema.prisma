@@ -501,3 +501,182 @@ model LaunchMetric {
   @@index([date])
   @@map("launch_metrics")
 }
+
+// Analytics Events (detailed event tracking)
+model AnalyticsEvent {
+  id            String      @id @default(cuid())
+  sessionId     String      @map("session_id") // Anonymous session identifier
+  userId        String?     @map("user_id") // If logged in
+  eventType     String      @map("event_type") // page_view, click, form_submit, etc.
+  eventCategory String      @map("event_category") // launch, discovery, restaurant, user
+  eventAction   String      @map("event_action") // giveaway_entry, coupon_view, spin, share
+  eventLabel    String?     @map("event_label") // Additional context
+  eventValue    Float?      @map("event_value") // Numeric value (e.g., order amount)
+
+  // Context
+  page          String?     // Current page path
+  referrer      String?     // Referrer URL
+  restaurantId  String?     @map("restaurant_id") // If restaurant-related
+
+  // Technical
+  deviceType    String?     @map("device_type") // mobile, tablet, desktop
+  browser       String?
+  os            String?
+  screenWidth   Int?        @map("screen_width")
+  screenHeight  Int?        @map("screen_height")
+
+  // Additional data
+  metadata      String?     // JSON: any additional event-specific data
+  timestamp     DateTime    @default(now())
+
+  @@index([sessionId, timestamp])
+  @@index([eventType, timestamp])
+  @@index([eventCategory, eventAction])
+  @@index([restaurantId, timestamp])
+  @@index([userId, timestamp])
+  @@index([timestamp])
+  @@map("analytics_events")
+}
+
+// User Sessions (aggregated session data)
+model UserSession {
+  id            String      @id @default(cuid())
+  sessionId     String      @unique @map("session_id")
+  userId        String?     @map("user_id")
+
+  // Session timing
+  startTime     DateTime    @default(now()) @map("start_time")
+  endTime       DateTime?   @map("end_time")
+  duration      Int?        // Duration in seconds
+
+  // Session data
+  pageViews     Int         @default(0) @map("page_views")
+  events        Int         @default(0)
+  landingPage   String      @map("landing_page")
+  exitPage      String?     @map("exit_page")
+  referrer      String?
+  referrerDomain String?    @map("referrer_domain")
+  utmSource     String?     @map("utm_source")
+  utmMedium     String?     @map("utm_medium")
+  utmCampaign   String?     @map("utm_campaign")
+
+  // Technical
+  deviceType    String      @map("device_type") // mobile, tablet, desktop
+  browser       String
+  os            String
+  screenWidth   Int?        @map("screen_width")
+  screenHeight  Int?        @map("screen_height")
+
+  // Engagement
+  bounced       Boolean     @default(false) // Single page visit
+  converted     Boolean     @default(false) // Completed a goal action
+  conversionType String?    @map("conversion_type") // giveaway, coupon, favorite, etc.
+
+  // Location (optional)
+  country       String?
+  city          String?
+  ipAddress     String?     @map("ip_address")
+
+  @@index([userId])
+  @@index([startTime])
+  @@index([converted, conversionType])
+  @@index([referrerDomain])
+  @@index([utmSource, utmMedium, utmCampaign])
+  @@map("user_sessions")
+}
+
+// Page Performance Metrics
+model PagePerformance {
+  id            String      @id @default(cuid())
+  page          String      // Page path
+
+  // Performance metrics (Core Web Vitals)
+  ttfb          Float?      // Time to First Byte (ms)
+  fcp           Float?      // First Contentful Paint (ms)
+  lcp           Float?      // Largest Contentful Paint (ms)
+  fid           Float?      // First Input Delay (ms)
+  cls           Float?      // Cumulative Layout Shift
+
+  // Additional metrics
+  loadTime      Float?      @map("load_time") // Total page load time (ms)
+  domReady      Float?      @map("dom_ready") // DOM ready time (ms)
+
+  // Context
+  deviceType    String?     @map("device_type")
+  browser       String?
+  connectionType String?    @map("connection_type") // 4g, wifi, etc.
+
+  timestamp     DateTime    @default(now())
+
+  @@index([page, timestamp])
+  @@index([timestamp])
+  @@map("page_performance")
+}
+
+// Restaurant Analytics (aggregated per-restaurant metrics)
+model RestaurantAnalytics {
+  id                String      @id @default(cuid())
+  restaurantId      String      @map("restaurant_id")
+  date              String      // YYYY-MM-DD
+
+  // Visibility metrics
+  profileViews      Int         @default(0) @map("profile_views")
+  uniqueVisitors    Int         @default(0) @map("unique_visitors")
+  mapClicks         Int         @default(0) @map("map_clicks")
+  searchAppearances Int         @default(0) @map("search_appearances")
+
+  // Engagement metrics
+  rouletteSpins     Int         @default(0) @map("roulette_spins")
+  rouletteWins      Int         @default(0) @map("roulette_wins") // Times selected by roulette
+  favoritesAdded    Int         @default(0) @map("favorites_added")
+  favoritesRemoved  Int         @default(0) @map("favorites_removed")
+
+  // Sharing & social
+  shareClicks       Int         @default(0) @map("share_clicks")
+  phoneClicks       Int         @default(0) @map("phone_clicks")
+  websiteClicks     Int         @default(0) @map("website_clicks")
+  directionsClicks  Int         @default(0) @map("directions_clicks")
+
+  // Conversion metrics
+  couponViews       Int         @default(0) @map("coupon_views")
+  couponRedemptions Int         @default(0) @map("coupon_redemptions")
+
+  // Engagement scores
+  avgTimeOnPage     Float?      @map("avg_time_on_page") // Seconds
+  bounceRate        Float?      @map("bounce_rate") // Percentage
+
+  updatedAt         DateTime    @updatedAt @map("updated_at")
+
+  @@unique([restaurantId, date])
+  @@index([restaurantId])
+  @@index([date])
+  @@map("restaurant_analytics")
+}
+
+// Conversion Funnels (track user journey through conversion paths)
+model ConversionFunnel {
+  id            String      @id @default(cuid())
+  sessionId     String      @map("session_id")
+  funnelType    String      @map("funnel_type") // giveaway, coupon, favorite, spin
+
+  // Funnel steps (timestamps for each step)
+  step1Time     DateTime?   @map("step1_time") // Landing
+  step2Time     DateTime?   @map("step2_time") // Engagement
+  step3Time     DateTime?   @map("step3_time") // Action
+  step4Time     DateTime?   @map("step4_time") // Completion
+
+  completed     Boolean     @default(false)
+  abandoned     Boolean     @default(false)
+  abandonedAt   String?     @map("abandoned_at") // Which step abandoned
+
+  // Context
+  restaurantId  String?     @map("restaurant_id")
+  metadata      String?     // JSON: additional funnel data
+
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@index([sessionId])
+  @@index([funnelType, completed])
+  @@index([createdAt])
+  @@map("conversion_funnels")
+}
