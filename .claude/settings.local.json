@@ -7,7 +7,15 @@
       "Bash(npm run dev:*)",
       "Bash(node scripts/import-harlem-bbq.js:*)",
       "Bash(npm install:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(fly deploy:*)",
+      "Bash(node scripts/update-harlem-prod.js:*)",
+      "Bash(python:*)",
+      "Bash(fly ssh console:*)",
+      "Bash(npx prisma migrate:*)",
+      "Bash(npx prisma db push:*)"
     ],
     "deny": [],
     "ask": []

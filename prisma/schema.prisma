@@ -20,6 +20,7 @@ model User {
   id                String              @id @default(cuid())
   email             String              @unique
   name              String?
+  profileImageUrl   String?             @map("profile_image_url")
   passwordHash      String              @map("password_hash")
   role              String              @default("USER")
   stripeCustomerId  String?             @unique @map("stripe_customer_id")
