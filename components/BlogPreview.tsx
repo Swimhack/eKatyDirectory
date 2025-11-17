@@ -77,7 +77,7 @@ export default function BlogPreview({ limit = 3, showTitle = true, familyFocused
           >
             {/* Header with gradient */}
             <div className="bg-gradient-to-br from-primary-50 to-orange-50 p-6 pb-4">
-              <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors leading-snug">
+              <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors leading-snug line-clamp-3">
                 {article.title}
               </h3>
             </div>
@@ -120,6 +120,7 @@ export default function BlogPreview({ limit = 3, showTitle = true, familyFocused
     </div>
   )
 }
+
 
 
 

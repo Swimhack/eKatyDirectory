@@ -7,7 +7,12 @@ const prisma = new PrismaClient()
 // Verify API key from request
 function verifyAdminAuth(request: Request): boolean {
   const authHeader = request.headers.get('authorization')
-  const apiKey = process.env.ADMIN_API_KEY || 'your-secret-admin-key'
+  const apiKey = process.env.ADMIN_API_KEY
+
+  if (!apiKey) {
+    console.error('ADMIN_API_KEY is not configured')
+    return false
+  }
 
   return authHeader === `Bearer ${apiKey}`
 }

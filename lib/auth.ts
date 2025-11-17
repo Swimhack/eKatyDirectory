@@ -18,7 +18,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
       return null
     }
 
-    // Verify user exists and has admin/editor role
+    // Verify user exists (role-based restrictions can be reintroduced later)
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -29,7 +29,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
       }
     })
 
-    if (!user || (user.role !== 'ADMIN' && user.role !== 'EDITOR')) {
+    if (!user) {
       return null
     }
 
@@ -47,6 +47,7 @@ export async function requireAuth(): Promise<AuthUser> {
   }
   return user
 }
+
 
 
 

@@ -31,6 +31,18 @@ export default function AdminLayout({
                 Dashboard
               </Link>
               <Link
+                href="/admin/analytics"
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              >
+                Analytics
+              </Link>
+              <Link
+                href="/admin/marketing"
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              >
+                Marketing
+              </Link>
+              <Link
                 href="/admin/restaurants"
                 className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
               >
