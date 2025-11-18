@@ -46,13 +46,13 @@ This file organizes all implementation tasks by user story priority, with parall
 - [ ] [T032] Update users table to add `role` column with values 'user' or 'admin' if not exists
 - [ ] [T033] Generate TypeScript types from Supabase schema (`npm run supabase:types`)
 - [ ] [T034] Get Resend API key from https://resend.com and add to `.env.local` as `RESEND_API_KEY`
-- [ ] [T035] Create email client at `lib/email/client.ts` with sendEmail() function and error handling
-- [ ] [T036] Create email templates at `lib/email/templates.ts` with generateOutreachEmail(), generateWelcomeEmail(), generateRenewalReminderEmail() using @react-email/components
-- [ ] [T037] Create email tracking helpers at `lib/email/tracking.ts` with generateTrackingPixel(), generateTrackingLink(), processWebhook()
-- [ ] [T038] Create email webhook endpoint at `app/api/webhooks/email/route.ts` handling Resend events (email.opened, email.clicked, email.bounced)
-- [ ] [T039] Create admin middleware at `lib/auth/require-admin.ts` with requireAdmin() function checking session and user role
-- [ ] [T040] Create rate limiter utility at `lib/utils/rate-limiter.ts` implementing token bucket algorithm (50/hour, 200/day)
-- [ ] [T041] Create CSV export utility at `lib/utils/export.ts` with generateCSV() function
+- [X] [T035] Create email client at `lib/email/client.ts` with sendEmail() function and error handling
+- [X] [T036] Create email templates at `lib/email/templates.ts` with generateOutreachEmail(), generateWelcomeEmail(), generateRenewalReminderEmail() using @react-email/components
+- [X] [T037] Create email tracking helpers at `lib/email/tracking.ts` with generateTrackingPixel(), generateTrackingLink(), processWebhook()
+- [X] [T038] Create email webhook endpoint at `app/api/webhooks/email/route.ts` handling Resend events (email.opened, email.clicked, email.bounced)
+- [X] [T039] Create admin middleware at `lib/auth/require-admin.ts` with requireAdmin() function checking session and user role
+- [X] [T040] Create rate limiter utility at `lib/utils/rate-limiter.ts` implementing token bucket algorithm (50/hour, 200/day)
+- [X] [T041] Create CSV export utility at `lib/utils/export.ts` with generateCSV() function
 - [ ] [T042] Update admin layout to include navigation links for monetization features at `components/admin/layout/AdminNav.tsx`
 - [ ] [T043] Write unit test for requireAdmin() middleware (unauthorized, forbidden, success cases)
 - [ ] [T044] Write unit test for rate limiter (within limit, exceeded limit, reset after window)
