@@ -28,14 +28,16 @@ export default function ClaimRestaurantCard({
       priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_OWNER || 'price_owner',
       description: 'Claim and verify your restaurant',
       features: [
-        'Verified owner badge',
-        'Respond to reviews',
-        'Update business information',
-        'Add photos and menu items',
-        'Basic analytics dashboard'
+        '✓ Verified owner badge',
+        '✓ Respond to reviews',
+        '✓ Update business information',
+        '✓ Add photos and menu items',
+        '✓ Basic analytics dashboard',
+        '✓ Email support'
       ],
       color: 'bg-blue-50 border-blue-200',
-      buttonColor: 'bg-blue-600 hover:bg-blue-700'
+      buttonColor: 'bg-blue-600 hover:bg-blue-700',
+      recommended: false
     },
     {
       id: 'featured' as const,
@@ -45,16 +47,17 @@ export default function ClaimRestaurantCard({
       description: 'Enhanced visibility and features',
       features: [
         '✓ Everything in Owner',
-        'Featured placement in search',
-        'Homepage banner rotation',
-        'Kids deals promotion',
-        'Email marketing campaigns',
-        'Advanced analytics',
-        'Priority support'
+        '✓ Featured placement in search',
+        '✓ Homepage banner rotation',
+        '✓ Kids deals promotion',
+        '✓ Email marketing campaigns',
+        '✓ Advanced analytics',
+        '✓ Priority support'
       ],
       color: 'bg-purple-50 border-purple-200',
       buttonColor: 'bg-purple-600 hover:bg-purple-700',
-      popular: true
+      popular: true,
+      recommended: true
     },
     {
       id: 'premium' as const,
@@ -64,15 +67,17 @@ export default function ClaimRestaurantCard({
       description: 'Complete marketing suite',
       features: [
         '✓ Everything in Featured',
-        'Top search placement',
-        'Social media integration',
-        'A/B testing campaigns',
-        'Competitor benchmarking',
-        'White-label branding',
-        'Dedicated account manager'
+        '✓ Top search placement',
+        '✓ Social media integration',
+        '✓ A/B testing campaigns',
+        '✓ Competitor benchmarking',
+        '✓ White-label branding',
+        '✓ Dedicated account manager',
+        '✓ Quarterly strategy sessions'
       ],
       color: 'bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-300',
-      buttonColor: 'bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700'
+      buttonColor: 'bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700',
+      recommended: false
     }
   ]
 
