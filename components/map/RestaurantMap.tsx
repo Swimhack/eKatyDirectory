@@ -275,10 +275,6 @@ export default function RestaurantMap({ restaurants, filters }: RestaurantMapPro
 
             {/* Content */}
             <div className="p-6 space-y-4">
-              {selectedRestaurant.description && (
-                <p className="text-gray-700">{selectedRestaurant.description}</p>
-              )}
-
               {selectedRestaurant.address && (
                 <div>
                   <p className="text-sm font-medium text-gray-500 mb-1">Address</p>

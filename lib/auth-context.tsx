@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { User } from '@supabase/supabase-js'
-import { Database } from '@/lib/supabase/types'
+import { Database } from '@/lib/supabase/database.types'
 
 interface AuthContextType {
   user: User | null

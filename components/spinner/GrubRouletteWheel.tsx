@@ -204,11 +204,6 @@ export default function GrubRouletteWheel({
                 {selectedRestaurant.categories.join(', ')} •{' '}
                 {'$'.repeat(selectedRestaurant.price_level)}
               </p>
-              {selectedRestaurant.description && (
-                <p className="text-gray-700 text-sm mb-3">
-                  {selectedRestaurant.description}
-                </p>
-              )}
               <div className="flex items-center">
                 {selectedRestaurant.rating ? (
                   <>

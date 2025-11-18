@@ -1,7 +1,7 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { Database } from '@/lib/supabase/types'
+import { Database } from '@/lib/supabase/database.types'
 import RestaurantsGrid from '@/components/restaurants/RestaurantsGrid'
 import Link from 'next/link'
 

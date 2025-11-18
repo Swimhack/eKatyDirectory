@@ -23,7 +23,9 @@ export default function DiscoverPage() {
         {/* Filters Sidebar */}
         <div className="lg:col-span-1">
           <div className="sticky top-4">
-            <SearchFilters />
+            <Suspense fallback={<div>Loading filters...</div>}>
+              <SearchFilters />
+            </Suspense>
           </div>
         </div>
 

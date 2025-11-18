@@ -1,4 +1,5 @@
 import { AuthForms } from '@/components/auth/AuthForms'
+import { Suspense } from 'react'
 
 export const metadata = {
   title: 'Sign In - eKaty',
@@ -17,7 +18,9 @@ export default function AuthPage() {
             Sign in to save your favorite restaurants and access personalized features
           </p>
         </div>
-        <AuthForms />
+        <Suspense fallback={<div>Loading...</div>}>
+          <AuthForms />
+        </Suspense>
       </div>
     </div>
   )
