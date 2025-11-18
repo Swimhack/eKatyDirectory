@@ -1,0 +1,161 @@
+# Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐 - Outreach Email Sequence
+
+## Restaurant Details
+- **Name:** Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐
+- **Phone:** (281) 810-7777
+- **Website:** https://tensecondsnoodlekaty.com/
+- **Email:** N/A
+- **Rating:** 4.7/5
+- **Reviews:** 708
+- **Cuisine:** Restaurant
+- **Address:** 23119 Colonial Pkwy Suite C-6
+- **Segment:** High-Value Targets
+
+---
+
+## EMAIL 1: Initial Outreach (Day 0)
+
+**Subject:** Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐 - You're Missing 10,000+ Monthly Diners 🍽️
+
+**Preview:** Your 4.7/5 rating deserves more visibility. Get discovered on eKaty.com.
+
+**Body:**
+
+Hi Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐 team,
+
+I noticed Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐 has an impressive 4.7/5 rating with 708+ reviews - that's fantastic!
+
+However, you're currently missing out on **10,000+ monthly diners** who are actively searching "restaurants near me in Katy" on eKaty.com.
+
+**Here's what's happening right now:**
+• 10,000+ Katy residents visit eKaty.com monthly
+• They're searching for Restaurant like yours
+• Your competitors are getting featured placement
+• You're not showing up in our "Top Rated" sections
+
+**Good news:** We've already created your FREE profile page at:
+https://ekaty.com/restaurants/ten-seconds-yunnan-rice-noodle
+
+**Want to get discovered?**
+✅ Claim your listing (FREE)
+✅ Add your specials and photos
+✅ Get featured placement for just $99/month
+✅ Start getting more customers THIS WEEK
+
+**Limited Time:**
+First 50 restaurants get Featured Placement at 50% OFF ($49/month for 3 months)
+
+Looking forward to helping Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐 reach more diners!
+
+Best,
+James
+Founder, eKaty.com
+P: (281) 810-7777
+
+**CTA:** Claim Your Free Listing →
+**URL:** https://ekaty.com/restaurants/ten-seconds-yunnan-rice-noodle?claim=true
+
+---
+
+## EMAIL 2: Follow-Up (Day 3)
+
+**Subject:** Re: Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐 - Quick question
+
+**Preview:** Just following up on the eKaty opportunity. Any questions?
+
+**Body:**
+
+Hi Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐 team,
+
+I sent you an email a few days ago about getting more visibility on eKaty.com.
+
+**Quick question:** What's holding you back from claiming your profile?
+
+Is it:
+→ Not sure it's worth it?
+→ Too busy right now?
+→ Want to see proof it works?
+→ Have questions about pricing?
+
+Let me know and I'll help!
+
+Also, here are some quick stats from this week:
+• 12,450 restaurant searches on eKaty.com
+• 4,200 "kids eat free" searches
+• 2,800 "happy hour near me" searches
+• 1,500 "Restaurant" searches
+
+Your competitors are capturing these customers.
+
+Want to grab your share?
+
+Best,
+James
+eKaty.com
+james@ekaty.com
+
+P.S. - Still offering 50% off first month for quick decisions!
+
+**CTA:** Yes, Let's Do This →
+**URL:** https://ekaty.com/restaurants/ten-seconds-yunnan-rice-noodle?claim=true
+
+---
+
+## EMAIL 3: Last Chance (Day 7)
+
+**Subject:** [FINAL] Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐 - Your spot is about to be taken
+
+**Preview:** Last chance for 50% off Featured placement. Offer expires in 48 hours.
+
+**Body:**
+
+Hi Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐 team,
+
+**This is my last email.**
+
+I've reached out a couple times about getting Ten Seconds Yunnan Rice Noodle 十秒到雲南過橋米缐 featured on eKaty.com.
+
+**Here's the situation:**
+• We have limited Featured spots available
+• Your competitors are signing up
+• The 50% off offer expires in 48 hours
+• After that, full price ($99/month) or the spot goes to someone else
+
+**Decision time:**
+→ Say YES: Get featured, capture 10,000+ monthly diners, grow revenue
+→ Say NO: Stay invisible while competitors win
+
+No hard feelings either way, but I wanted to give you one last chance before offering your spot to the next restaurant on our waitlist.
+
+**Reply "YES" to this email or click below to claim your spot:**
+
+Best,
+James
+eKaty.com
+james@ekaty.com
+
+P.S. - Even if you're not interested in Featured, at least claim your FREE profile so you show up in search results. Takes 2 minutes:
+https://ekaty.com/restaurants/ten-seconds-yunnan-rice-noodle?claim=true
+
+**CTA:** Claim My Spot (50% OFF) →
+**URL:** https://ekaty.com/restaurants/ten-seconds-yunnan-rice-noodle?upgrade=featured&code=LASTCHANCE50
+
+---
+
+## Recommended Sending Schedule
+
+1. **Day 0 (Now):** Send initial email
+2. **Day 3:** Send follow-up if no response
+3. **Day 7:** Send last chance if still no response
+
+## Next Steps After Response
+
+- **Interested:** Send onboarding email with login credentials
+- **Questions:** Book 15-min call to address concerns
+- **Not Now:** Add to nurture campaign for 30 days later
+- **Not Interested:** Remove from list, mark as inactive
+
+---
+
+*Generated by eKaty Outreach System*
+*Date: 2025-11-18T00:06:40.833Z*
