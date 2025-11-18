@@ -1,4 +1,4 @@
-import { AuthForms } from '@/components/ui/placeholders'
+import { AuthForms } from '@/components/auth/AuthForms'
 
 export const metadata = {
   title: 'Sign In - eKaty',

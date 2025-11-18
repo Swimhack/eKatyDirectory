@@ -1,4 +1,5 @@
-import { RestaurantHeader, RestaurantInfo, RestaurantReviews, RestaurantMap } from '@/components/ui/placeholders'
+import { RestaurantHeader, RestaurantInfo, RestaurantMap } from '@/components/ui/placeholders'
+import ReviewsList from '@/components/restaurants/ReviewsList'
 import { getRestaurant } from '@/lib/supabase/restaurants'
 import { notFound } from 'next/navigation'
 
@@ -37,9 +38,12 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
         <div className="lg:col-span-2 space-y-8">
           <RestaurantInfo restaurant={restaurant} />
-          <RestaurantReviews restaurantId={restaurant.id} />
+          <ReviewsList
+            restaurantId={restaurant.id}
+            restaurantName={restaurant.name}
+          />
         </div>
-        
+
         <div className="lg:col-span-1">
           <div className="sticky top-4">
             <RestaurantMap restaurant={restaurant} />

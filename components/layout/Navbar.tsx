@@ -2,11 +2,24 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { Menu, X, Search, User, Bell } from 'lucide-react'
+import { Menu, X, Search, User, Bell, Heart, LogOut } from 'lucide-react'
 import { clsx } from 'clsx'
+import { useAuth } from '@/lib/auth-context'
+import { useRouter } from 'next/navigation'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const { user, signOut, loading } = useAuth()
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    try {
+      await signOut()
+      router.push('/')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 safe-top">
@@ -56,16 +69,46 @@ export function Navbar() {
             <button className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
               <Search size={20} />
             </button>
-            
+
             {/* Desktop Auth */}
-            <Link 
-              href="/auth" 
-              className="hidden md:flex items-center space-x-1 text-gray-700 hover:text-brand-600 font-medium transition-colors min-h-[44px] px-2"
-            >
-              <User size={18} />
-              <span>Sign In</span>
-            </Link>
-            
+            {!loading && (
+              <>
+                {user ? (
+                  <>
+                    <Link
+                      href="/dashboard"
+                      className="hidden md:flex items-center space-x-1 text-gray-700 hover:text-brand-600 font-medium transition-colors min-h-[44px] px-2"
+                    >
+                      <User size={18} />
+                      <span>Dashboard</span>
+                    </Link>
+                    <Link
+                      href="/favorites"
+                      className="hidden md:flex items-center space-x-1 text-gray-700 hover:text-brand-600 font-medium transition-colors min-h-[44px] px-2"
+                    >
+                      <Heart size={18} />
+                      <span>Favorites</span>
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="hidden md:flex items-center space-x-1 text-gray-700 hover:text-brand-600 font-medium transition-colors min-h-[44px] px-2"
+                    >
+                      <LogOut size={18} />
+                      <span>Sign Out</span>
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    href="/auth"
+                    className="hidden md:flex items-center space-x-1 text-gray-700 hover:text-brand-600 font-medium transition-colors min-h-[44px] px-2"
+                  >
+                    <User size={18} />
+                    <span>Sign In</span>
+                  </Link>
+                )}
+              </>
+            )}
+
             {/* Mobile menu button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -80,24 +123,24 @@ export function Navbar() {
         {isOpen && (
           <div className="md:hidden border-t border-gray-200 animate-slide-up">
             <div className="py-4 space-y-1">
-              <Link 
-                href="/discover" 
+              <Link
+                href="/discover"
                 className="block px-4 py-3 text-gray-700 hover:text-brand-600 hover:bg-warm-50 font-medium transition-colors min-h-[44px] flex items-center"
                 onClick={() => setIsOpen(false)}
               >
                 <Search size={18} className="mr-3" />
                 Discover Restaurants
               </Link>
-              <Link 
-                href="/spinner" 
+              <Link
+                href="/spinner"
                 className="block px-4 py-3 text-gray-700 hover:text-brand-600 hover:bg-warm-50 font-medium transition-colors min-h-[44px] flex items-center"
                 onClick={() => setIsOpen(false)}
               >
                 <span className="mr-3 text-lg">🎲</span>
                 Grub Roulette
               </Link>
-              <Link 
-                href="/contact" 
+              <Link
+                href="/contact"
                 className="block px-4 py-3 text-gray-700 hover:text-brand-600 hover:bg-warm-50 font-medium transition-colors min-h-[44px] flex items-center"
                 onClick={() => setIsOpen(false)}
               >
@@ -105,14 +148,49 @@ export function Navbar() {
                 Contact Us
               </Link>
               <div className="border-t border-gray-200 my-2"></div>
-              <Link 
-                href="/auth" 
-                className="block px-4 py-3 text-gray-700 hover:text-brand-600 hover:bg-warm-50 font-medium transition-colors min-h-[44px] flex items-center"
-                onClick={() => setIsOpen(false)}
-              >
-                <User size={18} className="mr-3" />
-                <span>Sign In / Register</span>
-              </Link>
+              {!loading && (
+                <>
+                  {user ? (
+                    <>
+                      <Link
+                        href="/dashboard"
+                        className="block px-4 py-3 text-gray-700 hover:text-brand-600 hover:bg-warm-50 font-medium transition-colors min-h-[44px] flex items-center"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <User size={18} className="mr-3" />
+                        <span>My Dashboard</span>
+                      </Link>
+                      <Link
+                        href="/favorites"
+                        className="block px-4 py-3 text-gray-700 hover:text-brand-600 hover:bg-warm-50 font-medium transition-colors min-h-[44px] flex items-center"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Heart size={18} className="mr-3" />
+                        <span>My Favorites</span>
+                      </Link>
+                      <button
+                        onClick={() => {
+                          handleSignOut()
+                          setIsOpen(false)
+                        }}
+                        className="w-full text-left block px-4 py-3 text-gray-700 hover:text-brand-600 hover:bg-warm-50 font-medium transition-colors min-h-[44px] flex items-center"
+                      >
+                        <LogOut size={18} className="mr-3" />
+                        <span>Sign Out</span>
+                      </button>
+                    </>
+                  ) : (
+                    <Link
+                      href="/auth"
+                      className="block px-4 py-3 text-gray-700 hover:text-brand-600 hover:bg-warm-50 font-medium transition-colors min-h-[44px] flex items-center"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <User size={18} className="mr-3" />
+                      <span>Sign In / Register</span>
+                    </Link>
+                  )}
+                </>
+              )}
             </div>
           </div>
         )}

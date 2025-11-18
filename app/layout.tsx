@@ -4,6 +4,7 @@ import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { BottomNav } from '@/components/layout/BottomNav'
+import { AuthProvider } from '@/lib/auth-context'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -59,14 +60,16 @@ export default function RootLayout({
         <meta name="format-detection" content="address=yes" />
       </head>
       <body className={inter.className}>
-        <div className="min-h-screen-safe flex flex-col">
-          <Navbar />
-          <main className="flex-1 pb-16 md:pb-0">
-            {children}
-          </main>
-          <Footer />
-          <BottomNav />
-        </div>
+        <AuthProvider>
+          <div className="min-h-screen-safe flex flex-col">
+            <Navbar />
+            <main className="flex-1 pb-16 md:pb-0">
+              {children}
+            </main>
+            <Footer />
+            <BottomNav />
+          </div>
+        </AuthProvider>
       </body>
     </html>
   )
