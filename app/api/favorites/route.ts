@@ -1,20 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { requireAuth } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 
 // GET - List user's favorites
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'User ID is required' },
-        { status: 400 }
-      )
-    }
+    const authUser = await requireAuth()
+    const userId = authUser.id
 
     const favorites = await prisma.favorite.findMany({
       where: { userId },
@@ -46,11 +39,13 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { userId, restaurantId, notes } = body
+    const { restaurantId, notes } = body
+    const authUser = await requireAuth()
+    const userId = authUser.id
 
-    if (!userId || !restaurantId) {
+    if (!restaurantId) {
       return NextResponse.json(
-        { error: 'User ID and Restaurant ID are required' },
+        { error: 'Restaurant ID is required' },
         { status: 400 }
       )
     }
@@ -98,12 +93,13 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const userId = searchParams.get('userId')
+    const authUser = await requireAuth()
+    const userId = authUser.id
     const restaurantId = searchParams.get('restaurantId')
 
-    if (!userId || !restaurantId) {
+    if (!restaurantId) {
       return NextResponse.json(
-        { error: 'User ID and Restaurant ID are required' },
+        { error: 'Restaurant ID is required' },
         { status: 400 }
       )
     }

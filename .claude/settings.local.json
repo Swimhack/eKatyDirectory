@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node --eval:*)"
+      "Bash(node --eval:*)",
+      "Skill(example-skills:mcp-builder)",
+      "Bash(npm run build:*)",
+      "Bash(git reset:*)"
     ],
     "deny": [],
     "ask": []

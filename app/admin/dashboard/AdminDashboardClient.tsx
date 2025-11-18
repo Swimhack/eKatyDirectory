@@ -336,6 +336,30 @@ export default function AdminDashboardClient() {
               </div>
             </Link>
 
+            {/* My Favorites (user view) */}
+            <Link href="/favorites" className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow p-6 block">
+              <div className="flex items-start">
+                <div className="text-4xl mr-4"></div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">My Favorites</h3>
+                  <p className="text-sm text-gray-600">View and manage your personal saved restaurants</p>
+                </div>
+              </div>
+            </Link>
+
+            {/* Spin Favorites (Grub Roulette) */}
+            <Link href="/spinner?favoritesOnly=true" className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow p-6 block">
+              <div className="flex items-start">
+                <div className="text-4xl mr-4">
+                  
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Spin Favorites</h3>
+                  <p className="text-sm text-gray-600">Use Grub Roulette on your own favorites list</p>
+                </div>
+              </div>
+            </Link>
+
             {/* Manage Users */}
             <Link href="/admin/users" className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow p-6 block">
               <div className="flex items-start">

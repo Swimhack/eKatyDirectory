@@ -67,6 +67,18 @@ export default function AdminLayout({
                 Blog
               </Link>
               <Link
+                href="/favorites"
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              >
+                Favorites
+              </Link>
+              <Link
+                href="/spinner?favoritesOnly=true"
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              >
+                Spin Favorites
+              </Link>
+              <Link
                 href="/"
                 className="text-gray-500 hover:text-gray-700 transition-colors"
               >

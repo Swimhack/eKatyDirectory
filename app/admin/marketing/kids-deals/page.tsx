@@ -1,0 +1,405 @@
+'use client'
+
+import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
+
+interface MarketingKidsDeal {
+  enabled?: boolean
+  days?: string[]
+  description?: string
+}
+
+interface MarketingMeta {
+  kidsDeal?: MarketingKidsDeal | null
+}
+
+interface MarketingRestaurant {
+  id: string
+  name: string
+  slug: string
+  address: string
+  city: string
+  state: string
+  zipCode: string
+  phone: string | null
+  email: string | null
+  website: string | null
+  featured: boolean
+  verified: boolean
+  active: boolean
+  categories: string | null
+  cuisineTypes: string | null
+  priceLevel: string
+  marketing?: MarketingMeta | null
+}
+
+type DayFilter = 'all' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun'
+
+export default function KidsDealsMarketingPage() {
+  const [restaurants, setRestaurants] = useState<MarketingRestaurant[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [search, setSearch] = useState('')
+  const [day, setDay] = useState<DayFilter>('all')
+  const [sendingEmails, setSendingEmails] = useState(false)
+  const [emailResult, setEmailResult] = useState<{ sent: number; errors: number; total: number } | null>(null)
+
+  useEffect(() => {
+    let isMounted = true
+    async function load() {
+      setLoading(true)
+      setError(null)
+      try {
+        const params = new URLSearchParams()
+        if (search) params.set('search', search)
+        params.set('status', 'active')
+
+        const res = await fetch(`/api/admin/marketing/restaurants?${params.toString()}`)
+        const data = await res.json()
+
+        if (!res.ok || data.error) {
+          if (!isMounted) return
+          setError(data.error || 'Failed to load kids deal candidates')
+          setRestaurants([])
+        } else {
+          if (!isMounted) return
+          setRestaurants(data.restaurants || [])
+        }
+      } catch (e: any) {
+        if (!isMounted) return
+        setError(e?.message || 'Failed to load kids deal candidates')
+        setRestaurants([])
+      } finally {
+        if (!isMounted) return
+        setLoading(false)
+      }
+    }
+
+    load()
+    return () => {
+      isMounted = false
+    }
+  }, [search])
+
+  const filtered = useMemo(() => {
+    return restaurants.filter(r => {
+      const kids = r.marketing?.kidsDeal
+      if (!kids || kids.enabled === false) return false
+
+      if (day === 'all') return true
+
+      const dayMap: Record<DayFilter, string> = {
+        all: '',
+        Mon: 'monday',
+        Tue: 'tuesday',
+        Wed: 'wednesday',
+        Thu: 'thursday',
+        Fri: 'friday',
+        Sat: 'saturday',
+        Sun: 'sunday',
+      }
+      const target = dayMap[day]
+      const kidsDays = (kids.days || []).map(d => d.toLowerCase())
+      return !target || kidsDays.includes(target)
+    })
+  }, [restaurants, day])
+
+  const exportCsv = () => {
+    if (filtered.length === 0) return
+
+    const header = [
+      'Name',
+      'Email',
+      'Phone',
+      'Slug',
+      'Address',
+      'City',
+      'State',
+      'Zip',
+      'KidsDays',
+      'KidsDescription',
+    ]
+
+    const rows = filtered.map(r => {
+      const kids = r.marketing?.kidsDeal
+      const values = [
+        r.name,
+        r.email || '',
+        r.phone || '',
+        r.slug,
+        r.address,
+        r.city,
+        r.state,
+        r.zipCode,
+        (kids?.days || []).join(','),
+        kids?.description || '',
+      ]
+
+      return values
+        .map(value => {
+          const v = String(value ?? '')
+          if (v.includes(',') || v.includes('\n') || v.includes('"')) {
+            return '"' + v.replace(/"/g, '""') + '"'
+          }
+          return v
+        })
+        .join(',')
+    })
+
+    const csv = [header.join(','), ...rows].join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'ekaty-kids-deals-candidates.csv')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
+  const sendVerificationEmails = async () => {
+    if (!confirm('Send kids-eat-free verification emails to all restaurants with kids deals? This cannot be undone.')) {
+      return
+    }
+
+    const apiKey = prompt('Enter ADMIN_API_KEY to proceed:')
+    if (!apiKey) return
+
+    setSendingEmails(true)
+    setEmailResult(null)
+    setError(null)
+
+    try {
+      const res = await fetch('/api/admin/bulk-email/kids-deals', {
+        method: 'POST',
+        headers: {
+          'x-admin-api-key': apiKey,
+        },
+      })
+
+      const data = await res.json()
+
+      if (!res.ok || data.error) {
+        setError(data.error || 'Failed to send emails')
+      } else {
+        setEmailResult({
+          sent: data.sent,
+          errors: data.errors,
+          total: data.total,
+        })
+      }
+    } catch (e: any) {
+      setError(e?.message || 'Failed to send emails')
+    } finally {
+      setSendingEmails(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Kids-Eat-Free Candidates</h1>
+            <p className="text-gray-600 mt-1 text-sm max-w-2xl">
+              Restaurants that currently have a kids deal in their marketing metadata. Use this list to
+              verify and negotiate kids-eat-free offers.
+            </p>
+          </div>
+          <Link
+            href="/admin/marketing"
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
+          >
+            Back to Marketing
+          </Link>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-4 mb-6 space-y-4">
+          <div className="grid md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Search
+              </label>
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Name, address, cuisine, category"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Day focus
+              </label>
+              <select
+                value={day}
+                onChange={e => setDay(e.target.value as DayFilter)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+              >
+                <option value="all">Any day</option>
+                <option value="Mon">Monday</option>
+                <option value="Tue">Tuesday</option>
+                <option value="Wed">Wednesday</option>
+                <option value="Thu">Thursday</option>
+                <option value="Fri">Friday</option>
+                <option value="Sat">Saturday</option>
+                <option value="Sun">Sunday</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col justify-between">
+              <div className="text-xs text-gray-500">
+                Showing only restaurants where a kids deal is currently defined in marketing metadata.
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between text-xs text-gray-500">
+            <span>
+              Showing {filtered.length} of {restaurants.length} loaded restaurants
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={exportCsv}
+                disabled={filtered.length === 0}
+                className="px-3 py-1.5 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Export CSV
+              </button>
+              <button
+                type="button"
+                onClick={sendVerificationEmails}
+                disabled={sendingEmails || restaurants.length === 0}
+                className="px-3 py-1.5 bg-primary-600 text-white rounded-md text-xs font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {sendingEmails ? 'Sending...' : 'Send Verification Emails'}
+              </button>
+            </div>
+          </div>
+
+          {emailResult && (
+            <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <h3 className="text-sm font-semibold text-green-800 mb-2">Email Campaign Complete</h3>
+              <div className="text-xs text-green-700 space-y-1">
+                <p>✅ Sent: {emailResult.sent} emails</p>
+                {emailResult.errors > 0 && <p>❌ Errors: {emailResult.errors}</p>}
+                <p>📊 Total: {emailResult.total} restaurants</p>
+              </div>
+            </div>
+          )}
+
+          {error && !loading && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-xs text-red-700">{error}</p>
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          {loading ? (
+            <div className="py-16 text-center text-gray-500 text-sm">Loading kids deal candidates…</div>
+          ) : error ? (
+            <div className="py-16 text-center text-red-600 text-sm">{error}</div>
+          ) : filtered.length === 0 ? (
+            <div className="py-16 text-center text-gray-500 text-sm">
+              No restaurants with kids deals are defined yet. Try running your marketing data population
+              script or adding marketing metadata to restaurants.
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead className="bg-gray-50 border-b">
+                  <tr>
+                    <th className="px-4 py-2 text-left font-medium text-gray-700">Restaurant</th>
+                    <th className="px-4 py-2 text-left font-medium text-gray-700">Contact</th>
+                    <th className="px-4 py-2 text-left font-medium text-gray-700">Kids deal</th>
+                    <th className="px-4 py-2 text-left font-medium text-gray-700">Status</th>
+                    <th className="px-4 py-2 text-left font-medium text-gray-700"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map(r => {
+                    const kids = r.marketing?.kidsDeal
+                    return (
+                      <tr key={r.id} className="border-b last:border-0">
+                        <td className="px-4 py-3 align-top">
+                          <div className="font-semibold text-gray-900 flex items-center gap-2">
+                            <Link
+                              href={`/restaurants/${r.slug}`}
+                              className="hover:text-primary-600"
+                            >
+                              {r.name}
+                            </Link>
+                            {r.featured && (
+                              <span className="text-[10px] uppercase tracking-wide bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded">
+                                Featured
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            {r.address}, {r.city}, {r.state} {r.zipCode}
+                          </div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            {(r.cuisineTypes || r.categories || '').split(',').slice(0, 3).join(', ')}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 align-top text-xs text-gray-700">
+                          {r.email ? (
+                            <div className="space-y-1">
+                              <div className="font-medium text-gray-900 break-all">{r.email}</div>
+                              {r.phone && <div className="text-gray-600">{r.phone}</div>}
+                              {r.website && (
+                                <a
+                                  href={r.website}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-primary-600 hover:text-primary-700"
+                                >
+                                  Website
+                                </a>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-gray-400">No email on file</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 align-top text-xs text-gray-700">
+                          {kids ? (
+                            <div className="max-w-xs">
+                              {kids.days && kids.days.length > 0 && (
+                                <div className="font-semibold text-gray-800 mb-1">Days: {kids.days.join(', ')}</div>
+                              )}
+                              <div className="text-gray-600 line-clamp-3">{kids.description}</div>
+                            </div>
+                          ) : (
+                            <span className="text-gray-400">Not defined</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 align-top text-xs text-gray-700">
+                          <div>{r.active ? 'Active' : 'Inactive'}</div>
+                          <div className="text-gray-500">{r.verified ? 'Verified' : 'Unverified'}</div>
+                        </td>
+                        <td className="px-4 py-3 align-top text-right text-xs">
+                          <Link
+                            href={`/admin/restaurants/${r.id}/edit`}
+                            className="inline-flex items-center px-3 py-1.5 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50"
+                          >
+                            Edit
+                          </Link>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}

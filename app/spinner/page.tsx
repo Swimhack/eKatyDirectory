@@ -20,7 +20,6 @@ const priceLevels = [
 function SpinnerPageContent() {
   const searchParams = useSearchParams()
   const favoritesOnly = searchParams?.get('favoritesOnly') === 'true'
-  const userId = searchParams?.get('userId') || 'demo-user-id'
   
   const [isSpinning, setIsSpinning] = useState(false)
   const [result, setResult] = useState<any>(null)
@@ -47,7 +46,7 @@ function SpinnerPageContent() {
 
   const fetchFavorites = async () => {
     try {
-      const response = await fetch(`/api/favorites?userId=${userId}`)
+      const response = await fetch('/api/favorites')
       const data = await response.json()
       setFavorites(data.favorites || [])
     } catch (error) {

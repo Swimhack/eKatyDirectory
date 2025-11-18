@@ -25,6 +25,7 @@ export async function GET(request: NextRequest) {
         state: true,
         zipCode: true,
         phone: true,
+        email: true,
         website: true,
         featured: true,
         verified: true,

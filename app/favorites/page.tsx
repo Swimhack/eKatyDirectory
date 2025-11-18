@@ -17,9 +17,6 @@ export default function FavoritesPage() {
   const [shareUrl, setShareUrl] = useState('')
   const [showShareModal, setShowShareModal] = useState(false)
 
-  // Mock user ID - in production, get from auth session
-  const userId = 'demo-user-id'
-
   useEffect(() => {
     fetchFavorites()
   }, [])
@@ -27,7 +24,7 @@ export default function FavoritesPage() {
   const fetchFavorites = async () => {
     setLoading(true)
     try {
-      const response = await fetch(`/api/favorites?userId=${userId}`)
+      const response = await fetch('/api/favorites')
       const data = await response.json()
       setFavorites(data.favorites || [])
     } catch (error) {
@@ -85,7 +82,7 @@ export default function FavoritesPage() {
                     📤 Share List
                   </button>
                   <Link
-                    href={`/spinner?favoritesOnly=true&userId=${userId}`}
+                    href="/spinner?favoritesOnly=true"
                     className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-semibold"
                   >
                     🎰 Spin Favorites

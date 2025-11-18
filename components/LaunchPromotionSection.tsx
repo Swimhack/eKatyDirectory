@@ -13,7 +13,7 @@ export default function LaunchPromotionSection() {
     {
       icon: '🎁',
       title: 'Win Free Meals',
-      description: 'Enter our launch giveaway for a chance to win $500 in restaurant gift cards!',
+      description: 'Enter our launch giveaway for a chance to win restaurant gift cards during launch week.',
       color: 'from-pink-500 to-rose-600',
       action: () => setShowGiveawayModal(true),
       cta: 'Enter Now'
@@ -21,7 +21,7 @@ export default function LaunchPromotionSection() {
     {
       icon: '🎫',
       title: 'Exclusive Coupons',
-      description: 'Get 20% off at participating Katy restaurants. Limited time launch offer!',
+      description: 'Get limited-time launch coupons from participating Katy restaurants as we roll them out.',
       color: 'from-blue-500 to-indigo-600',
       action: () => setShowCouponModal(true),
       cta: 'Get Coupons'
@@ -37,7 +37,7 @@ export default function LaunchPromotionSection() {
     {
       icon: '⭐',
       title: 'Early Adopter Deals',
-      description: 'Be among the first to discover amazing restaurants and unlock special launch deals!',
+      description: 'Be among the first to discover family-friendly spots and get early access when new freebies and kids deals go live.',
       color: 'from-purple-500 to-violet-600',
       link: '/discover',
       cta: 'Explore'

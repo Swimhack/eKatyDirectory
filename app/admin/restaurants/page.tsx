@@ -7,6 +7,7 @@ interface Restaurant {
   id: string
   name: string
   slug: string
+  email?: string | null
   address: string
   zipCode: string
   phone: string | null
@@ -45,6 +46,39 @@ export default function AdminRestaurantsPage() {
     }
   }
 
+  const handleExportCsv = () => {
+    if (!restaurants || restaurants.length === 0) return
+
+    const header = ['Name', 'Email']
+    const rows = restaurants.map((r) => [
+      r.name || '',
+      (r.email || '').toString(),
+    ])
+
+    const escape = (value: string) => {
+      const v = value ?? ''
+      if (v.includes('"') || v.includes(',') || v.includes('\n')) {
+        return '"' + v.replace(/"/g, '""') + '"'
+      }
+      return v
+    }
+
+    const csvContent = [
+      header.join(','),
+      ...rows.map((row) => row.map(escape).join(',')),
+    ].join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'restaurants-name-email.csv')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
   const filteredRestaurants = restaurants.filter(restaurant => {
     const matchesSearch = restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          restaurant.address.toLowerCase().includes(searchTerm.toLowerCase())
@@ -81,12 +115,21 @@ export default function AdminRestaurantsPage() {
                 {filteredRestaurants.length} of {restaurants.length} restaurants
               </p>
             </div>
-            <Link
-              href="/admin/dashboard"
-              className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-            >
-              ← Back to Dashboard
-            </Link>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleExportCsv}
+                className="px-4 py-2 bg-white border border-primary-600 text-primary-600 rounded-lg hover:bg-primary-50 transition-colors text-sm font-medium"
+              >
+                Export Name + Email CSV
+              </button>
+              <Link
+                href="/admin/dashboard"
+                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                ← Back to Dashboard
+              </Link>
+            </div>
           </div>
 
           {/* Search and Filters */}
