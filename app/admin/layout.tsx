@@ -43,6 +43,12 @@ export default function AdminLayout({
                 Marketing
               </Link>
               <Link
+                href="/admin/outreach"
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              >
+                Outreach
+              </Link>
+              <Link
                 href="/admin/restaurants"
                 className="text-gray-700 hover:text-primary-600 font-medium transition-colors"
               >
