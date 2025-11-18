@@ -43,20 +43,26 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link 
-              href="/discover" 
+            <Link
+              href="/discover"
               className="text-gray-700 hover:text-brand-600 font-medium transition-colors min-h-[44px] flex items-center"
             >
               Discover
             </Link>
-            <Link 
-              href="/spinner" 
+            <Link
+              href="/map"
+              className="text-gray-700 hover:text-brand-600 font-medium transition-colors min-h-[44px] flex items-center"
+            >
+              Map
+            </Link>
+            <Link
+              href="/spinner"
               className="text-gray-700 hover:text-brand-600 font-medium transition-colors min-h-[44px] flex items-center"
             >
               Grub Roulette
             </Link>
-            <Link 
-              href="/contact" 
+            <Link
+              href="/contact"
               className="text-gray-700 hover:text-brand-600 font-medium transition-colors min-h-[44px] flex items-center"
             >
               Contact
@@ -130,6 +136,14 @@ export function Navbar() {
               >
                 <Search size={18} className="mr-3" />
                 Discover Restaurants
+              </Link>
+              <Link
+                href="/map"
+                className="block px-4 py-3 text-gray-700 hover:text-brand-600 hover:bg-warm-50 font-medium transition-colors min-h-[44px] flex items-center"
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="mr-3 text-lg">🗺️</span>
+                Restaurant Map
               </Link>
               <Link
                 href="/spinner"
