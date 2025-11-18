@@ -4,7 +4,17 @@
       "Bash(node --eval:*)",
       "Skill(example-skills:mcp-builder)",
       "Bash(npm run build:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(flyctl deploy:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(\"/c/Program Files/fly/bin/fly.exe\" deploy)",
+      "Bash(\"/c/Users/james/.fly/bin/fly.exe\" deploy)",
+      "Bash(cmd.exe /c \"fly deploy\")",
+      "Bash(cmd.exe /c \"C:\\Users\\james\\.fly\\bin\\fly.exe deploy\":*)",
+      "Bash(export PATH=\"$PATH:/c/Users/james/.fly/bin\")",
+      "Bash(fly version:*)",
+      "Bash(npm run update:all-listings:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
