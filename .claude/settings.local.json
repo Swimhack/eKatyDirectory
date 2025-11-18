@@ -14,7 +14,11 @@
       "Bash(export PATH=\"$PATH:/c/Users/james/.fly/bin\")",
       "Bash(fly version:*)",
       "Bash(npm run update:all-listings:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd backend script to update all restaurant listings\n\n- Create comprehensive update-all-listings script\n- Fetches latest data from Google Places API\n- ALWAYS respects admin overrides - never overwrites admin-edited fields\n- Updates 100 restaurants successfully\n- Includes detailed progress logging and error handling\n- Rate limiting to respect API quotas\n- Summary statistics at completion\n\nScript usage: npm run update:all-listings\n\n🤖 Generated with Claude Code\nhttps://claude.com/claude-code\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push)",
+      "Bash(find:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

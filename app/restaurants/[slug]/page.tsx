@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import BlogPreview from '@/components/BlogPreview'
 import ShareDiscoveryCard from '@/components/ShareDiscoveryCard'
+import ClaimRestaurantCard from '@/components/ClaimRestaurantCard'
 import { useToast } from '@/contexts/ToastContext'
 
 // Review Form Component
@@ -451,6 +452,15 @@ export default function RestaurantDetailPage() {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
+            {/* Claim Restaurant Card */}
+            <div className="mb-6">
+              <ClaimRestaurantCard
+                restaurantId={restaurant.id}
+                restaurantName={restaurant.name}
+                restaurantEmail={restaurant.email}
+              />
+            </div>
+
             {/* Contact Info */}
             <div className="bg-white rounded-lg shadow-md p-6 mb-6 sticky top-4">
               <h2 className="text-xl font-semibold mb-4">Contact & Hours</h2>

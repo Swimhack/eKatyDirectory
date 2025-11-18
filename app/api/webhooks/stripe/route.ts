@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import Stripe from 'stripe'
+import {
+  sendPaymentSuccessEmail,
+  sendPaymentFailedEmail,
+  sendSubscriptionCanceledEmail,
+  sendSubscriptionChangedEmail
+} from '@/lib/email-service'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-12-18.acacia'
@@ -118,6 +124,22 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
     }
   })
 
+  // Send cancellation email
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+  if (user?.email) {
+    const tierName = getTierDisplayName(user.subscriptionTier)
+    const cancelDate = new Date().toLocaleDateString()
+    const accessEndDate = new Date(subscription.current_period_end * 1000).toLocaleDateString()
+
+    await sendSubscriptionCanceledEmail(
+      user.email,
+      user.name || 'Restaurant Owner',
+      tierName,
+      cancelDate,
+      accessEndDate
+    )
+  }
+
   // Downgrade user to free tier
   await prisma.user.update({
     where: { id: userId },
@@ -157,6 +179,23 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
     data: { status: 'active' }
   })
 
+  // Send payment success email
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+  if (user?.email) {
+    const tierName = getTierDisplayName(user.subscriptionTier)
+    const nextBillingDate = new Date(subscription.current_period_end * 1000).toLocaleDateString()
+
+    await sendPaymentSuccessEmail(
+      user.email,
+      user.name || 'Restaurant Owner',
+      invoice.amount_paid,
+      invoice.currency,
+      invoice.hosted_invoice_url || `https://ekaty.com/owner/subscription`,
+      tierName,
+      nextBillingDate
+    )
+  }
+
   console.log(`Payment succeeded for user ${userId}: $${invoice.amount_paid / 100}`)
 }
 
@@ -191,7 +230,24 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
     data: { subscriptionStatus: 'past_due' }
   })
 
-  // TODO: Send email notification about payment failure
+  // Send payment failed email
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+  if (user?.email) {
+    const tierName = getTierDisplayName(user.subscriptionTier)
+    const retryDate = invoice.next_payment_attempt
+      ? new Date(invoice.next_payment_attempt * 1000).toLocaleDateString()
+      : 'within 3-5 days'
+
+    await sendPaymentFailedEmail(
+      user.email,
+      user.name || 'Restaurant Owner',
+      invoice.amount_due,
+      invoice.currency,
+      tierName,
+      retryDate,
+      `https://ekaty.com/api/stripe/portal`
+    )
+  }
 
   console.log(`Payment failed for user ${userId}`)
 }
@@ -230,4 +286,14 @@ function getSubscriptionTier(subscription: Stripe.Subscription): string {
   }
 
   return tierMap[priceId] || 'FREE'
+}
+
+function getTierDisplayName(tier: string): string {
+  const tierNames: Record<string, string> = {
+    'FREE': 'Free Plan',
+    'BASIC': 'Basic Plan',
+    'PRO': 'Pro Plan',
+    'PREMIUM': 'Premium Plan'
+  }
+  return tierNames[tier] || tier
 }
