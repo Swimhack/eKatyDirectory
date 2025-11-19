@@ -1,0 +1,1152 @@
+openapi: 3.0.3
+info:
+  title: eKaty Monetization & Outreach API
+  description: Admin API for restaurant outreach, partnership management, and revenue tracking
+  version: 1.0.0
+  contact:
+    name: eKaty Development Team
+
+servers:
+  - url: https://ekaty.fly.dev/api
+    description: Production
+  - url: http://localhost:3000/api
+    description: Local development
+
+tags:
+  - name: Partnership Tiers
+    description: Manage partnership pricing tiers
+  - name: Restaurant Leads
+    description: Manage potential partner restaurants
+  - name: Outreach Campaigns
+    description: Create and manage email outreach campaigns
+  - name: Partnerships
+    description: Manage active partnerships
+  - name: Applications
+    description: Handle inbound partnership applications
+  - name: Revenue
+    description: Revenue metrics and reporting
+
+paths:
+  # Partnership Tiers
+  /admin/tiers:
+    get:
+      summary: List all partnership tiers
+      tags: [Partnership Tiers]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: include_inactive
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Include inactive tiers in response
+      responses:
+        '200':
+          description: List of partnership tiers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tiers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PartnershipTier'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      summary: Create new partnership tier
+      tags: [Partnership Tiers]
+      security:
+        - adminAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTierRequest'
+      responses:
+        '201':
+          description: Tier created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tier:
+                    $ref: '#/components/schemas/PartnershipTier'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /admin/tiers/{id}:
+    get:
+      summary: Get tier by ID
+      tags: [Partnership Tiers]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Tier details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tier:
+                    $ref: '#/components/schemas/PartnershipTier'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      summary: Update tier
+      tags: [Partnership Tiers]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTierRequest'
+      responses:
+        '200':
+          description: Tier updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tier:
+                    $ref: '#/components/schemas/PartnershipTier'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete tier (soft delete - marks as inactive)
+      tags: [Partnership Tiers]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Tier deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # Restaurant Leads
+  /admin/leads:
+    get:
+      summary: List restaurant leads
+      tags: [Restaurant Leads]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [prospective, contacted, engaged, interested, negotiating, converted, declined, invalid_email]
+        - name: assigned_to
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by assigned admin user ID
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 200
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of leads
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  leads:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RestaurantLead'
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+
+    post:
+      summary: Create new lead
+      tags: [Restaurant Leads]
+      security:
+        - adminAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLeadRequest'
+      responses:
+        '201':
+          description: Lead created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lead:
+                    $ref: '#/components/schemas/RestaurantLead'
+
+  /admin/leads/{id}:
+    get:
+      summary: Get lead details
+      tags: [Restaurant Leads]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Lead details with outreach history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lead:
+                    $ref: '#/components/schemas/RestaurantLeadDetailed'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      summary: Update lead
+      tags: [Restaurant Leads]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLeadRequest'
+      responses:
+        '200':
+          description: Lead updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lead:
+                    $ref: '#/components/schemas/RestaurantLead'
+
+  # Outreach Campaigns
+  /admin/outreach:
+    get:
+      summary: List outreach campaigns
+      tags: [Outreach Campaigns]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [draft, scheduled, sending, sent, paused, failed]
+      responses:
+        '200':
+          description: List of campaigns
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  campaigns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OutreachCampaign'
+
+    post:
+      summary: Create new outreach campaign
+      tags: [Outreach Campaigns]
+      security:
+        - adminAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCampaignRequest'
+      responses:
+        '201':
+          description: Campaign created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  campaign:
+                    $ref: '#/components/schemas/OutreachCampaign'
+
+  /admin/outreach/{id}:
+    get:
+      summary: Get campaign details with email statuses
+      tags: [Outreach Campaigns]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Campaign details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  campaign:
+                    $ref: '#/components/schemas/OutreachCampaignDetailed'
+
+    patch:
+      summary: Update campaign
+      tags: [Outreach Campaigns]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCampaignRequest'
+      responses:
+        '200':
+          description: Campaign updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  campaign:
+                    $ref: '#/components/schemas/OutreachCampaign'
+
+  /admin/outreach/send:
+    post:
+      summary: Send campaign emails
+      tags: [Outreach Campaigns]
+      security:
+        - adminAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - campaign_id
+              properties:
+                campaign_id:
+                  type: string
+                  format: uuid
+                send_now:
+                  type: boolean
+                  default: true
+                  description: If false, schedule based on campaign.scheduled_for
+      responses:
+        '200':
+          description: Emails queued for sending
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  queued:
+                    type: integer
+                    description: Number of emails queued
+                  estimated_send_time:
+                    type: string
+                    format: date-time
+                    description: When all emails will be sent (considering rate limits)
+        '400':
+          description: Campaign not ready to send
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Campaign must be in 'draft' or 'scheduled' status
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Email rate limit exceeded. 45 emails sent in last hour. Limit: 50/hour.
+                  retry_after:
+                    type: integer
+                    description: Seconds to wait before retry
+
+  # Partnerships
+  /admin/partnerships:
+    get:
+      summary: List active partnerships
+      tags: [Partnerships]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, past_due, canceled, expired, trial]
+        - name: tier_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of partnerships
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  partnerships:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Partnership'
+
+  /admin/partnerships/{id}:
+    get:
+      summary: Get partnership details
+      tags: [Partnerships]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Partnership details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  partnership:
+                    $ref: '#/components/schemas/PartnershipDetailed'
+
+  # Applications
+  /admin/applications:
+    get:
+      summary: List partnership applications
+      tags: [Applications]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, approved, rejected, converted]
+      responses:
+        '200':
+          description: List of applications
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  applications:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PartnershipApplication'
+
+  /admin/applications/{id}/approve:
+    post:
+      summary: Approve partnership application
+      tags: [Applications]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tier_id
+              properties:
+                tier_id:
+                  type: string
+                  format: uuid
+                notes:
+                  type: string
+      responses:
+        '200':
+          description: Application approved, welcome email sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  application:
+                    $ref: '#/components/schemas/PartnershipApplication'
+                  partnership_id:
+                    type: string
+                    format: uuid
+
+  # Revenue
+  /admin/revenue/metrics:
+    get:
+      summary: Get revenue metrics
+      tags: [Revenue]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [month, quarter, year]
+            default: month
+      responses:
+        '200':
+          description: Revenue metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevenueMetrics'
+
+  /admin/revenue/export:
+    get:
+      summary: Export revenue report as CSV
+      tags: [Revenue]
+      security:
+        - adminAuth: []
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: CSV file download
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+
+  # Public endpoints
+  /partner/apply:
+    post:
+      summary: Submit partnership application (public)
+      tags: [Applications]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationRequest'
+      responses:
+        '201':
+          description: Application submitted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  application_id:
+                    type: string
+                    format: uuid
+                  message:
+                    type: string
+                    example: Thank you for your application! We'll review it within 2 business days.
+
+components:
+  securitySchemes:
+    adminAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Supabase session token with admin role
+
+  schemas:
+    PartnershipTier:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        monthly_price:
+          type: number
+          format: decimal
+        features:
+          type: array
+          items:
+            type: string
+        display_order:
+          type: integer
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateTierRequest:
+      type: object
+      required:
+        - name
+        - slug
+        - monthly_price
+        - features
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        monthly_price:
+          type: number
+          format: decimal
+        features:
+          type: array
+          items:
+            type: string
+        display_order:
+          type: integer
+
+    UpdateTierRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        monthly_price:
+          type: number
+        features:
+          type: array
+          items:
+            type: string
+        display_order:
+          type: integer
+        is_active:
+          type: boolean
+
+    RestaurantLead:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        business_name:
+          type: string
+        contact_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        cuisine_type:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        assigned_to:
+          type: string
+          format: uuid
+        last_contacted_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+
+    RestaurantLeadDetailed:
+      allOf:
+        - $ref: '#/components/schemas/RestaurantLead'
+        - type: object
+          properties:
+            notes:
+              type: string
+            source:
+              type: string
+            outreach_history:
+              type: array
+              items:
+                type: object
+                properties:
+                  email_id:
+                    type: string
+                    format: uuid
+                  campaign_name:
+                    type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+                  opened_at:
+                    type: string
+                    format: date-time
+                  clicked_at:
+                    type: string
+                    format: date-time
+
+    CreateLeadRequest:
+      type: object
+      required:
+        - business_name
+        - email
+      properties:
+        business_name:
+          type: string
+        contact_name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        cuisine_type:
+          type: array
+          items:
+            type: string
+        assigned_to:
+          type: string
+          format: uuid
+        notes:
+          type: string
+        source:
+          type: string
+
+    UpdateLeadRequest:
+      type: object
+      properties:
+        contact_name:
+          type: string
+        phone:
+          type: string
+        status:
+          type: string
+        assigned_to:
+          type: string
+          format: uuid
+        notes:
+          type: string
+
+    OutreachCampaign:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        created_by:
+          type: string
+          format: uuid
+        status:
+          type: string
+        total_sent:
+          type: integer
+        total_opened:
+          type: integer
+        total_clicked:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    OutreachCampaignDetailed:
+      allOf:
+        - $ref: '#/components/schemas/OutreachCampaign'
+        - type: object
+          properties:
+            subject_template:
+              type: string
+            body_template:
+              type: string
+            target_list:
+              type: array
+              items:
+                type: string
+                format: uuid
+            tier_showcase:
+              type: array
+              items:
+                type: string
+                format: uuid
+            scheduled_for:
+              type: string
+              format: date-time
+            sent_at:
+              type: string
+              format: date-time
+            emails:
+              type: array
+              items:
+                type: object
+                properties:
+                  lead_id:
+                    type: string
+                    format: uuid
+                  lead_name:
+                    type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+                  opened_at:
+                    type: string
+                    format: date-time
+                  clicked_at:
+                    type: string
+                    format: date-time
+                  bounced_at:
+                    type: string
+                    format: date-time
+
+    CreateCampaignRequest:
+      type: object
+      required:
+        - name
+        - subject_template
+        - body_template
+        - target_list
+      properties:
+        name:
+          type: string
+        subject_template:
+          type: string
+        body_template:
+          type: string
+        target_list:
+          type: array
+          items:
+            type: string
+            format: uuid
+        tier_showcase:
+          type: array
+          items:
+            type: string
+            format: uuid
+        scheduled_for:
+          type: string
+          format: date-time
+
+    UpdateCampaignRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        subject_template:
+          type: string
+        body_template:
+          type: string
+        target_list:
+          type: array
+          items:
+            type: string
+            format: uuid
+        status:
+          type: string
+
+    Partnership:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        restaurant_id:
+          type: string
+          format: uuid
+        tier_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+        start_date:
+          type: string
+          format: date
+        renewal_date:
+          type: string
+          format: date
+        billing_cycle:
+          type: string
+        payment_status:
+          type: string
+
+    PartnershipDetailed:
+      allOf:
+        - $ref: '#/components/schemas/Partnership'
+        - type: object
+          properties:
+            restaurant:
+              type: object
+              properties:
+                name:
+                  type: string
+                address:
+                  type: string
+            tier:
+              $ref: '#/components/schemas/PartnershipTier'
+            last_payment_date:
+              type: string
+              format: date
+            notes:
+              type: string
+
+    PartnershipApplication:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        business_name:
+          type: string
+        contact_name:
+          type: string
+        contact_email:
+          type: string
+        contact_phone:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        cuisine_type:
+          type: string
+        website:
+          type: string
+        preferred_tier_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+        reviewed_by:
+          type: string
+          format: uuid
+        review_notes:
+          type: string
+        submitted_at:
+          type: string
+          format: date-time
+        reviewed_at:
+          type: string
+          format: date-time
+
+    CreateApplicationRequest:
+      type: object
+      required:
+        - business_name
+        - contact_name
+        - contact_email
+        - address
+        - city
+      properties:
+        business_name:
+          type: string
+        contact_name:
+          type: string
+        contact_email:
+          type: string
+          format: email
+        contact_phone:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        cuisine_type:
+          type: string
+        website:
+          type: string
+        preferred_tier_id:
+          type: string
+          format: uuid
+
+    RevenueMetrics:
+      type: object
+      properties:
+        period:
+          type: string
+        total_mrr:
+          type: number
+          format: decimal
+          description: Monthly recurring revenue
+        active_partnerships:
+          type: integer
+        new_partnerships:
+          type: integer
+        churned_partnerships:
+          type: integer
+        conversion_rate:
+          type: number
+          format: percent
+        partnerships_by_tier:
+          type: array
+          items:
+            type: object
+            properties:
+              tier_name:
+                type: string
+              count:
+                type: integer
+              revenue:
+                type: number
+        revenue_trend:
+          type: array
+          items:
+            type: object
+            properties:
+              month:
+                type: string
+              mrr:
+                type: number
+
+  responses:
+    Unauthorized:
+      description: Not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Unauthorized
+
+    Forbidden:
+      description: Not authorized (not an admin)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Forbidden - admin access required
+
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              validation_errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    message:
+                      type: string
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Resource not found

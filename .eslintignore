@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Testing
+coverage/
+
+# Generated files
+*.min.js
+next-env.d.ts
+
+# Configuration
+.eslintrc.json
+
+# Verification reports
+deployment-verification-*.json
+mobile-first-report-*.json
