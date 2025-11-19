@@ -25,7 +25,11 @@
       "Bash(npm run dev:*)",
       "Bash(node scripts/add-mexican-restaurants.js:*)",
       "Bash(npx prisma migrate:*)",
-      "Bash(npx prisma:*)"
+      "Bash(npx prisma:*)",
+      "Bash(git push:*)",
+      "Bash(cmd.exe /c \"cd /d c:\\STRICKLAND\\Strickland Technology Marketing\\ekaty.com-2025 && fly deploy\")",
+      "Bash(where:*)",
+      "Bash(\"C:\\Users\\james\\.fly\\bin\\fly.exe\" deploy)"
     ],
     "deny": [],
     "ask": []
