@@ -86,12 +86,11 @@ describe('Template Variables Utility', () => {
     })
 
     it('should handle all standard outreach variables', () => {
-      const template = `
-        Dear {{contact_name}},
+      const template =
+        'Dear {{contact_name}},\n\n' +
+        "We'd love to partner with {{restaurant_name}} in {{city}}.\n" +
+        'Your {{cuisine}} restaurant would be perfect for our {{tier_name}} tier at ${{tier_price}}/month.'
 
-        We'd love to partner with {{restaurant_name}} in {{city}}.
-        Your {{cuisine}} restaurant would be perfect for our {{tier_name}} tier at ${{tier_price}}/month.
-      `
       const variables = {
         contact_name: 'Maria Garcia',
         restaurant_name: 'Tacos & More',
