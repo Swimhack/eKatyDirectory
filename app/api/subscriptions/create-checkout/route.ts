@@ -3,7 +3,7 @@ import { getCurrentUser } from '@/lib/auth'
 import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2025-02-24.acacia'
 })
 
 export async function POST(request: NextRequest) {
@@ -19,26 +19,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Price ID required' }, { status: 400 })
     }
 
-    // Create or retrieve Stripe customer
-    let customerId = user.stripeCustomerId
+    // Create Stripe customer
+    const customer = await stripe.customers.create({
+      email: user.email,
+      name: user.name || undefined,
+      metadata: {
+        userId: user.id
+      }
+    })
+    const customerId = customer.id
 
-    if (!customerId) {
-      const customer = await stripe.customers.create({
-        email: user.email,
-        name: user.name || undefined,
-        metadata: {
-          userId: user.id
-        }
-      })
-      customerId = customer.id
-
-      // Update user with Stripe customer ID
-      // TODO: Add stripeCustomerId field to User model
-      // await prisma.user.update({
-      //   where: { id: user.id },
-      //   data: { stripeCustomerId: customerId }
-      // })
-    }
+    // Update user with Stripe customer ID
+    // TODO: Add stripeCustomerId field to User model
+    // await prisma.user.update({
+    //   where: { id: user.id },
+    //   data: { stripeCustomerId: customerId }
+    // })
 
     // Create checkout session
     const session = await stripe.checkout.sessions.create({

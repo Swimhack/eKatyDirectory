@@ -1,8 +1,5 @@
 import { Resend } from 'resend'
 
-// Initialize Resend client
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 /**
  * Send an email using Resend API
  * @param options Email sending options
@@ -17,6 +14,9 @@ export async function sendEmail(options: {
 }) {
   try {
     const { to, subject, html, from = 'eKaty <noreply@ekaty.com>' } = options
+
+    // Initialize Resend client only when sending email
+    const resend = new Resend(process.env.RESEND_API_KEY || '')
 
     const response = await resend.emails.send({
       from,

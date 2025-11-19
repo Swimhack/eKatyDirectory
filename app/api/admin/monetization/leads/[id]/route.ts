@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 
 const ADMIN_KEY = process.env.ADMIN_API_KEY || 'ekaty-admin-secret-2025'
 
+export const dynamic = 'force-dynamic'
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }

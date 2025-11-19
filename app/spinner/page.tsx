@@ -204,7 +204,7 @@ function SpinnerPageContent() {
             🎰 Grub Roulette
           </h1>
           <p className="text-xl text-gray-600">
-            Can't decide where to eat? Let the wheel decide!
+            Can&apos;t decide where to eat? Let the wheel decide!
           </p>
         </div>
 

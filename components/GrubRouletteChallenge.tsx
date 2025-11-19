@@ -98,7 +98,7 @@ export default function GrubRouletteChallenge({ restaurant, spinNumber }: GrubRo
                   🎯 Your Challenge:
                 </h3>
                 <p className="text-lg text-gray-700 font-medium mb-4">
-                  "{randomChallenge}"
+                  &ldquo;{randomChallenge}&rdquo;
                 </p>
                 <p className="text-sm text-gray-600">
                   at <span className="font-semibold">{restaurant.name}</span>
@@ -117,7 +117,7 @@ export default function GrubRouletteChallenge({ restaurant, spinNumber }: GrubRo
                     onClick={() => setShowChallenge(false)}
                     className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-all"
                   >
-                    😅 Nah, I'll Pass
+                    😅 Nah, I&apos;ll Pass
                   </button>
                 </div>
               ) : (

@@ -316,7 +316,7 @@ export default function ShareDiscoveryCard({ restaurant }: ShareDiscoveryCardPro
             <ul className="space-y-2 text-sm text-gray-700">
               <li className="flex items-center space-x-2">
                 <span className="text-green-500">✓</span>
-                <span>Share 3 restaurants → Unlock "Foodie Explorer" badge</span>
+                <span>Share 3 restaurants → Unlock &ldquo;Foodie Explorer&rdquo; badge</span>
               </li>
               <li className="flex items-center space-x-2">
                 <span className="text-green-500">✓</span>

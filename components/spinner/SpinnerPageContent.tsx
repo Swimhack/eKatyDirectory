@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Restaurant } from '@/lib/supabase/database.types'
 import GrubRouletteWheel from './GrubRouletteWheel'
 import SpinnerFilters from './SpinnerFilters'
-import { SpinHistory } from '@/components/ui/placeholders'
+// import { SpinHistory } from '@/components/ui/placeholders'
 
 export default function SpinnerPageContent() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([])
@@ -85,7 +85,7 @@ export default function SpinnerPageContent() {
 
         {/* History */}
         <div className="lg:col-span-1">
-          <SpinHistory />
+          {/* <SpinHistory /> */}
         </div>
       </div>
     </div>

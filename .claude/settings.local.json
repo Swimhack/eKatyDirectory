@@ -29,7 +29,16 @@
       "Bash(git push:*)",
       "Bash(cmd.exe /c \"cd /d c:\\STRICKLAND\\Strickland Technology Marketing\\ekaty.com-2025 && fly deploy\")",
       "Bash(where:*)",
-      "Bash(\"C:\\Users\\james\\.fly\\bin\\fly.exe\" deploy)"
+      "Bash(\"C:\\Users\\james\\.fly\\bin\\fly.exe\" deploy)",
+      "Skill(example-skills:webapp-testing)",
+      "Bash(python test_leads_page.py:*)",
+      "Bash(npm install:*)",
+      "Bash(fly deploy:*)",
+      "Bash(\"/c/Users/james/.fly/bin/fly.exe\" deploy --detach)",
+      "Bash(cmd.exe /c \"C:\\Users\\james\\.fly\\bin\\fly.exe\" deploy --detach)",
+      "Bash(\"/c/Program Files/fly/bin/fly.exe\" deploy --detach)",
+      "Bash(\"/c/Users/james/.fly/bin/flyctl.exe.old\" deploy --detach)",
+      "Bash(cmd.exe /c fly deploy)"
     ],
     "deny": [],
     "ask": []

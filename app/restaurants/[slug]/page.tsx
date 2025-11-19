@@ -232,7 +232,7 @@ export default function RestaurantDetailPage() {
         <div className="text-center">
           <div className="text-6xl mb-4">🍽️</div>
           <h2 className="text-2xl font-semibold text-gray-900 mb-2">Restaurant Not Found</h2>
-          <p className="text-gray-600 mb-6">The restaurant you're looking for doesn't exist.</p>
+          <p className="text-gray-600 mb-6">The restaurant you&apos;re looking for doesn&apos;t exist.</p>
           <Link href="/discover" className="btn-primary">
             Browse Restaurants
           </Link>
@@ -520,7 +520,7 @@ export default function RestaurantDetailPage() {
               {/* Hours */}
               {todayHours && (
                 <div className="mb-4">
-                  <h3 className="text-sm font-medium text-gray-600 mb-1">Today's Hours</h3>
+                  <h3 className="text-sm font-medium text-gray-600 mb-1">Today&apos;s Hours</h3>
                   <p className="text-gray-900">
                     {todayHours.open} - {todayHours.close}
                   </p>

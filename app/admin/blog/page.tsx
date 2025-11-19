@@ -225,7 +225,7 @@ export default function BlogManagerPage() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-bold mb-4">⚡ Quick Generate Article</h2>
             <p className="text-gray-600 mb-6">
-              Enter just a title and James Strickland's AI article agent will generate a complete, research-driven article written from its cute, enthusiastic perspective! 🤖✨
+              Enter just a title and James Strickland&apos;s AI article agent will generate a complete, research-driven article written from its cute, enthusiastic perspective! 🤖✨
               <strong> Article will be published immediately!</strong>
             </p>
 

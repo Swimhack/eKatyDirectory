@@ -60,11 +60,11 @@ export default function LaunchPromotionSection() {
             Launch Celebration Specials! 🎉
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Join the eKaty launch buzz! We're celebrating with amazing deals, coupons, giveaways, and flyers for Katy families!
+            Join the eKaty launch buzz! We&apos;re celebrating with amazing deals, coupons, giveaways, and flyers for Katy families!
           </p>
           <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-gray-500">
             <span>🤖</span>
-            <span>From James Strickland's AI Article Agent</span>
+            <span>From James Strickland&apos;s AI Article Agent</span>
           </div>
         </div>
 
@@ -115,7 +115,7 @@ export default function LaunchPromotionSection() {
           <div className="max-w-3xl mx-auto">
             <div className="text-6xl mb-4">🚀</div>
             <h3 className="text-3xl md:text-4xl font-bold mb-4">
-              Don't Miss Out on the Launch Buzz!
+              Don&apos;t Miss Out on the Launch Buzz!
             </h3>
             <p className="text-xl text-primary-100 mb-8">
               Get all the details about our flyers, deals, coupons, and giveaways. Join thousands of Katy families celebrating the launch of eKaty!

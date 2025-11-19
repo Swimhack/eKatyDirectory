@@ -143,7 +143,7 @@ export default function ImportRestaurantPage() {
               </button>
             </div>
             <p className="text-sm text-gray-500 mt-2">
-              💡 Tip: Include "Katy" or the full restaurant name for best results
+              💡 Tip: Include &ldquo;Katy&rdquo; or the full restaurant name for best results
             </p>
           </form>
         </div>
@@ -313,15 +313,15 @@ export default function ImportRestaurantPage() {
               </li>
               <li className="flex items-start">
                 <span className="flex-shrink-0 w-6 h-6 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center text-sm font-semibold mr-3">2</span>
-                <span>Click "Search" to find the restaurant on Google Places</span>
+                <span>Click &ldquo;Search&rdquo; to find the restaurant on Google Places</span>
               </li>
               <li className="flex items-start">
                 <span className="flex-shrink-0 w-6 h-6 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center text-sm font-semibold mr-3">3</span>
-                <span>Review the search result to confirm it's the correct restaurant</span>
+                <span>Review the search result to confirm it&apos;s the correct restaurant</span>
               </li>
               <li className="flex items-start">
                 <span className="flex-shrink-0 w-6 h-6 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center text-sm font-semibold mr-3">4</span>
-                <span>Click "Import Restaurant" to add it to your database with full details</span>
+                <span>Click &ldquo;Import Restaurant&rdquo; to add it to your database with full details</span>
               </li>
             </ol>
 
@@ -329,7 +329,7 @@ export default function ImportRestaurantPage() {
               <h4 className="font-medium text-blue-900 mb-2">💡 Pro Tips</h4>
               <ul className="text-sm text-blue-800 space-y-1">
                 <li>• Use the full restaurant name for best results</li>
-                <li>• Include "Katy" if the restaurant has multiple locations</li>
+                <li>• Include &ldquo;Katy&rdquo; if the restaurant has multiple locations</li>
                 <li>• The system will automatically fetch photos, hours, ratings, and more</li>
                 <li>• You can re-import to update existing restaurant data</li>
               </ul>

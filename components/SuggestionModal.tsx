@@ -127,7 +127,7 @@ export default function SuggestionModal({
                       Suggest an Edit
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">
-                      Help us keep {restaurantName}'s information accurate
+                      Help us keep {restaurantName}&apos;s information accurate
                     </p>
                   </div>
                   <button

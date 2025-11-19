@@ -329,9 +329,9 @@ export default function OutreachDashboard() {
         <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
           <h3 className="text-lg font-bold text-yellow-900 mb-2">Getting Started</h3>
           <ol className="list-decimal list-inside space-y-2 text-sm text-yellow-800">
-            <li>Click "Export CSV" on Phone-Only Quick Wins to get SMS list</li>
+            <li>Click &ldquo;Export CSV&rdquo; on Phone-Only Quick Wins to get SMS list</li>
             <li>Text first 5-10 restaurants manually from your phone</li>
-            <li>Click "Send Bulk Emails" on High-Value Targets segment</li>
+            <li>Click &ldquo;Send Bulk Emails&rdquo; on High-Value Targets segment</li>
             <li>Track responses and conversions in the stats above</li>
             <li>Follow up with interested restaurants within 1 hour</li>
           </ol>

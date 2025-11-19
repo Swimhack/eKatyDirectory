@@ -36,7 +36,7 @@ export default function FavoritesPage() {
 
   const handleRemoveFavorite = async (restaurantId: string) => {
     try {
-      const response = await fetch(`/api/favorites?userId=${userId}&restaurantId=${restaurantId}`, {
+      const response = await fetch(`/api/favorites?restaurantId=${restaurantId}`, {
         method: 'DELETE'
       })
 

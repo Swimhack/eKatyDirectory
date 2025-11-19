@@ -9,7 +9,7 @@ import {
 } from '@/lib/email-service'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2025-02-24.acacia'
 })
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
@@ -127,7 +127,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   // Send cancellation email
   const user = await prisma.user.findUnique({ where: { id: userId } })
   if (user?.email) {
-    const tierName = getTierDisplayName(user.subscriptionTier)
+    const tierName = getTierDisplayName(user.subscriptionTier || 'FREE')
     const cancelDate = new Date().toLocaleDateString()
     const accessEndDate = new Date(subscription.current_period_end * 1000).toLocaleDateString()
 
@@ -182,7 +182,7 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
   // Send payment success email
   const user = await prisma.user.findUnique({ where: { id: userId } })
   if (user?.email) {
-    const tierName = getTierDisplayName(user.subscriptionTier)
+    const tierName = getTierDisplayName(user.subscriptionTier || 'FREE')
     const nextBillingDate = new Date(subscription.current_period_end * 1000).toLocaleDateString()
 
     await sendPaymentSuccessEmail(
@@ -233,7 +233,7 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
   // Send payment failed email
   const user = await prisma.user.findUnique({ where: { id: userId } })
   if (user?.email) {
-    const tierName = getTierDisplayName(user.subscriptionTier)
+    const tierName = getTierDisplayName(user.subscriptionTier || 'FREE')
     const retryDate = invoice.next_payment_attempt
       ? new Date(invoice.next_payment_attempt * 1000).toLocaleDateString()
       : 'within 3-5 days'

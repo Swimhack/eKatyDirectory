@@ -94,8 +94,7 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
     create: {
       userId,
       stripeSubscriptionId: subscription.id,
-      stripePriceId: subscription.items.data[0].price.id,
-      stripeProductId: subscription.items.data[0].price.product as string,
+      stripeCustomerId: subscription.customer as string,
       status: subscription.status,
       tier,
       currentPeriodStart: new Date(subscription.current_period_start * 1000),
