@@ -3,6 +3,13 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
+interface User {
+  id: string
+  name: string | null
+  email: string
+  role: string
+}
+
 interface Lead {
   id: string
   restaurantId: string
@@ -15,6 +22,8 @@ interface Lead {
   source: string
   status: 'new' | 'contacted' | 'interested' | 'converted' | 'lost'
   notes: string | null
+  assignedToId: string | null
+  assignedTo: User | null
   createdAt: string
   updatedAt: string
 }
@@ -22,20 +31,49 @@ interface Lead {
 export default function MonetizationLeadsPage() {
   const [leads, setLeads] = useState<Lead[]>([])
   const [filter, setFilter] = useState<'all' | 'new' | 'contacted' | 'interested' | 'converted' | 'lost'>('all')
+  const [sourceFilter, setSourceFilter] = useState<string>('all')
+  const [availableSources, setAvailableSources] = useState<string[]>([])
+  const [adminUsers, setAdminUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
   const [notes, setNotes] = useState('')
+  const [selectedAssignee, setSelectedAssignee] = useState<string>('')
 
   useEffect(() => {
     fetchLeads()
-  }, [filter])
+  }, [filter, sourceFilter])
+
+  useEffect(() => {
+    fetchAdminUsers()
+  }, [])
+
+  const fetchAdminUsers = async () => {
+    try {
+      const response = await fetch('/api/admin/users?role=ADMIN,EDITOR', {
+        headers: {
+          'x-admin-key': process.env.NEXT_PUBLIC_ADMIN_API_KEY || 'ekaty-admin-secret-2025'
+        }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setAdminUsers(data.users || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch admin users:', error)
+    }
+  }
 
   const fetchLeads = async () => {
     setLoading(true)
     try {
-      const url = filter === 'all'
-        ? '/api/admin/monetization/leads'
-        : `/api/admin/monetization/leads?status=${filter}`
+      const params = new URLSearchParams()
+      if (filter !== 'all') params.append('status', filter)
+      if (sourceFilter !== 'all') params.append('source', sourceFilter)
+
+      const url = params.toString()
+        ? `/api/admin/monetization/leads?${params}`
+        : '/api/admin/monetization/leads'
 
       const response = await fetch(url, {
         headers: {
@@ -48,7 +86,12 @@ export default function MonetizationLeadsPage() {
       }
 
       const data = await response.json()
-      setLeads(data.leads || [])
+      const fetchedLeads = data.leads || []
+      setLeads(fetchedLeads)
+
+      // Extract unique sources for filtering
+      const sources = Array.from(new Set(fetchedLeads.map((l: Lead) => l.source)))
+      setAvailableSources(sources as string[])
     } catch (error) {
       console.error('Failed to fetch leads:', error)
       setLeads([])
@@ -57,7 +100,7 @@ export default function MonetizationLeadsPage() {
     }
   }
 
-  const updateLeadStatus = async (leadId: string, newStatus: Lead['status']) => {
+  const updateLead = async (leadId: string, updates: { status?: Lead['status'], notes?: string, assignedToId?: string | null }) => {
     try {
       const response = await fetch(`/api/admin/monetization/leads/${leadId}`, {
         method: 'PATCH',
@@ -65,22 +108,68 @@ export default function MonetizationLeadsPage() {
           'Content-Type': 'application/json',
           'x-admin-key': process.env.NEXT_PUBLIC_ADMIN_API_KEY || 'ekaty-admin-secret-2025'
         },
-        body: JSON.stringify({
-          status: newStatus,
-          notes
-        })
+        body: JSON.stringify(updates)
       })
 
       if (response.ok) {
         alert('Lead updated successfully!')
         setSelectedLead(null)
         setNotes('')
+        setSelectedAssignee('')
         fetchLeads()
       }
     } catch (error) {
       console.error('Failed to update lead:', error)
       alert('Failed to update lead')
     }
+  }
+
+  const exportToCSV = () => {
+    // Prepare CSV data
+    const headers = [
+      'Restaurant Name',
+      'Contact Name',
+      'Contact Email',
+      'Contact Phone',
+      'Tier',
+      'Source',
+      'Status',
+      'Assigned To',
+      'Notes',
+      'Created Date',
+      'Updated Date'
+    ]
+
+    const rows = leads.map(lead => [
+      lead.restaurantName,
+      lead.contactName || '',
+      lead.contactEmail,
+      lead.contactPhone || '',
+      lead.tier,
+      lead.source,
+      lead.status,
+      lead.assignedTo?.name || lead.assignedTo?.email || 'Unassigned',
+      (lead.notes || '').replace(/"/g, '""'), // Escape quotes
+      new Date(lead.createdAt).toLocaleDateString(),
+      new Date(lead.updatedAt).toLocaleDateString()
+    ])
+
+    // Convert to CSV format
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n')
+
+    // Download CSV
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', `monetization-leads-${new Date().toISOString().split('T')[0]}.csv`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
   const getStatusColor = (status: Lead['status']) => {
@@ -122,12 +211,21 @@ export default function MonetizationLeadsPage() {
               <h1 className="text-3xl font-bold text-gray-900">Monetization Leads</h1>
               <p className="text-gray-600 mt-1">Track and manage restaurant claim interest</p>
             </div>
-            <Link
-              href="/admin/dashboard"
-              className="text-primary-600 hover:text-primary-700 font-medium"
-            >
-              ← Back to Dashboard
-            </Link>
+            <div className="flex gap-3">
+              <button
+                onClick={exportToCSV}
+                disabled={leads.length === 0}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              >
+                Export CSV ({leads.length})
+              </button>
+              <Link
+                href="/admin/dashboard"
+                className="text-primary-600 hover:text-primary-700 font-medium"
+              >
+                ← Back to Dashboard
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -166,22 +264,56 @@ export default function MonetizationLeadsPage() {
 
       {/* Filters */}
       <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-4 py-4 overflow-x-auto">
-            {(['all', 'new', 'contacted', 'interested', 'converted', 'lost'] as const).map((status) => (
-              <button
-                key={status}
-                onClick={() => setFilter(status)}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
-                  filter === status
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-              </button>
-            ))}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="mb-4">
+            <label className="text-sm font-medium text-gray-700 mb-2 block">Filter by Status:</label>
+            <div className="flex gap-2 overflow-x-auto">
+              {(['all', 'new', 'contacted', 'interested', 'converted', 'lost'] as const).map((status) => (
+                <button
+                  key={status}
+                  onClick={() => setFilter(status)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
+                    filter === status
+                      ? 'bg-primary-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {availableSources.length > 0 && (
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">Filter by Source:</label>
+              <div className="flex gap-2 overflow-x-auto">
+                <button
+                  onClick={() => setSourceFilter('all')}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
+                    sourceFilter === 'all'
+                      ? 'bg-primary-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  All Sources
+                </button>
+                {availableSources.map((source) => (
+                  <button
+                    key={source}
+                    onClick={() => setSourceFilter(source)}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
+                      sourceFilter === source
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {source.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -216,7 +348,7 @@ export default function MonetizationLeadsPage() {
                       </span>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-4 mb-4">
+                    <div className="grid md:grid-cols-3 gap-4 mb-4">
                       <div>
                         <p className="text-sm text-gray-600 mb-1">Contact Information:</p>
                         <p className="font-medium">{lead.contactName || 'Unknown'}</p>
@@ -227,9 +359,23 @@ export default function MonetizationLeadsPage() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-600 mb-1">Lead Details:</p>
-                        <p className="text-sm">Source: <span className="font-medium">{lead.source}</span></p>
+                        <p className="text-sm">Source: <span className="font-medium">{lead.source.replace(/_/g, ' ')}</span></p>
                         <p className="text-sm">Created: {new Date(lead.createdAt).toLocaleDateString()}</p>
                         <p className="text-sm">Updated: {new Date(lead.updatedAt).toLocaleDateString()}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1">Assignment:</p>
+                        {lead.assignedTo ? (
+                          <>
+                            <p className="font-medium text-sm">{lead.assignedTo.name || 'Unnamed User'}</p>
+                            <p className="text-sm text-gray-700">{lead.assignedTo.email}</p>
+                            <span className="inline-block mt-1 px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium">
+                              {lead.assignedTo.role}
+                            </span>
+                          </>
+                        ) : (
+                          <p className="text-sm text-gray-500 italic">Unassigned</p>
+                        )}
                       </div>
                     </div>
 
@@ -262,10 +408,11 @@ export default function MonetizationLeadsPage() {
                       onClick={() => {
                         setSelectedLead(lead)
                         setNotes(lead.notes || '')
+                        setSelectedAssignee(lead.assignedToId || '')
                       }}
                       className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
                     >
-                      Update Status
+                      Update Lead
                     </button>
                   </div>
                 </div>
@@ -291,7 +438,7 @@ export default function MonetizationLeadsPage() {
                 {(['new', 'contacted', 'interested', 'converted', 'lost'] as const).map((status) => (
                   <button
                     key={status}
-                    onClick={() => updateLeadStatus(selectedLead.id, status)}
+                    onClick={() => updateLead(selectedLead.id, { status })}
                     className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                       selectedLead.status === status
                         ? 'bg-primary-600 text-white'
@@ -306,6 +453,30 @@ export default function MonetizationLeadsPage() {
 
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">
+                Assign To
+              </label>
+              <select
+                value={selectedAssignee}
+                onChange={(e) => setSelectedAssignee(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              >
+                <option value="">Unassigned</option>
+                {adminUsers.map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.name || user.email} ({user.role})
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={() => updateLead(selectedLead.id, { assignedToId: selectedAssignee || null })}
+                className="mt-2 w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+              >
+                Update Assignment
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Notes
               </label>
               <textarea
@@ -315,6 +486,12 @@ export default function MonetizationLeadsPage() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                 placeholder="Add notes about this lead..."
               />
+              <button
+                onClick={() => updateLead(selectedLead.id, { notes })}
+                className="mt-2 w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium"
+              >
+                Save Notes
+              </button>
             </div>
 
             <div className="flex gap-3">

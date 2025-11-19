@@ -15,13 +15,25 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
+    const source = searchParams.get('source')
 
     // Build where clause
-    const where = status ? { status } : {}
+    const where: any = {}
+    if (status) where.status = status
+    if (source) where.source = source
 
     // Fetch monetization leads
     const leads = await prisma.monetizationLead.findMany({
       where,
+      include: {
+        assignedTo: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        }
+      },
       orderBy: {
         createdAt: 'desc'
       }

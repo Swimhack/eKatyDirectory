@@ -18,7 +18,7 @@ export async function PATCH(
 
     const { id } = params
     const body = await request.json()
-    const { status, notes } = body
+    const { status, notes, assignedToId } = body
 
     // Update the lead
     const updatedLead = await prisma.monetizationLead.update({
@@ -26,7 +26,17 @@ export async function PATCH(
       data: {
         status,
         notes,
+        assignedToId: assignedToId || null,
         updatedAt: new Date()
+      },
+      include: {
+        assignedTo: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        }
       }
     })
 

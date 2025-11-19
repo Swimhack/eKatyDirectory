@@ -6,23 +6,35 @@ const prisma = new PrismaClient()
 // GET - List all users
 export async function GET(request: NextRequest) {
   try {
-    // Verify admin authentication
+    // Verify admin authentication (support both header formats)
     const authHeader = request.headers.get('authorization')
-    const adminKey = process.env.ADMIN_API_KEY
-    
-    if (!authHeader || !adminKey || authHeader !== `Bearer ${adminKey}`) {
+    const xAdminKey = request.headers.get('x-admin-key')
+    const adminKey = process.env.ADMIN_API_KEY || 'ekaty-admin-secret-2025'
+
+    const isAuthorized = (authHeader === `Bearer ${adminKey}`) || (xAdminKey === adminKey)
+
+    if (!isAuthorized) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const { searchParams } = new URL(request.url)
     const limit = parseInt(searchParams.get('limit') || '100')
     const offset = parseInt(searchParams.get('offset') || '0')
+    const roleFilter = searchParams.get('role') // e.g., "ADMIN,EDITOR"
+
+    // Build where clause for role filtering
+    const where: any = {}
+    if (roleFilter) {
+      const roles = roleFilter.split(',')
+      where.OR = roles.map(role => ({ role: role.trim() }))
+    }
 
     const [users, total] = await Promise.all([
       prisma.user.findMany({
+        where,
         take: limit,
         skip: offset,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { name: 'asc' },
         select: {
           id: true,
           email: true,
@@ -37,7 +49,7 @@ export async function GET(request: NextRequest) {
           }
         }
       }),
-      prisma.user.count()
+      prisma.user.count({ where })
     ])
 
     return NextResponse.json({
