@@ -705,3 +705,26 @@ model ConversionFunnel {
   @@index([createdAt])
   @@map("conversion_funnels")
 }
+
+// Monetization Leads (track restaurant claim interest)
+model MonetizationLead {
+  id              String      @id @default(cuid())
+  restaurantId    String      @map("restaurant_id")
+  restaurantName  String      @map("restaurant_name")
+  restaurantSlug  String      @map("restaurant_slug")
+  contactEmail    String      @map("contact_email")
+  contactName     String?     @map("contact_name")
+  contactPhone    String?     @map("contact_phone")
+  tier            String      // owner, featured, premium
+  source          String      // claim_card, pricing_page, contact_form
+  status          String      @default("new") // new, contacted, interested, converted, lost
+  notes           String?
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+
+  @@index([restaurantId])
+  @@index([status])
+  @@index([tier])
+  @@index([createdAt])
+  @@map("monetization_leads")
+}
