@@ -71,17 +71,31 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-8 pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-gray-400 text-sm text-center md:text-left">
-              © 2024 eKaty. All rights reserved.
-            </p>
-            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 items-center">
-              <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors min-h-[44px] md:min-h-0 flex items-center">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors min-h-[44px] md:min-h-0 flex items-center">
-                Terms of Service
-              </Link>
+          <div className="border-t border-gray-800 mt-8 pt-6 md:pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 mb-4">
+              <p className="text-gray-400 text-sm text-center md:text-left">
+                © 2025 eKaty.com. All rights reserved.
+              </p>
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 items-center">
+                <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors min-h-[44px] md:min-h-0 flex items-center">
+                  Privacy Policy
+                </Link>
+                <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors min-h-[44px] md:min-h-0 flex items-center">
+                  Terms of Service
+                </Link>
+              </div>
+            </div>
+            <div className="text-center">
+              <a 
+                href="https://StricklandTechnology.net" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-brand-400 text-xs transition-colors inline-flex items-center gap-1"
+                title="Houston Web Design & Development by Strickland Technology"
+                aria-label="Website designed and developed by Strickland Technology - Houston Web Design"
+              >
+                Powered by Strickland Technology
+              </a>
             </div>
           </div>
         </div>
@@ -92,15 +106,27 @@ export function Footer() {
         <div className="container-mobile">
           <div className="text-center">
             <p className="text-gray-400 text-xs">
-              © 2024 eKaty. All rights reserved.
+              © 2025 eKaty.com. All rights reserved.
             </p>
-          <div className="flex justify-center space-x-4 mt-2">
+          <div className="flex justify-center space-x-4 mt-2 mb-3">
             <Link href="/privacy" className="text-gray-400 hover:text-white text-xs transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center px-2 py-3">
               Privacy
             </Link>
             <Link href="/terms" className="text-gray-400 hover:text-white text-xs transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center px-2 py-3">
               Terms
             </Link>
+          </div>
+          <div className="text-center">
+            <a 
+              href="https://StricklandTechnology.net" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-brand-400 text-xs transition-colors inline-flex items-center gap-1 min-h-[44px] px-2 py-3"
+              title="Houston Web Design & Development by Strickland Technology"
+              aria-label="Website designed and developed by Strickland Technology - Houston Web Design"
+            >
+              Powered by Strickland Technology
+            </a>
           </div>
           </div>
         </div>
