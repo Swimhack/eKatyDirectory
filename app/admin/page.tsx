@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+import { Mail, Users, DollarSign, TrendingUp, FileText } from 'lucide-react'
 
 export default function AdminPage() {
   const [isSeeding, setIsSeeding] = useState(false)
@@ -41,15 +43,117 @@ export default function AdminPage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
           eKaty Admin Panel
         </h1>
+        <p className="text-gray-600 mb-8">
+          Manage restaurants, partnerships, and outreach campaigns
+        </p>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+        {/* Monetization Dashboard Cards */}
+        <div className="mb-12">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            Database Seeding
+            Monetization & Partnerships
           </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link
+              href="/admin/monetization/outreach"
+              className="bg-white rounded-lg border-2 border-gray-200 p-6 hover:border-amber-500 hover:shadow-lg transition-all group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 bg-amber-50 rounded-lg group-hover:bg-amber-100 transition-colors">
+                  <Mail className="w-6 h-6 text-amber-600" />
+                </div>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Outreach Campaigns
+              </h3>
+              <p className="text-sm text-gray-600">
+                Create and manage email campaigns to attract new restaurant partners
+              </p>
+            </Link>
+
+            <Link
+              href="/admin/monetization/leads"
+              className="bg-white rounded-lg border-2 border-gray-200 p-6 hover:border-amber-500 hover:shadow-lg transition-all group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 bg-amber-50 rounded-lg group-hover:bg-amber-100 transition-colors">
+                  <Users className="w-6 h-6 text-amber-600" />
+                </div>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Restaurant Leads
+              </h3>
+              <p className="text-sm text-gray-600">
+                Track and manage potential restaurant partners and their status
+              </p>
+            </Link>
+
+            <Link
+              href="/admin/monetization/tiers"
+              className="bg-white rounded-lg border-2 border-gray-200 p-6 hover:border-amber-500 hover:shadow-lg transition-all group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 bg-amber-50 rounded-lg group-hover:bg-amber-100 transition-colors">
+                  <DollarSign className="w-6 h-6 text-amber-600" />
+                </div>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Partnership Tiers
+              </h3>
+              <p className="text-sm text-gray-600">
+                Configure pricing tiers and features for restaurant partnerships
+              </p>
+            </Link>
+
+            <Link
+              href="/admin/monetization/revenue"
+              className="bg-white rounded-lg border-2 border-gray-200 p-6 hover:border-amber-500 hover:shadow-lg transition-all group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 bg-amber-50 rounded-lg group-hover:bg-amber-100 transition-colors">
+                  <TrendingUp className="w-6 h-6 text-amber-600" />
+                </div>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Revenue Tracking
+              </h3>
+              <p className="text-sm text-gray-600">
+                Monitor revenue, active partnerships, and business growth metrics
+              </p>
+            </Link>
+
+            <Link
+              href="/admin/monetization/applications"
+              className="bg-white rounded-lg border-2 border-gray-200 p-6 hover:border-amber-500 hover:shadow-lg transition-all group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 bg-amber-50 rounded-lg group-hover:bg-amber-100 transition-colors">
+                  <FileText className="w-6 h-6 text-amber-600" />
+                </div>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Partnership Applications
+              </h3>
+              <p className="text-sm text-gray-600">
+                Review and approve inbound partnership requests from restaurants
+              </p>
+            </Link>
+          </div>
+        </div>
+
+        {/* Database Seeding Section */}
+        <div className="max-w-2xl">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            Database Management
+          </h2>
+
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Seed Restaurant Database
+          </h3>
           <p className="text-gray-600 mb-6">
             Seed the database with restaurant data for Katy, Texas. This will add approximately 20 restaurants
             with complete information including addresses, phone numbers, hours, and categories.
@@ -128,6 +232,7 @@ export default function AdminPage() {
             </a>
             !
           </p>
+        </div>
         </div>
       </div>
     </div>
