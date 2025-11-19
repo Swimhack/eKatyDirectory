@@ -3,7 +3,7 @@ import { requireAdmin } from '@/lib/auth/require-admin'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { checkRateLimit } from '@/lib/utils/rate-limiter'
 import { sendEmail } from '@/lib/email/client'
-import { generateOutreachEmail } from '@/lib/email/templates'
+import { replaceTemplateVariables } from '@/lib/utils/template-variables'
 
 interface SendRequest {
   campaignId: string
@@ -49,15 +49,31 @@ export async function POST(request: NextRequest) {
     }
 
     // Check rate limit (50/hour, 200/day)
-    const rateLimitResult = await checkRateLimit(session.user.id)
+    // Check hourly limit
+    const hourlyLimit = await checkRateLimit(session.user.id, 50, 3600)
 
-    if (!rateLimitResult.allowed) {
+    if (!hourlyLimit.allowed) {
       return NextResponse.json(
         {
           error: 'Rate limit exceeded',
-          details: `You can send ${rateLimitResult.limit} emails per ${rateLimitResult.window}. Please try again later.`,
-          limit: rateLimitResult.limit,
-          window: rateLimitResult.window,
+          details: 'You can send 50 emails per hour. Please try again later.',
+          remaining: hourlyLimit.remaining,
+          resetAt: hourlyLimit.resetAt,
+        },
+        { status: 429 }
+      )
+    }
+
+    // Check daily limit
+    const dailyLimit = await checkRateLimit(session.user.id, 200, 86400)
+
+    if (!dailyLimit.allowed) {
+      return NextResponse.json(
+        {
+          error: 'Rate limit exceeded',
+          details: 'You can send 200 emails per day. Please try again later.',
+          remaining: dailyLimit.remaining,
+          resetAt: dailyLimit.resetAt,
         },
         { status: 429 }
       )
@@ -109,65 +125,58 @@ export async function POST(request: NextRequest) {
 
     for (const lead of leads) {
       try {
-        // Generate personalized email
-        const emailHtml = generateOutreachEmail({
-          restaurantName: lead.business_name,
-          contactName: lead.contact_name,
+        // Prepare template variables
+        const variables = {
+          restaurant_name: lead.business_name,
+          contact_name: lead.contact_name,
           cuisine: lead.cuisine_type || 'restaurant',
           city: lead.city,
-          tierName: tier?.name,
-          tierPrice: tier?.monthly_price,
-          leadId: lead.id,
-          campaignId: campaign.id,
-        })
+          tier_name: tier?.name || '',
+          tier_price: tier?.monthly_price?.toString() || '',
+        }
 
         // Replace template variables in subject
-        const subject = campaign.subject_template
-          .replace('{{restaurant_name}}', lead.business_name)
-          .replace('{{contact_name}}', lead.contact_name)
-          .replace('{{cuisine}}', lead.cuisine_type || 'restaurant')
-          .replace('{{city}}', lead.city)
-          .replace('{{tier_name}}', tier?.name || '')
-          .replace('{{tier_price}}', tier?.monthly_price?.toString() || '')
+        const subject = replaceTemplateVariables(
+          campaign.subject_template,
+          variables,
+          false // Don't escape HTML in subject
+        )
+
+        // Replace template variables in body
+        const emailBody = replaceTemplateVariables(
+          campaign.body_template,
+          variables,
+          false // Plain text email
+        )
 
         // Send email
         const emailResult = await sendEmail({
           to: lead.email,
           subject,
-          html: emailHtml,
+          html: emailBody.replace(/\n/g, '<br>'), // Convert newlines to HTML
         })
 
-        if (emailResult.success) {
-          // Record email sent
-          await supabase.from('outreach_emails').insert({
-            campaign_id: campaignId,
-            lead_id: lead.id,
-            email_provider_id: emailResult.id || null,
-            subject,
-            sent_at: new Date().toISOString(),
-          })
+        // Record email sent
+        await supabase.from('outreach_emails').insert({
+          campaign_id: campaignId,
+          lead_id: lead.id,
+          email_provider_id: emailResult.id || null,
+          subject,
+          sent_at: new Date().toISOString(),
+        })
 
-          // Update lead last_contacted_at
-          await supabase
-            .from('restaurant_leads')
-            .update({ last_contacted_at: new Date().toISOString() })
-            .eq('id', lead.id)
+        // Update lead last_contacted_at
+        await supabase
+          .from('restaurant_leads')
+          .update({ last_contacted_at: new Date().toISOString() })
+          .eq('id', lead.id)
 
-          successCount++
-          results.push({
-            leadId: lead.id,
-            email: lead.email,
-            status: 'sent',
-          })
-        } else {
-          failureCount++
-          results.push({
-            leadId: lead.id,
-            email: lead.email,
-            status: 'failed',
-            error: emailResult.error,
-          })
-        }
+        successCount++
+        results.push({
+          leadId: lead.id,
+          email: lead.email,
+          status: 'sent',
+        })
       } catch (error) {
         failureCount++
         results.push({

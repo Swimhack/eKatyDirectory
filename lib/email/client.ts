@@ -14,17 +14,15 @@ export async function sendEmail(options: {
   subject: string
   html: string
   from?: string
-  tags?: Record<string, string>
 }) {
   try {
-    const { to, subject, html, from = 'eKaty <noreply@ekaty.com>', tags } = options
+    const { to, subject, html, from = 'eKaty <noreply@ekaty.com>' } = options
 
     const response = await resend.emails.send({
       from,
       to,
       subject,
       html,
-      tags,
     })
 
     if (response.error) {
@@ -54,7 +52,6 @@ export async function sendBatchEmails(
     subject: string
     html: string
     from?: string
-    tags?: Record<string, string>
   }>
 ) {
   const results = []

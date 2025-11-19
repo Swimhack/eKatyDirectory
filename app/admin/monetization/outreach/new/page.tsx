@@ -14,27 +14,21 @@ export default function NewCampaignPage() {
     name: '',
     subject_template:
       'Partnership Opportunity for {{restaurant_name}} in {{city}}',
-    body_template: `Dear {{contact_name}},
-
-I hope this email finds you well. My name is [Your Name], and I'm reaching out from eKaty - the premier local restaurant discovery platform serving Katy, Texas.
-
-We've been following {{restaurant_name}}, and we're impressed by your {{cuisine}} offerings. We believe your restaurant would be an excellent fit for our platform, which helps thousands of local food enthusiasts discover great dining experiences every month.
-
-We're currently offering partnership opportunities through our {{tier_name}} tier at just ${{tier_price}}/month. This includes:
-
-• Featured placement in search results
-• Enhanced listing with photos and menus
-• Priority ranking in your cuisine category
-• Monthly performance analytics
-• Social media promotion
-
-We'd love to discuss how we can help {{restaurant_name}} reach more customers in {{city}} and beyond.
-
-Would you be available for a brief call this week to explore this opportunity?
-
-Best regards,
-[Your Name]
-eKaty Partnership Team`,
+    body_template:
+      'Dear {{contact_name}},\n\n' +
+      "I hope this email finds you well. My name is [Your Name], and I'm reaching out from eKaty - the premier local restaurant discovery platform serving Katy, Texas.\n\n" +
+      "We've been following {{restaurant_name}}, and we're impressed by your {{cuisine}} offerings. We believe your restaurant would be an excellent fit for our platform, which helps thousands of local food enthusiasts discover great dining experiences every month.\n\n" +
+      "We're currently offering partnership opportunities through our {{tier_name}} tier at just ${{tier_price}}/month. This includes:\n\n" +
+      '• Featured placement in search results\n' +
+      '• Enhanced listing with photos and menus\n' +
+      '• Priority ranking in your cuisine category\n' +
+      '• Monthly performance analytics\n' +
+      '• Social media promotion\n\n' +
+      "We'd love to discuss how we can help {{restaurant_name}} reach more customers in {{city}} and beyond.\n\n" +
+      'Would you be available for a brief call this week to explore this opportunity?\n\n' +
+      'Best regards,\n' +
+      '[Your Name]\n' +
+      'eKaty Partnership Team',
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -183,7 +177,7 @@ eKaty Partnership Team`,
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div className="bg-white rounded px-3 py-2">
                     <code className="text-brand-600">
-                      {{'{{'}}restaurant_name{{'}}'}}
+                      {`{{restaurant_name}}`}
                     </code>
                     <p className="text-xs text-gray-600 mt-1">
                       Business name
@@ -191,25 +185,25 @@ eKaty Partnership Team`,
                   </div>
                   <div className="bg-white rounded px-3 py-2">
                     <code className="text-brand-600">
-                      {{'{{'}}contact_name{{'}}'}}
+                      {`{{contact_name}}`}
                     </code>
                     <p className="text-xs text-gray-600 mt-1">Contact person</p>
                   </div>
                   <div className="bg-white rounded px-3 py-2">
                     <code className="text-brand-600">
-                      {{'{{'}}cuisine{{'}}'}}
+                      {`{{cuisine}}`}
                     </code>
                     <p className="text-xs text-gray-600 mt-1">Cuisine type</p>
                   </div>
                   <div className="bg-white rounded px-3 py-2">
                     <code className="text-brand-600">
-                      {{'{{'}}city{{'}}'}}
+                      {`{{city}}`}
                     </code>
                     <p className="text-xs text-gray-600 mt-1">City location</p>
                   </div>
                   <div className="bg-white rounded px-3 py-2">
                     <code className="text-brand-600">
-                      {{'{{'}}tier_name{{'}}'}}
+                      {`{{tier_name}}`}
                     </code>
                     <p className="text-xs text-gray-600 mt-1">
                       Partnership tier
@@ -217,7 +211,7 @@ eKaty Partnership Team`,
                   </div>
                   <div className="bg-white rounded px-3 py-2">
                     <code className="text-brand-600">
-                      {{'{{'}}tier_price{{'}}'}}
+                      {`{{tier_price}}`}
                     </code>
                     <p className="text-xs text-gray-600 mt-1">Monthly price</p>
                   </div>

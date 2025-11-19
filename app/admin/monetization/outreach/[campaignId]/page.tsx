@@ -374,9 +374,7 @@ export default function CampaignDetailPage() {
               </p>
             )}
             <p className="text-xs text-gray-500 mt-1">
-              Available variables: {{'{{'}}restaurant_name{{'}}'}}, {{'{{'}}
-              contact_name{{'}}'}}, {{'{{'}}cuisine{{'}}'}}, {{'{{'}}city
-              {{'}}'}}, {{'{{'}}tier_name{{'}}'}}, {{'{{'}}tier_price{{'}}'}}
+              Available variables: {`{{restaurant_name}}, {{contact_name}}, {{cuisine}}, {{city}}, {{tier_name}}, {{tier_price}}`}
             </p>
           </div>
           <div>

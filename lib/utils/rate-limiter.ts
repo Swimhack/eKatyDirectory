@@ -30,18 +30,41 @@ export async function checkRateLimit(
   const now = new Date()
   const windowStart = new Date(now.getTime() - windowSeconds * 1000)
 
+  // First, get all campaign IDs created by this user
+  const { data: campaigns, error: campaignError } = await supabase
+    .from('outreach_campaigns')
+    .select('id')
+    .eq('created_by', userId)
+
+  if (campaignError) {
+    console.error('Rate limit campaign check error:', campaignError)
+    // Fail open - allow the request but log the error
+    return {
+      allowed: true,
+      remaining: limit,
+      resetAt: new Date(now.getTime() + windowSeconds * 1000),
+      current: 0,
+    }
+  }
+
+  const campaignIds = campaigns?.map((c) => c.id) || []
+
+  // If no campaigns, no emails sent
+  if (campaignIds.length === 0) {
+    return {
+      allowed: true,
+      remaining: limit,
+      resetAt: new Date(now.getTime() + windowSeconds * 1000),
+      current: 0,
+    }
+  }
+
   // Count emails sent within the time window
   const { count, error } = await supabase
     .from('outreach_emails')
     .select('id', { count: 'exact', head: true })
     .gte('sent_at', windowStart.toISOString())
-    .in(
-      'campaign_id',
-      supabase
-        .from('outreach_campaigns')
-        .select('id')
-        .eq('created_by', userId)
-    )
+    .in('campaign_id', campaignIds)
 
   if (error) {
     console.error('Rate limit check error:', error)
