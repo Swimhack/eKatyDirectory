@@ -37,6 +37,7 @@ model User {
   auditLogs         AuditLog[]
   subscriptions     Subscription[]
   payments          Payment[]
+  assignedLeads     MonetizationLead[] @relation("AssignedLeads")
   claimRequests     RestaurantClaim[]
   ownedRestaurants  RestaurantOwner[]
 
@@ -718,6 +719,8 @@ model MonetizationLead {
   tier            String      // owner, featured, premium
   source          String      // claim_card, pricing_page, contact_form
   status          String      @default("new") // new, contacted, interested, converted, lost
+  assignedToId    String?     @map("assigned_to_id")
+  assignedTo      User?       @relation("AssignedLeads", fields: [assignedToId], references: [id])
   notes           String?
   createdAt       DateTime    @default(now()) @map("created_at")
   updatedAt       DateTime    @updatedAt @map("updated_at")
@@ -726,5 +729,6 @@ model MonetizationLead {
   @@index([status])
   @@index([tier])
   @@index([createdAt])
+  @@index([assignedToId])
   @@map("monetization_leads")
 }
