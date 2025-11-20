@@ -18,7 +18,15 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '2mb',
     },
-    instrumentationHook: true,
+    instrumentationHook: false, // Disabled because cron file doesn't exist
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Mark resend as external to prevent bundling during build
+      config.externals = config.externals || []
+      config.externals.push('resend')
+    }
+    return config
   },
 }
 
