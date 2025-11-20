@@ -3,6 +3,8 @@ import { requireAdmin } from '@/lib/auth/require-admin'
 import { getActivePartnerships } from '@/lib/supabase/admin'
 import { formatDateForCSV, formatCurrencyForCSV } from '@/lib/utils/export'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * GET /api/admin/revenue/export
  * Export revenue report as CSV

@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
 import { getTemplateForSegment } from '@/lib/outreach/email-templates'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const user = await getCurrentUser()
@@ -42,7 +44,7 @@ export async function POST(request: NextRequest) {
         try {
           const meta = JSON.parse(r.metadata as string)
           hasMarketing = !!meta.marketing
-        } catch {}
+        } catch { }
       }
       return { ...r, hasMarketing }
     })
@@ -97,7 +99,7 @@ export async function POST(request: NextRequest) {
     /*
     const sendgrid = require('@sendgrid/mail')
     sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
-
+    
     for (const email of emailsToSend) {
       await sendgrid.send({
         to: email.to,

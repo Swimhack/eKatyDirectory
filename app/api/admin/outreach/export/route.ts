@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
 import { getTemplateForSegment } from '@/lib/outreach/email-templates'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const user = await getCurrentUser()
@@ -40,7 +42,7 @@ export async function GET(request: NextRequest) {
         try {
           const meta = JSON.parse(r.metadata as string)
           hasMarketing = !!meta.marketing
-        } catch {}
+        } catch { }
       }
       return { ...r, hasMarketing }
     })

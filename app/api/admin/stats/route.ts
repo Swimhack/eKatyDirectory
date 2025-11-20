@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     // Verify admin authentication
@@ -12,13 +14,13 @@ export async function GET(request: NextRequest) {
 
     // Get counts and recent data
     const [
-      totalRestaurants, 
-      activeRestaurants, 
+      totalRestaurants,
+      activeRestaurants,
       featuredRestaurants,
-      totalUsers, 
-      totalReviews, 
-      totalBlogArticles, 
-      publishedBlogArticles, 
+      totalUsers,
+      totalReviews,
+      totalBlogArticles,
+      publishedBlogArticles,
       recentRestaurants,
       recentBlogArticles
     ] = await Promise.all([

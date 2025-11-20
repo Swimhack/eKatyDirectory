@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth/require-admin'
 import { createAdminClient, getRevenueMetrics } from '@/lib/supabase/admin'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   const adminError = await requireAdmin(request)
   if (adminError) {

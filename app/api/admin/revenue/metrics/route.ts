@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth/require-admin'
-import { getRevenueMetrics } from '@/lib/supabase/admin'
-import { createAdminClient } from '@/lib/supabase/admin'
+import { getRevenueMetrics, createAdminClient } from '@/lib/supabase/admin'
 
-/**
- * Calculate MRR trend for the last 6 months
- */
+export const dynamic = 'force-dynamic'
+
 async function calculateMRRTrend() {
   const supabase = createAdminClient()
   const now = new Date()

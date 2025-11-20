@@ -33,7 +33,7 @@ export function Footer() {
                 </div>
               </div>
               <p className="text-gray-400 max-w-md text-sm md:text-base">
-                Bringing Katy families together through authentic local dining experiences. 
+                Bringing Katy families together through authentic local dining experiences.
                 Discover the restaurants that make our community special.
               </p>
             </div>
@@ -72,7 +72,7 @@ export function Footer() {
           </div>
 
           <div className="border-t border-gray-800 mt-8 pt-6 md:pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 mb-4">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 mb-2">
               <p className="text-gray-400 text-sm text-center md:text-left">
                 © 2025 eKaty.com. All rights reserved.
               </p>
@@ -86,9 +86,9 @@ export function Footer() {
               </div>
             </div>
             <div className="text-center">
-              <a 
-                href="https://StricklandTechnology.net" 
-                target="_blank" 
+              <a
+                href="https://StricklandTechnology.net"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-brand-400 text-xs transition-colors inline-flex items-center gap-1"
                 title="Houston Web Design & Development by Strickland Technology"
@@ -108,26 +108,26 @@ export function Footer() {
             <p className="text-gray-400 text-xs">
               © 2025 eKaty.com. All rights reserved.
             </p>
-          <div className="flex justify-center space-x-4 mt-2 mb-3">
-            <Link href="/privacy" className="text-gray-400 hover:text-white text-xs transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center px-2 py-3">
-              Privacy
-            </Link>
-            <Link href="/terms" className="text-gray-400 hover:text-white text-xs transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center px-2 py-3">
-              Terms
-            </Link>
-          </div>
-          <div className="text-center">
-            <a 
-              href="https://StricklandTechnology.net" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-brand-400 text-xs transition-colors inline-flex items-center gap-1 min-h-[44px] px-2 py-3"
-              title="Houston Web Design & Development by Strickland Technology"
-              aria-label="Website designed and developed by Strickland Technology - Houston Web Design"
-            >
-              Powered by Strickland Technology
-            </a>
-          </div>
+            <div className="flex justify-center space-x-4 mt-2 mb-3">
+              <Link href="/privacy" className="text-gray-400 hover:text-white text-xs transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center px-2 py-3">
+                Privacy
+              </Link>
+              <Link href="/terms" className="text-gray-400 hover:text-white text-xs transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center px-2 py-3">
+                Terms
+              </Link>
+            </div>
+            <div className="text-center">
+              <a
+                href="https://StricklandTechnology.net"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-brand-400 text-xs transition-colors inline-flex items-center gap-1 min-h-[44px] px-2 py-3"
+                title="Houston Web Design & Development by Strickland Technology"
+                aria-label="Website designed and developed by Strickland Technology - Houston Web Design"
+              >
+                Powered by Strickland Technology
+              </a>
+            </div>
           </div>
         </div>
       </footer>

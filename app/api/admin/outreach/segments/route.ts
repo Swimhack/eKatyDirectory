@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/auth'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const user = await getCurrentUser()
@@ -34,7 +36,7 @@ export async function GET(request: NextRequest) {
         try {
           const meta = JSON.parse(r.metadata as string)
           hasMarketing = !!meta.marketing
-        } catch {}
+        } catch { }
       }
       return { ...r, hasMarketing }
     })
